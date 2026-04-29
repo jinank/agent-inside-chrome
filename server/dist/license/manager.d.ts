@@ -8,7 +8,7 @@
  * Pro: Unlimited ($29 one-time via LemonSqueezy)
  *
  * License key sources (checked in order):
- * 1. HANZI_IN_CHROME_LICENSE_KEY env var
+ * 1. RETHINKSOFT_IN_CHROME_LICENSE_KEY env var (HANZI_IN_CHROME_LICENSE_KEY also accepted for backwards compatibility)
  * 2. ~/.rethinksoft-in-chrome/mcp-license.json (persisted from previous activation)
  *
  * Storage:

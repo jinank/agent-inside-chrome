@@ -8,7 +8,7 @@
  * Pro: Unlimited ($29 one-time via LemonSqueezy)
  *
  * License key sources (checked in order):
- * 1. HANZI_IN_CHROME_LICENSE_KEY env var
+ * 1. RETHINKSOFT_IN_CHROME_LICENSE_KEY env var (HANZI_IN_CHROME_LICENSE_KEY also accepted for backwards compatibility)
  * 2. ~/.rethinksoft-in-chrome/mcp-license.json (persisted from previous activation)
  *
  * Storage:
@@ -64,11 +64,11 @@ function saveUsageData(data) {
  */
 export async function checkAndIncrementUsage() {
     // Auto-activate from env var if no license exists yet
-    const envKey = process.env.HANZI_IN_CHROME_LICENSE_KEY;
+    const envKey = process.env.RETHINKSOFT_IN_CHROME_LICENSE_KEY || process.env.HANZI_IN_CHROME_LICENSE_KEY;
     if (envKey && !getLicenseData()) {
         const result = await activateLicense(envKey);
         if (result.success) {
-            console.error(`[MCP] Auto-activated license from HANZI_IN_CHROME_LICENSE_KEY`);
+            console.error(`[MCP] Auto-activated license from env var`);
         }
         else {
             console.error(`[MCP] License key from env var invalid: ${result.message}`);
@@ -84,7 +84,7 @@ export async function checkAndIncrementUsage() {
                 return {
                     allowed: false,
                     remaining: 0,
-                    message: "Pro license could not be validated (offline for 7+ days). Please check your internet connection and try again, or set HANZI_IN_CHROME_LICENSE_KEY in your environment.",
+                    message: "Pro license could not be validated (offline for 7+ days). Please check your internet connection and try again, or set RETHINKSOFT_IN_CHROME_LICENSE_KEY in your environment.",
                 };
             }
         }
@@ -100,8 +100,8 @@ export async function checkAndIncrementUsage() {
                 `You've used all ${FREE_TASK_LIMIT} free tasks.`,
                 ``,
                 `Upgrade to Pro ($29 one-time) for unlimited tasks:`,
-                `  Buy: https://hanziinchrome.lemonsqueezy.com/checkout/buy/14a16cd3-47d7-42c9-a870-b44aa070cc44`,
-                `  Then set HANZI_IN_CHROME_LICENSE_KEY=<your-key> in your environment.`,
+                `  Buy: https://rethinksoft.lemonsqueezy.com/buy`,
+                `  Then set RETHINKSOFT_IN_CHROME_LICENSE_KEY=<your-key> in your environment.`,
             ].join("\n"),
         };
     }

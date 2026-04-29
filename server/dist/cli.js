@@ -280,7 +280,7 @@ async function cmdScreenshot() {
     disconnectAndExit(0);
 }
 // --- Skills ---
-const SKILLS_BASE_URL = 'https://raw.githubusercontent.com/hanzili/llm-in-chrome/main/server/skills';
+const SKILLS_BASE_URL = 'https://raw.githubusercontent.com/hanzili/rethinksoft-in-chrome/main/server/skills';
 const SKILL_REGISTRY = [
     {
         name: 'linkedin-prospector',
@@ -341,7 +341,7 @@ async function cmdSkills() {
         console.log(`  ${skill.name.padEnd(24)} ${skill.description}`);
     }
     console.log(`\nInstall: rethinksoft-browser skills install <name>`);
-    console.log(`Browse:  https://browse.hanzilla.co/skills\n`);
+    console.log(`Browse:  https://github.com/hanzili/rethinksoft-in-chrome/tree/main/server/skills\n`);
 }
 function detectSkillsDir(skillName) {
     // Check for common agent skill directories in the current project

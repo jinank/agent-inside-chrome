@@ -54,9 +54,9 @@ export async function checkAndIncrementUsage() {
         `You've used all ${FREE_TASK_LIMIT} free tasks.`,
         ``,
         `Upgrade to Pro ($29 one-time) for unlimited tasks:`,
-        `  Buy: https://hanziinchrome.lemonsqueezy.com/checkout/buy/14a16cd3-47d7-42c9-a870-b44aa070cc44`,
+        `  Buy: https://rethinksoft.lemonsqueezy.com/buy`,
         `  Then activate your key in the extension Settings > License tab,`,
-        `  or set HANZI_IN_CHROME_LICENSE_KEY in your environment.`,
+        `  or set RETHINKSOFT_IN_CHROME_LICENSE_KEY in your environment.`,
       ].join('\n'),
     };
   }

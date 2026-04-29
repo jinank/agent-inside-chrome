@@ -63,9 +63,9 @@ interface PendingScreenshot {
 const pendingScreenshots = new Map<string, PendingScreenshot>();
 
 // Max time a task can run before we return (configurable, default 5 minutes)
-const TASK_TIMEOUT_MS = parseInt(process.env.HANZI_IN_CHROME_TIMEOUT_MS || String(5 * 60 * 1000), 10);
-const MAX_CONCURRENT = parseInt(process.env.HANZI_IN_CHROME_MAX_SESSIONS || "5", 10);
-const SESSION_TTL_MS = parseInt(process.env.HANZI_IN_CHROME_SESSION_TTL_MS || String(60 * 60 * 1000), 10);
+const TASK_TIMEOUT_MS = parseInt(process.env.RETHINKSOFT_IN_CHROME_TIMEOUT_MS || process.env.HANZI_IN_CHROME_TIMEOUT_MS || String(5 * 60 * 1000), 10);
+const MAX_CONCURRENT = parseInt(process.env.RETHINKSOFT_IN_CHROME_MAX_SESSIONS || process.env.HANZI_IN_CHROME_MAX_SESSIONS || "5", 10);
+const SESSION_TTL_MS = parseInt(process.env.RETHINKSOFT_IN_CHROME_SESSION_TTL_MS || process.env.HANZI_IN_CHROME_SESSION_TTL_MS || String(60 * 60 * 1000), 10);
 
 // WebSocket relay connection
 let connection: WebSocketClient;

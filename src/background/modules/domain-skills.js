@@ -356,7 +356,7 @@ if (handle) {
 
 ### 5b. Session Expiration
 - Sessions can expire unexpectedly - you may find yourself back at the login page
-- If this happens, log in again with: netname: hanzili5, password: 123456
+- If this happens, log in again using your credentials
 
 ### 6. Popup Windows (Payment, Verification, etc.)
 - Some actions open a NEW POPUP WINDOW instead of showing content inline

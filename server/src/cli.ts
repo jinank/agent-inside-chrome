@@ -328,7 +328,7 @@ async function cmdScreenshot(): Promise<void> {
 
 // --- Skills ---
 
-const SKILLS_BASE_URL = 'https://raw.githubusercontent.com/hanzili/llm-in-chrome/main/server/skills';
+const SKILLS_BASE_URL = 'https://raw.githubusercontent.com/hanzili/rethinksoft-in-chrome/main/server/skills';
 
 const SKILL_REGISTRY = [
   {
@@ -396,7 +396,7 @@ async function cmdSkills(): Promise<void> {
     console.log(`  ${skill.name.padEnd(24)} ${skill.description}`);
   }
   console.log(`\nInstall: rethinksoft-browser skills install <name>`);
-  console.log(`Browse:  https://browse.hanzilla.co/skills\n`);
+  console.log(`Browse:  https://github.com/hanzili/rethinksoft-in-chrome/tree/main/server/skills\n`);
 }
 
 function detectSkillsDir(skillName: string): string {
