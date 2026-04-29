@@ -9,11 +9,11 @@
  *
  * License key sources (checked in order):
  * 1. HANZI_IN_CHROME_LICENSE_KEY env var
- * 2. ~/.hanzi-in-chrome/mcp-license.json (persisted from previous activation)
+ * 2. ~/.rethinksoft-in-chrome/mcp-license.json (persisted from previous activation)
  *
  * Storage:
- *   ~/.hanzi-in-chrome/mcp-license.json — { key, valid, instanceId, validatedAt }
- *   ~/.hanzi-in-chrome/mcp-usage.json   — { count }
+ *   ~/.rethinksoft-in-chrome/mcp-license.json â€” { key, valid, instanceId, validatedAt }
+ *   ~/.rethinksoft-in-chrome/mcp-usage.json   â€” { count }
  */
 
 import fs from "fs";
@@ -26,7 +26,7 @@ const LEMON_SQUEEZY_VALIDATE_URL =
 const REVALIDATION_INTERVAL_MS = 24 * 60 * 60 * 1000; // 24 hours
 const OFFLINE_GRACE_PERIOD_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
-const DATA_DIR = path.join(os.homedir(), ".hanzi-in-chrome");
+const DATA_DIR = path.join(os.homedir(), ".rethinksoft-in-chrome");
 const LICENSE_PATH = path.join(DATA_DIR, "mcp-license.json");
 const USAGE_PATH = path.join(DATA_DIR, "mcp-usage.json");
 
@@ -104,7 +104,7 @@ export async function checkAndIncrementUsage(): Promise<{
 
   const license = getLicenseData();
 
-  // Pro user — check if revalidation needed
+  // Pro user â€” check if revalidation needed
   if (license && license.valid) {
     const elapsed = Date.now() - (license.validatedAt || 0);
 
@@ -120,10 +120,10 @@ export async function checkAndIncrementUsage(): Promise<{
       }
     }
 
-    return { allowed: true, remaining: null, message: "Pro — unlimited tasks" };
+    return { allowed: true, remaining: null, message: "Pro â€” unlimited tasks" };
   }
 
-  // Free tier — check total count
+  // Free tier â€” check total count
   const usage = getUsageData();
 
   if (usage.count >= FREE_TASK_LIMIT) {
@@ -170,7 +170,7 @@ export async function activateLicense(
       },
       body: JSON.stringify({
         license_key: key.trim(),
-        instance_name: "hanzi-in-chrome",
+        instance_name: "rethinksoft-in-chrome",
       }),
     });
 
@@ -236,7 +236,7 @@ async function revalidateLicense(
     saveLicenseData(license);
     return { valid: false };
   } catch {
-    // Network error — don't invalidate, rely on grace period
+    // Network error â€” don't invalidate, rely on grace period
     return { valid: license.valid };
   }
 }
@@ -258,7 +258,7 @@ export function getLicenseStatus(): {
       isPro: true,
       tasksUsed: usage.count,
       taskLimit: null,
-      message: "Pro — Unlimited tasks",
+      message: "Pro â€” Unlimited tasks",
     };
   }
 
@@ -266,6 +266,6 @@ export function getLicenseStatus(): {
     isPro: false,
     tasksUsed: usage.count,
     taskLimit: FREE_TASK_LIMIT,
-    message: `Free — ${usage.count}/${FREE_TASK_LIMIT} tasks used`,
+    message: `Free â€” ${usage.count}/${FREE_TASK_LIMIT} tasks used`,
   };
 }

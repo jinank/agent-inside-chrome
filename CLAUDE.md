@@ -16,14 +16,14 @@ This project is an MCP server that controls a Chrome extension for browser autom
 
 ```
 Claude Code / Cursor (MCP client)
-  → MCP Server (server/src/index.ts) via stdio
-  → WebSocket relay (ws://localhost:7862)
-  → Chrome Extension (service-worker.js)
-  → Browser agent makes LLM calls via native host
-  → Native host reads local credentials + proxies API calls
+  â†’ MCP Server (server/src/index.ts) via stdio
+  â†’ WebSocket relay (ws://localhost:7862)
+  â†’ Chrome Extension (service-worker.js)
+  â†’ Browser agent makes LLM calls via native host
+  â†’ Native host reads local credentials + proxies API calls
 ```
 
-All LLM calls happen in the extension via `api.js` → native host. The MCP server does NOT call LLMs directly — it only routes tasks to the extension.
+All LLM calls happen in the extension via `api.js` â†’ native host. The MCP server does NOT call LLMs directly â€” it only routes tasks to the extension.
 
 ### CLI Usage
 
@@ -45,4 +45,4 @@ cd server && npm run build
 - The `--context` flag passes info the agent needs (form data, preferences, tone)
 - The `--url` flag sets the starting page
 - The Chrome extension must be loaded and running
-- Session state is stored in `~/.hanzi-in-chrome/sessions/`
+- Session state is stored in `~/.rethinksoft-in-chrome/sessions/`

@@ -11,11 +11,11 @@ Claude's OAuth requires a `redirect_uri` that's whitelisted for the Claude Code 
 ## Architecture
 
 ```
-Extension → Native Messaging → Node.js Script → HTTP Server (localhost:8080)
-                                                      ↓
+Extension â†’ Native Messaging â†’ Node.js Script â†’ HTTP Server (localhost:8080)
+                                                      â†“
                                                 OAuth Callback
-                                                      ↓
-Extension ← Native Messaging ← Node.js Script ← Auth Code
+                                                      â†“
+Extension â† Native Messaging â† Node.js Script â† Auth Code
 ```
 
 ## Installation
@@ -31,7 +31,7 @@ Extension ← Native Messaging ← Node.js Script ← Auth Code
    ```bash
    # Go to chrome://extensions
    # Enable "Developer mode"
-   # Find "Hanzi in Chrome" and copy the ID
+   # Find "RethinkSoft in Chrome" and copy the ID
    ```
 
 2. **Run the installation script**:
@@ -56,12 +56,12 @@ Extension ← Native Messaging ← Node.js Script ← Auth Code
 ## Usage
 
 1. Open the extension
-2. Go to Settings → Providers
+2. Go to Settings â†’ Providers
 3. Click **"Login with Claude Account"**
 4. A new tab opens with the Claude authorization page
 5. Click "Authorize"
 6. The tab redirects to `http://localhost:8080/callback`
-7. You see "✓ Authorization Successful!"
+7. You see "âœ“ Authorization Successful!"
 8. The tab auto-closes
 9. Extension is now authenticated with OAuth
 
@@ -71,7 +71,7 @@ Extension ← Native Messaging ← Node.js Script ← Auth Code
 
 ```javascript
 // Extension connects to native messaging host
-const port = chrome.runtime.connectNative('com.hanzi_in_chrome.oauth_host');
+const port = chrome.runtime.connectNative('com.rethinksoft_in_chrome.oauth_host');
 
 // Sends "start_server" message
 port.postMessage({ type: 'start_server' });
@@ -118,7 +118,7 @@ const state = parsedUrl.query.state;
 sendMessage({ type: 'oauth_success', code, state });
 
 // Shows success page to user
-res.end('<h1>✓ Authorization Successful!</h1>');
+res.end('<h1>âœ“ Authorization Successful!</h1>');
 ```
 
 ### 6. Extension exchanges code for tokens
@@ -155,10 +155,10 @@ cd native-host
 **Check**:
 ```bash
 # macOS
-cat ~/Library/Application\ Support/Google/Chrome/NativeMessagingHosts/com.hanzi_in_chrome.oauth_host.json
+cat ~/Library/Application\ Support/Google/Chrome/NativeMessagingHosts/com.rethinksoft_in_chrome.oauth_host.json
 
 # Linux
-cat ~/.config/google-chrome/NativeMessagingHosts/com.hanzi_in_chrome.oauth_host.json
+cat ~/.config/google-chrome/NativeMessagingHosts/com.rethinksoft_in_chrome.oauth_host.json
 ```
 
 **Fix**:
@@ -192,18 +192,18 @@ lsof -ti:8080 | xargs kill -9
 ```bash
 # Check native host logs
 # They go to Chrome's extension console
-# chrome://extensions → Hanzi in Chrome → service worker → Console
+# chrome://extensions â†’ RethinkSoft in Chrome â†’ service worker â†’ Console
 ```
 
 ## Testing
 
 ### Test native messaging connection
 
-Open the extension's service worker console (`chrome://extensions` → service worker):
+Open the extension's service worker console (`chrome://extensions` â†’ service worker):
 
 ```javascript
 // Test connection
-const port = chrome.runtime.connectNative('com.hanzi_in_chrome.oauth_host');
+const port = chrome.runtime.connectNative('com.rethinksoft_in_chrome.oauth_host');
 
 port.onMessage.addListener((msg) => {
   console.log('Received:', msg);
@@ -248,7 +248,7 @@ This removes the manifest file from Chrome's native messaging directory.
 ## Files
 
 - `oauth-server.cjs` - Node.js HTTP server (native messaging host)
-- `com.hanzi_in_chrome.oauth_host.json` - Template manifest
+- `com.rethinksoft_in_chrome.oauth_host.json` - Template manifest
 - `install.sh` - Installation script (macOS/Linux)
 - `uninstall.sh` - Uninstallation script
 - `README.md` - This file

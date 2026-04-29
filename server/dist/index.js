@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// If invoked as `npx hanzi-in-chrome setup`, delegate to the CLI
+// If invoked as `npx rethinksoft-in-chrome setup`, delegate to the CLI
 if (process.argv[2] === 'setup') {
     const { fileURLToPath } = await import('url');
     const { dirname, join } = await import('path');
@@ -13,7 +13,7 @@ if (process.argv[2] === 'setup') {
     process.exit(0);
 }
 /**
- * Hanzi in Chrome MCP Server
+ * RethinkSoft in Chrome MCP Server
  *
  * MCP transport + session wrapper for the extension-side browser agent.
  * The Chrome extension owns browser execution; this server forwards tasks,
@@ -217,7 +217,7 @@ function waitForSessionTerminal(sessionId, timeoutMs = TASK_TIMEOUT_MS) {
         (msg.type === "task_complete" || msg.type === "task_error"), timeoutMs);
 }
 // --- Helpers ---
-const EXTENSION_URL = "https://chromewebstore.google.com/detail/hanzi-in-chrome/iklpkemlmbhemkiojndpbhoakgikpmcd";
+const EXTENSION_URL = "https://chromewebstore.google.com/detail/rethinksoft-in-chrome/iklpkemlmbhemkiojndpbhoakgikpmcd";
 function openInBrowser(url) {
     const cmd = process.platform === "win32" ? "start" : process.platform === "darwin" ? "open" : "xdg-open";
     exec(`${cmd} "${url}"`);
@@ -275,29 +275,29 @@ const TOOLS = [
         name: "browser_start",
         description: `Start a browser automation task. Controls the user's real Chrome browser with their existing logins, cookies, and sessions.
 
-An autonomous agent navigates, clicks, types, and fills forms. Blocks until complete or timeout (5 min). You can run multiple browser_start calls in parallel — each gets its own browser window.
+An autonomous agent navigates, clicks, types, and fills forms. Blocks until complete or timeout (5 min). You can run multiple browser_start calls in parallel â€” each gets its own browser window.
 
-WHEN TO USE — only when you need a real browser and no other tool can do it:
+WHEN TO USE â€” only when you need a real browser and no other tool can do it:
 - Clicking, typing, filling forms, navigating menus, selecting dropdowns
 - Testing workflows: "sign up for an account and verify the welcome email arrives"
 - Posting or publishing: write a LinkedIn post, send a Slack message, submit a forum reply, post a tweet
-- Authenticated pages: read a Jira ticket, check GitHub PR status, pull data from an analytics dashboard, check order status — the user is already logged in
-- Dynamic / JS-rendered pages: SPAs, dashboards, infinite scroll — content that plain fetch can't reach
+- Authenticated pages: read a Jira ticket, check GitHub PR status, pull data from an analytics dashboard, check order status â€” the user is already logged in
+- Dynamic / JS-rendered pages: SPAs, dashboards, infinite scroll â€” content that plain fetch can't reach
 - Multi-step tasks: "find flights from A to B, compare prices, and pick the cheapest"
 
-WHEN NOT TO USE — always prefer faster tools first:
+WHEN NOT TO USE â€” always prefer faster tools first:
 - If you have an API, MCP tool, or CLI command that can accomplish the task, use that instead. Browser automation is slower and should be a last resort.
-- Factual or general knowledge questions — just answer directly
-- Web search — use built-in web search or a search MCP
-- Reading public/static pages — use a fetch, reader, or web scraping tool
-- GitHub, Jira, Slack, etc. — use their dedicated API or MCP tool if available
-- API requests — use curl or an HTTP tool
+- Factual or general knowledge questions â€” just answer directly
+- Web search â€” use built-in web search or a search MCP
+- Reading public/static pages â€” use a fetch, reader, or web scraping tool
+- GitHub, Jira, Slack, etc. â€” use their dedicated API or MCP tool if available
+- API requests â€” use curl or an HTTP tool
 - Code, files, or anything that doesn't need a browser
 
 Return statuses:
-- "complete" — task succeeded, result in "answer"
-- "error" — task failed. Call browser_screenshot to see the page, then browser_message to retry or browser_stop to clean up.
-- "timeout" — the 5-minute window elapsed but the task is still running in the browser. This is normal for long tasks. Call browser_screenshot to check progress, then browser_message to continue or browser_stop to end.`,
+- "complete" â€” task succeeded, result in "answer"
+- "error" â€” task failed. Call browser_screenshot to see the page, then browser_message to retry or browser_stop to clean up.
+- "timeout" â€” the 5-minute window elapsed but the task is still running in the browser. This is normal for long tasks. Call browser_screenshot to check progress, then browser_message to continue or browser_stop to end.`,
         inputSchema: {
             type: "object",
             properties: {
@@ -366,7 +366,7 @@ Without "remove", the session can still be resumed later with browser_message. W
         name: "browser_screenshot",
         description: `Capture a screenshot of the current browser page. Returns a PNG image.
 
-Call this when browser_start returns "error" or times out — see what the agent was looking at.`,
+Call this when browser_start returns "error" or times out â€” see what the agent was looking at.`,
         inputSchema: {
             type: "object",
             properties: {
@@ -382,7 +382,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({ tools: TOOLS }))
 const PROMPTS = [
     {
         name: "linkedin-prospector",
-        description: "Find people on LinkedIn and send personalized connection requests. Uses your real signed-in browser — LinkedIn has no API for this. Supports networking, sales, partnerships, and hiring strategies. Each connection note is unique.",
+        description: "Find people on LinkedIn and send personalized connection requests. Uses your real signed-in browser â€” LinkedIn has no API for this. Supports networking, sales, partnerships, and hiring strategies. Each connection note is unique.",
         arguments: [
             { name: "goal", description: "What you're trying to achieve: networking, sales, partnerships, hiring, or market-research", required: true },
             { name: "topic", description: "Topic, industry, or product area (e.g., 'browser automation', 'AI DevTools')", required: true },
@@ -392,7 +392,7 @@ const PROMPTS = [
     },
     {
         name: "e2e-tester",
-        description: "Test a web app in your real browser — click through flows and report what's broken with screenshots and code references. Gathers context from the codebase first, then uses the browser only for UI interaction and visual verification. Works on localhost, staging, and preview URLs.",
+        description: "Test a web app in your real browser â€” click through flows and report what's broken with screenshots and code references. Gathers context from the codebase first, then uses the browser only for UI interaction and visual verification. Works on localhost, staging, and preview URLs.",
         arguments: [
             { name: "url", description: "App URL to test (e.g., 'localhost:3000', 'staging.myapp.com')", required: true },
             { name: "what", description: "What to test: 'signup flow', 'checkout', 'everything', or 'what I just changed'", required: false },
@@ -430,25 +430,25 @@ ${context ? `\nContext about me/my product: ${context}` : ""}
 ## Tool selection rule
 
 - Prefer existing tools first: code search, git diff, logs, APIs, local files, and other MCP integrations.
-- Use Hanzi only for browser-required steps: LinkedIn prospecting is a logged-in UI workflow with no useful public API for this job.
+- Use RethinkSoft only for browser-required steps: LinkedIn prospecting is a logged-in UI workflow with no useful public API for this job.
 - If LinkedIn shows a rate limit warning, CAPTCHA, or risk signal, stop immediately and tell me.
 
 ## Step 1: Choose the right search strategy
 
 Based on my goal, pick the best approach (or combine them):
 
-**Networking / community building** → Search LinkedIn POSTS. Find people actively talking about the topic. These are engaged, vocal people — great for community.
+**Networking / community building** â†’ Search LinkedIn POSTS. Find people actively talking about the topic. These are engaged, vocal people â€” great for community.
 URL: https://www.linkedin.com/search/results/content/?keywords=${encodeURIComponent(topic)}
 
-**Sales prospecting** → Search LinkedIn PEOPLE with role/industry filters. Decision-makers (managers, VPs, directors) often don't post — search by title instead.
+**Sales prospecting** â†’ Search LinkedIn PEOPLE with role/industry filters. Decision-makers (managers, VPs, directors) often don't post â€” search by title instead.
 URL: https://www.linkedin.com/search/results/people/?keywords=${encodeURIComponent(topic)}
 Add filters: use LinkedIn's built-in filters for seniority level, industry, company size, location.
 
-**Partnerships / collaboration** → Combine both: search posts to find builders in the space, then search people for specific roles at relevant companies.
+**Partnerships / collaboration** â†’ Combine both: search posts to find builders in the space, then search people for specific roles at relevant companies.
 
-**Hiring** → Search people by skills and current role. Filter by location and experience level.
+**Hiring** â†’ Search people by skills and current role. Filter by location and experience level.
 
-**Market research** → Search posts and read comments. Find what people are saying, who's engaging, what problems they mention.
+**Market research** â†’ Search posts and read comments. Find what people are saying, who's engaging, what problems they mention.
 
 Tell me which strategy you're going with before starting. If my goal suggests a clear strategy, just confirm it and proceed.
 
@@ -458,17 +458,17 @@ For each person, gather personalization material. What you look for depends on h
 
 - **Found via post search**: What they posted about, their take, any specific insight they shared
 - **Found via people search**: Visit their profile. Look for: recent job change, About section, featured content, recent activity, mutual connections, company news
-- **Found via both**: Combine signals — strongest personalization
+- **Found via both**: Combine signals â€” strongest personalization
 
 Collect: name, headline, and at least one personalization hook per person.
 
 ## Step 3: Dedup with outreach log
 
 Before searching, check prior outreach:
-\`wc -l ~/.hanzi-in-chrome/contacted.txt 2>/dev/null || echo "0 (new log)"\`
+\`wc -l ~/.rethinksoft-in-chrome/contacted.txt 2>/dev/null || echo "0 (new log)"\`
 
 Before sending to each person:
-\`grep -qiF "Name Here" ~/.hanzi-in-chrome/contacted.txt 2>/dev/null\`
+\`grep -qiF "Name Here" ~/.rethinksoft-in-chrome/contacted.txt 2>/dev/null\`
 Skip if found (exit 0).
 
 ## Step 4: Show me the list before sending
@@ -476,38 +476,38 @@ Skip if found (exit 0).
 Present a table:
 | # | Name | Role / Company | Personalization hook | Why they match my goal | Status |
 
-The "Personalization hook" column is key — it's the specific thing you'll reference in the note. If you don't have a strong hook for someone, flag it.
+The "Personalization hook" column is key â€” it's the specific thing you'll reference in the note. If you don't have a strong hook for someone, flag it.
 
 Ask me which ones to send to. I might want to adjust the list or the approach.
 
 ## Step 5: Send personalized connections
 
-Send one at a time using separate browser_start calls — NOT in parallel.
+Send one at a time using separate browser_start calls â€” NOT in parallel.
 
 Each connection note (max 300 chars) must:
-1. **Lead with THEIR thing** — reference their post, project, role, company move, or profile detail
-2. **Connect it to why you're reaching out** — make the relevance obvious
-3. **Sound like a human** — conversational, not polished marketing copy
+1. **Lead with THEIR thing** â€” reference their post, project, role, company move, or profile detail
+2. **Connect it to why you're reaching out** â€” make the relevance obvious
+3. **Sound like a human** â€” conversational, not polished marketing copy
 
 Personalization varies by how you found them:
 
-**Post-based**: "Your post about [specific thing] resonated — I'm working on [related thing]. Would love to connect."
-**Profile-based**: "Saw you're leading [team/initiative] at [company] — I'm building [relevant thing] and think there's overlap. Happy to share notes."
+**Post-based**: "Your post about [specific thing] resonated â€” I'm working on [related thing]. Would love to connect."
+**Profile-based**: "Saw you're leading [team/initiative] at [company] â€” I'm building [relevant thing] and think there's overlap. Happy to share notes."
 **Job-change-based**: "Congrats on the move to [company]! I work on [relevant thing] that might be useful as you're getting set up."
-**Mutual-connection-based**: "We both know [person] — I noticed you're working on [thing] and thought we should connect."
+**Mutual-connection-based**: "We both know [person] â€” I noticed you're working on [thing] and thought we should connect."
 
 After each send, log immediately:
-\`mkdir -p ~/.hanzi-in-chrome && echo "Name Here" >> ~/.hanzi-in-chrome/contacted.txt\`
+\`mkdir -p ~/.rethinksoft-in-chrome && echo "Name Here" >> ~/.rethinksoft-in-chrome/contacted.txt\`
 
-Report progress: "Sent 3/12 — continuing..."
+Report progress: "Sent 3/12 â€” continuing..."
 
 ## Safety rules
 
 - Max 20 connection requests per session
 - If LinkedIn shows a rate limit warning or CAPTCHA, stop immediately and tell me
-- Every note must be unique — never copy-paste between people
+- Every note must be unique â€” never copy-paste between people
 - No links, no sales pitches, no product plugs in the connection note
-- Don't send to people where you couldn't find a good personalization hook — skip and note why
+- Don't send to people where you couldn't find a good personalization hook â€” skip and note why
 
 ## When done
 
@@ -539,7 +539,7 @@ ${credentials ? `\nTest credentials: ${credentials}` : ""}
 ## Tool selection rule
 
 - Prefer existing tools first: code search, git diff, logs, APIs, local files, and other MCP integrations. Gather all context you can before opening the browser.
-- Use Hanzi only for browser-required steps: real UI interaction, visual verification, form submission, and anything that needs a rendered page.
+- Use RethinkSoft only for browser-required steps: real UI interaction, visual verification, form submission, and anything that needs a rendered page.
 - If a browser step could mutate real data, ask me before proceeding unless the environment is clearly local, dev, test, or preview.
 
 ## Safety: Check the target before testing
@@ -563,13 +563,13 @@ You have access to the codebase. Use it. Before touching the browser:
    - Key pages: login, signup, dashboard, checkout, settings
    - API endpoints the frontend calls
 
-3. **Find test credentials**: Check \`.env\`, \`.env.local\`, \`seed\` files, or test fixtures for test accounts. Note what type of account you found (admin, test user, etc.) — don't silently use production credentials.
+3. **Find test credentials**: Check \`.env\`, \`.env.local\`, \`seed\` files, or test fixtures for test accounts. Note what type of account you found (admin, test user, etc.) â€” don't silently use production credentials.
 
 4. **Check if the server is running**: Run \`curl -s -o /dev/null -w "%{http_code}" ${url}\`. If it's not running, tell me to start it and stop here.
 
 5. **Decide what to test**: Based on recent changes + app structure, prioritize:
-   - Changed files first — if I touched the checkout page, test checkout
-   - Critical paths — signup, login, core feature
+   - Changed files first â€” if I touched the checkout page, test checkout
+   - Critical paths â€” signup, login, core feature
    - If I said "everything", hit every major route
 
 Present your test plan briefly: "I'll test: 1) signup, 2) login, 3) the checkout flow you changed in the last commit." Ask if I want to adjust before proceeding.
@@ -588,9 +588,9 @@ For each flow:
 
 If a flow requires login, log in first using the credentials I provided or that you found (with my confirmation).
 
-If something fails, try to get specific error information — what error message appeared? What was the URL? What was the last thing that worked?
+If something fails, try to get specific error information â€” what error message appeared? What was the URL? What was the last thing that worked?
 
-**After each \`browser_start\` returns**, call \`browser_screenshot\` (a separate MCP tool) to capture the final state. The browser window stays open, so the screenshot shows the page at the end of the flow. Do this for both passing and failing flows — screenshots are evidence.
+**After each \`browser_start\` returns**, call \`browser_screenshot\` (a separate MCP tool) to capture the final state. The browser window stays open, so the screenshot shows the page at the end of the flow. Do this for both passing and failing flows â€” screenshots are evidence.
 
 ## Phase 3: Report findings
 
@@ -600,19 +600,19 @@ After testing, write a clear report:
 \`\`\`
 Tested [N] flows on ${url}:
 
-✓ [Flow name] — [what happened, one line]
-  📸 Screenshot: [describe what the screenshot shows]
+âœ“ [Flow name] â€” [what happened, one line]
+  ðŸ“¸ Screenshot: [describe what the screenshot shows]
 
-✗ [Flow name] — [what's broken, specifically]
-  📸 Screenshot: [what the page looked like when it failed]
+âœ— [Flow name] â€” [what's broken, specifically]
+  ðŸ“¸ Screenshot: [what the page looked like when it failed]
 
-⚠ [Flow name] — [works but has issues]
-  📸 Screenshot: [evidence of the issue]
+âš  [Flow name] â€” [works but has issues]
+  ðŸ“¸ Screenshot: [evidence of the issue]
 \`\`\`
 
 ### Then, for each failure:
 
-**Cross-reference with the code.** This is your superpower — you can see both the browser AND the codebase. For each broken thing:
+**Cross-reference with the code.** This is your superpower â€” you can see both the browser AND the codebase. For each broken thing:
 1. What did the browser show? (include the screenshot)
 2. What file likely causes this? (check recent git changes, route handlers, API endpoints)
 3. What's your best guess at the root cause?
@@ -620,8 +620,8 @@ Tested [N] flows on ${url}:
 
 Example:
 \`\`\`
-✗ Checkout — form submits but the page hangs on a loading spinner.
-  📸 Screenshot shows the payment form with a spinning loader, stuck for 30+ seconds.
+âœ— Checkout â€” form submits but the page hangs on a loading spinner.
+  ðŸ“¸ Screenshot shows the payment form with a spinning loader, stuck for 30+ seconds.
 
   Likely cause: src/api/checkout.ts was modified in your last commit (abc123).
   You removed the \`onSuccess\` callback on line 45. The frontend is waiting
@@ -638,14 +638,14 @@ Example:
 
 ## Rules
 
-- Don't test in parallel — one flow at a time via separate browser_start calls
-- Don't guess — if you can't tell what's wrong, say so and suggest I check manually
-- Don't skip the codebase analysis — it's what makes your report actionable instead of generic
+- Don't test in parallel â€” one flow at a time via separate browser_start calls
+- Don't guess â€” if you can't tell what's wrong, say so and suggest I check manually
+- Don't skip the codebase analysis â€” it's what makes your report actionable instead of generic
 - If the dev server isn't running, stop and tell me instead of reporting "page not found" as a bug
 - If browser_start times out, call browser_screenshot to see where it got stuck
-- Always take a screenshot after each flow — for both passes and failures
+- Always take a screenshot after each flow â€” for both passes and failures
 - On production URLs, default to read-only unless I explicitly opt in
-- Don't silently use credentials from .env on non-local targets — confirm first`,
+- Don't silently use credentials from .env on non-local targets â€” confirm first`,
                     },
                 },
             ],
@@ -670,7 +670,7 @@ ${context ? `\nExtra context: ${context}` : ""}
 ## Tool selection rule
 
 - Prefer existing tools first: read the codebase, changelog, git log, README, or any source material to understand what to post about. Draft all content WITHOUT the browser.
-- Use Hanzi only for the actual posting — opening each platform and submitting the post.
+- Use RethinkSoft only for the actual posting â€” opening each platform and submitting the post.
 - Each post is a public action that cannot be undone. Show me every draft and get my approval before posting anything.
 
 ## Phase 1: Gather source material (no browser)
@@ -692,7 +692,7 @@ Write a separate version for each platform. Do NOT copy-paste the same text ever
 - Use line breaks for readability
 - 3-5 hashtags at the end
 - Include a link if relevant
-- Bold key phrases using unicode (𝗯𝗼𝗹𝗱) sparingly
+- Bold key phrases using unicode (ð—¯ð—¼ð—¹ð—±) sparingly
 
 **Twitter/X:**
 - Casual, punchy, opinionated
@@ -739,7 +739,7 @@ Ask: "Ready to post these, or want to change anything?"
 
 Do NOT proceed to posting until I confirm.
 
-## Phase 3: Post (browser via Hanzi)
+## Phase 3: Post (browser via RethinkSoft)
 
 After I approve, post to each platform **one at a time, sequentially** using separate \`browser_start\` calls.
 
@@ -749,7 +749,7 @@ For each platform:
 - Paste the approved text
 - Add any images or links if relevant
 - Submit the post
-- After \`browser_start\` returns, call \`browser_screenshot\` (a separate MCP tool) to capture the live post — the window stays open
+- After \`browser_start\` returns, call \`browser_screenshot\` (a separate MCP tool) to capture the live post â€” the window stays open
 - Note the URL of the published post if visible
 
 If a platform requires additional steps (e.g., Reddit asks for a flair, Product Hunt needs a schedule), tell me and ask how to proceed.
@@ -761,26 +761,26 @@ If posting fails (CAPTCHA, rate limit, account restriction), skip that platform 
 \`\`\`
 Posted to [N]/[total] platforms:
 
-✓ LinkedIn — posted
-  📸 Screenshot of live post
+âœ“ LinkedIn â€” posted
+  ðŸ“¸ Screenshot of live post
   URL: [url if available]
 
-✓ Twitter/X — posted (2-tweet thread)
-  📸 Screenshot of live post
+âœ“ Twitter/X â€” posted (2-tweet thread)
+  ðŸ“¸ Screenshot of live post
   URL: [url if available]
 
-✗ Reddit — r/programming requires account age > 30 days. Skipped.
+âœ— Reddit â€” r/programming requires account age > 30 days. Skipped.
 \`\`\`
 
 ## Rules
 
 - Never post without my explicit approval of the draft
 - Never post to a platform I didn't ask for
-- Don't use the same text across platforms — adapt each one
-- If a platform blocks the post, don't retry — report and move on
+- Don't use the same text across platforms â€” adapt each one
+- If a platform blocks the post, don't retry â€” report and move on
 - If browser_start times out, call browser_screenshot to see where it got stuck, then browser_message to continue
 - Don't post images unless I provided them or explicitly asked for them
-- One platform at a time, sequentially — not in parallel`,
+- One platform at a time, sequentially â€” not in parallel`,
                     },
                 },
             ],
@@ -966,7 +966,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 });
 // --- Startup ---
 async function main() {
-    console.error("[MCP] Starting Hanzi in Chrome MCP Server v2.0...");
+    console.error("[MCP] Starting RethinkSoft in Chrome MCP Server v2.0...");
     // Startup diagnostics
     const credDesc = describeCredentials();
     console.error(`[MCP] Credentials: ${credDesc}`);
@@ -980,17 +980,17 @@ async function main() {
     connection.onMessage(handleMessage);
     await connection.connect();
     console.error("[MCP] Connected to relay");
-    // Quick extension check at startup (single probe, no retries — don't block startup)
+    // Quick extension check at startup (single probe, no retries â€” don't block startup)
     try {
         if (await checkExtensionOnce()) {
-            console.error("[MCP] Extension connected — ready for tasks");
+            console.error("[MCP] Extension connected â€” ready for tasks");
         }
         else {
-            console.error("[MCP] Extension not connected — will retry when tasks arrive");
+            console.error("[MCP] Extension not connected â€” will retry when tasks arrive");
         }
     }
     catch {
-        // Non-fatal — don't block startup
+        // Non-fatal â€” don't block startup
     }
     const transport = new StdioServerTransport();
     await server.connect(transport);

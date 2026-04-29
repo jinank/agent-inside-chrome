@@ -25,7 +25,7 @@ const USAGE_KEY = 'usage_total';
 export async function checkAndIncrementUsage() {
   const license = await getLicenseData();
 
-  // Pro user — check if revalidation needed
+  // Pro user â€” check if revalidation needed
   if (license && license.valid) {
     const elapsed = Date.now() - (license.validatedAt || 0);
 
@@ -39,10 +39,10 @@ export async function checkAndIncrementUsage() {
       // Either revalidation succeeded or we're still within grace period
     }
 
-    return { allowed: true, remaining: null, message: 'Pro — unlimited tasks' };
+    return { allowed: true, remaining: null, message: 'Pro â€” unlimited tasks' };
   }
 
-  // Free tier — check total count
+  // Free tier â€” check total count
   const data = await chrome.storage.local.get(USAGE_KEY);
   const usage = data[USAGE_KEY] || { count: 0 };
 
@@ -86,7 +86,7 @@ export async function activateLicense(key) {
     const response = await fetch(LEMON_SQUEEZY_VALIDATE_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ license_key: key.trim(), instance_name: 'hanzi-in-chrome' }),
+      body: JSON.stringify({ license_key: key.trim(), instance_name: 'rethinksoft-in-chrome' }),
     });
 
     const result = await response.json();
@@ -123,7 +123,7 @@ export async function getLicenseStatus() {
       key: license.key,
       tasksUsed: usage.count,
       taskLimit: null,
-      message: 'Pro — Unlimited tasks',
+      message: 'Pro â€” Unlimited tasks',
     };
   }
 
@@ -132,7 +132,7 @@ export async function getLicenseStatus() {
     key: null,
     tasksUsed: usage.count,
     taskLimit: FREE_TASK_LIMIT,
-    message: `Free — ${usage.count}/${FREE_TASK_LIMIT} tasks used`,
+    message: `Free â€” ${usage.count}/${FREE_TASK_LIMIT} tasks used`,
   };
 }
 
@@ -173,7 +173,7 @@ async function revalidateLicense(license) {
     await chrome.storage.local.set({ license_data: license });
     return { valid: false };
   } catch {
-    // Network error — don't invalidate, rely on grace period
+    // Network error â€” don't invalidate, rely on grace period
     return { valid: license.valid };
   }
 }

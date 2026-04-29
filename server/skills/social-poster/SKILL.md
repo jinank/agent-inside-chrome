@@ -10,16 +10,16 @@ You draft platform-adapted social posts and publish them from the user's real si
 ## Tool Selection Rule
 
 - **Prefer existing tools first**: read the codebase, changelog, git log, README, or any source material to understand what to post about. Draft all content WITHOUT the browser.
-- **Use Hanzi only for the actual posting** — opening each platform and submitting the post.
+- **Use RethinkSoft only for the actual posting** â€” opening each platform and submitting the post.
 - **Each post is public and cannot be undone.** Show every draft and get explicit approval before posting anything.
 
-## Before Starting — Preflight Check
+## Before Starting â€” Preflight Check
 
 Try calling `browser_status` to verify the browser extension is reachable. If the tool doesn't exist or returns an error:
 
-> **Hanzi isn't set up yet.** This skill needs the hanzi browser extension running in Chrome.
+> **RethinkSoft isn't set up yet.** This skill needs the rethinksoft browser extension running in Chrome.
 >
-> 1. Install from the Chrome Web Store: https://chromewebstore.google.com/detail/hanzi-in-chrome/iklpkemlmbhemkiojndpbhoakgikpmcd
+> 1. Install from the Chrome Web Store: https://chromewebstore.google.com/detail/rethinksoft-in-chrome/iklpkemlmbhemkiojndpbhoakgikpmcd
 > 2. The extension will walk you through setup (~1 minute)
 > 3. Then come back and run this again
 
@@ -27,8 +27,8 @@ Try calling `browser_status` to verify the browser extension is reachable. If th
 
 ## What You Need From the User
 
-1. **Content** — what to post about: a topic, announcement, "our latest release", or exact text
-2. **Platforms** — where to post (default: LinkedIn + Twitter)
+1. **Content** â€” what to post about: a topic, announcement, "our latest release", or exact text
+2. **Platforms** â€” where to post (default: LinkedIn + Twitter)
 3. **Optional**: link to include, images, tone preference, target audience
 
 ---
@@ -97,7 +97,7 @@ Ask: "Ready to post these, or want to change anything?"
 
 ---
 
-## Phase 3: Post (browser via Hanzi)
+## Phase 3: Post (browser via RethinkSoft)
 
 After approval, post to each platform **one at a time, sequentially** using separate `browser_start` calls.
 
@@ -107,7 +107,7 @@ For each platform:
 - Paste the approved text
 - Add images or links if relevant
 - Submit
-- After `browser_start` returns, call `browser_screenshot` (a separate MCP tool) to capture the live post — the window stays open so this shows the published result
+- After `browser_start` returns, call `browser_screenshot` (a separate MCP tool) to capture the live post â€” the window stays open so this shows the published result
 - Note the URL of the published post if visible
 
 If a platform requires extra steps (Reddit flair, Product Hunt scheduling), tell the user and ask.
@@ -123,15 +123,15 @@ If `browser_start` times out, call `browser_screenshot` to see where it got stuc
 ```
 Posted to [N]/[total] platforms:
 
-✓ LinkedIn — posted
-  📸 Screenshot of live post
+âœ“ LinkedIn â€” posted
+  ðŸ“¸ Screenshot of live post
   URL: [url if available]
 
-✓ Twitter/X — posted (2-tweet thread)
-  📸 Screenshot
+âœ“ Twitter/X â€” posted (2-tweet thread)
+  ðŸ“¸ Screenshot
   URL: [url if available]
 
-✗ Reddit — r/programming requires 30-day account age. Skipped.
+âœ— Reddit â€” r/programming requires 30-day account age. Skipped.
 ```
 
 ---
@@ -140,7 +140,7 @@ Posted to [N]/[total] platforms:
 
 - Never post without explicit approval of the draft
 - Never post to a platform the user didn't ask for
-- Don't use the same text across platforms — adapt each one
-- If a platform blocks the post, don't retry — report and move on
+- Don't use the same text across platforms â€” adapt each one
+- If a platform blocks the post, don't retry â€” report and move on
 - Don't post images unless the user provided them or asked for them
-- One platform at a time, sequentially — not in parallel
+- One platform at a time, sequentially â€” not in parallel

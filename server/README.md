@@ -1,4 +1,4 @@
-# Hanzi in Chrome — MCP Server
+# RethinkSoft in Chrome â€” MCP Server
 
 The MCP server exposes browser tools to MCP clients and forwards browser work to
 the Chrome extension over the local WebSocket relay.
@@ -18,7 +18,7 @@ Add to your MCP config (e.g., `~/.claude/claude_desktop_config.json`):
   "mcpServers": {
     "browser": {
       "command": "node",
-      "args": ["/path/to/hanzi-in-chrome/mcp-server/dist/index.js"]
+      "args": ["/path/to/rethinksoft-in-chrome/mcp-server/dist/index.js"]
     }
   }
 }
@@ -52,7 +52,7 @@ browser_start(
   context: "Departing March 15, economy"     // optional extra info
 )
 
-→ {
+â†’ {
   "session_id": "abc123",
   "status": "complete",
   "task": "Search for flights to Tokyo...",
@@ -111,13 +111,13 @@ browser_start("Go to Jira, find my open tickets, and summarize what needs attent
 **Multi-turn:**
 ```
 s = browser_start("Go to LinkedIn and find AI Engineer jobs in Montreal")
-→ { session_id: "x1", answer: "Found: Applied AI Engineer at Cohere" }
+â†’ { session_id: "x1", answer: "Found: Applied AI Engineer at Cohere" }
 
 browser_message("x1", "Click into that job and tell me the requirements")
-→ { answer: "Requirements: 3+ years Python, ML experience..." }
+â†’ { answer: "Requirements: 3+ years Python, ML experience..." }
 
 browser_message("x1", "Apply to this job using my profile")
-→ { answer: "Application submitted successfully" }
+â†’ { answer: "Application submitted successfully" }
 ```
 
 **Parallel execution:**
@@ -139,13 +139,13 @@ browser_start("Look up train pass costs")
 
 ```
 AI Tool (Claude Code, Cursor, etc.)
-    ↓ MCP Protocol (stdio)
+    â†“ MCP Protocol (stdio)
 MCP Server
-    ↓ WebSocket
+    â†“ WebSocket
 Relay Server
-    ↓ WebSocket
+    â†“ WebSocket
 Chrome Extension
-    ↓ Extension agent loop
+    â†“ Extension agent loop
 Target Website
 ```
 
@@ -153,8 +153,8 @@ The relay server starts automatically when the MCP server connects. It routes
 messages between the MCP server and the Chrome extension and briefly queues
 messages while the extension service worker is asleep.
 
-> **Principle**: Hanzi is for real browser work in your signed-in Chrome.
-> Agents should prefer code, logs, APIs, and existing tools first. Use Hanzi when the job needs a real browser session.
+> **Principle**: RethinkSoft is for real browser work in your signed-in Chrome.
+> Agents should prefer code, logs, APIs, and existing tools first. Use RethinkSoft when the job needs a real browser session.
 
 ## Prompts
 
@@ -162,20 +162,20 @@ The server exposes MCP prompts that clients auto-discover as slash commands:
 
 | Prompt | Description |
 |--------|-------------|
-| `linkedin-prospector` | Goal-driven LinkedIn outreach — networking, sales, partnerships, or hiring |
-| `e2e-tester` | Test your app in a real browser — reports bugs with screenshots and code references |
-| `social-poster` | Post across LinkedIn, Twitter, Reddit, HN — drafts per-platform, posts from your browser |
+| `linkedin-prospector` | Goal-driven LinkedIn outreach â€” networking, sales, partnerships, or hiring |
+| `e2e-tester` | Test your app in a real browser â€” reports bugs with screenshots and code references |
+| `social-poster` | Post across LinkedIn, Twitter, Reddit, HN â€” drafts per-platform, posts from your browser |
 
 In Claude Code, use the built-in `linkedin-prospector` prompt from the MCP prompt list.
 
 ## Skills CLI
 
 ```bash
-hanzi-browser skills                              # list available skills
-hanzi-browser skills install linkedin-prospector   # install SKILL.md to your project
+rethinksoft-browser skills                              # list available skills
+rethinksoft-browser skills install linkedin-prospector   # install SKILL.md to your project
 ```
 
-Skills are portable SKILL.md files for agents that don't support MCP prompts (Cline, Codex). Each skill follows the same principle: use existing tools first, Hanzi only for real browser steps.
+Skills are portable SKILL.md files for agents that don't support MCP prompts (Cline, Codex). Each skill follows the same principle: use existing tools first, RethinkSoft only for real browser steps.
 
 ## License
 

@@ -148,7 +148,7 @@ function ProvidersTab({
       {/* Import Claude credentials */}
       <div class="provider-section">
         <h4>Import Claude credentials</h4>
-        <p class="provider-desc">Import from <code>claude login</code> to use your Claude Pro/Max subscription. <a href="https://github.com/hanzili/hanzi-in-chrome#claude-code-plan-setup" target="_blank">Setup guide</a></p>
+        <p class="provider-desc">Import from <code>claude login</code> to use your Claude Pro/Max subscription. <a href="https://github.com/hanzili/rethinksoft-in-chrome#claude-code-plan-setup" target="_blank">Setup guide</a></p>
         {config.oauthStatus.isAuthenticated ? (
           <div class="connected-status">
             <span class="status-badge connected">Connected</span>
@@ -162,7 +162,7 @@ function ProvidersTab({
       {/* Import Codex credentials */}
       <div class="provider-section">
         <h4>Import Codex credentials</h4>
-        <p class="provider-desc">Import from <code>codex login</code> to use your ChatGPT Pro/Plus subscription. <a href="https://github.com/hanzili/hanzi-in-chrome#codex-plan-setup" target="_blank">Setup guide</a></p>
+        <p class="provider-desc">Import from <code>codex login</code> to use your ChatGPT Pro/Plus subscription. <a href="https://github.com/hanzili/rethinksoft-in-chrome#codex-plan-setup" target="_blank">Setup guide</a></p>
         {config.codexStatus.isAuthenticated ? (
           <div class="connected-status">
             <span class="status-badge connected">Connected</span>
@@ -185,7 +185,7 @@ function ProvidersTab({
             onClick={() => setSelectedProvider(selectedProvider === id ? null : id)}
           >
             <div class="provider-name">{provider.name}</div>
-            {localKeys[id] && <span class="check-badge">✓</span>}
+            {localKeys[id] && <span class="check-badge">âœ“</span>}
           </div>
         ))}
       </div>
@@ -207,7 +207,7 @@ function ProvidersTab({
       <div class="provider-section">
         <h4>browser automation default</h4>
         <p class="provider-desc">
-          used by <code>hanzi-browser</code> and mcp browser tasks.
+          used by <code>rethinksoft-browser</code> and mcp browser tasks.
           the sidepanel model is still selected from the header.
         </p>
         <div class="api-key-input">
@@ -237,9 +237,9 @@ function ProvidersTab({
         <h4>MCP Server</h4>
         <p class="provider-desc">
           Control this browser from Claude Code or any MCP client.{' '}
-          <a href="https://github.com/hanzili/hanzi-in-chrome#setup" target="_blank">Setup guide</a>
+          <a href="https://github.com/hanzili/rethinksoft-in-chrome#setup" target="_blank">Setup guide</a>
         </p>
-        <code class="install-cmd">npm install -g hanzi-in-chrome</code>
+        <code class="install-cmd">npm install -g rethinksoft-in-chrome</code>
       </div>
     </div>
   );
@@ -353,7 +353,7 @@ function LicenseTab() {
             class="btn btn-primary"
             style={{ display: 'inline-block', textDecoration: 'none', marginBottom: '12px' }}
           >
-            Buy Pro — $29
+            Buy Pro â€” $29
           </a>
         </div>
       )}

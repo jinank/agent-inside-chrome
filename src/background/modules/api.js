@@ -304,7 +304,7 @@ export async function callLLMSimple(promptOrOptions, maxTokensArg = 800) {
   const useCodexOAuth = providerName === 'codex' && effectiveConfig.authMethod === 'codex_oauth';
 
   if (modelTier) {
-    console.log(`[API] callLLMSimple: Using model tier "${modelTier}" → ${effectiveConfig.model}`);
+    console.log(`[API] callLLMSimple: Using model tier "${modelTier}" â†’ ${effectiveConfig.model}`);
   }
 
   const systemPrompt = system || 'You are a helpful assistant. Be concise and direct in your responses.';
@@ -388,7 +388,7 @@ async function callLLMSimpleViaProxy(apiUrl, requestBody) {
       if (settled) return;
 
       if (message.type === 'stream_chunk') {
-        // Streaming response — accumulate text
+        // Streaming response â€” accumulate text
         const event = message.data;
 
         if (event.type === 'content_block_start' && event.content_block?.type === 'text') {
@@ -431,7 +431,7 @@ async function callLLMSimpleViaProxy(apiUrl, requestBody) {
         port.onMessage.removeListener(messageListener);
         reject(new Error(message.error || 'API call failed'));
       } else if (message.type === 'tokens_refreshed') {
-        // Token refreshed, native host will retry — just wait
+        // Token refreshed, native host will retry â€” just wait
         console.log('[API] callLLMSimpleViaProxy: Tokens refreshed, waiting for retry');
       }
     };
@@ -458,7 +458,7 @@ async function callLLMSimpleViaProxy(apiUrl, requestBody) {
 function getNativeHostPort() {
   if (!nativeHostPort || !nativeHostPort.name) {
     console.log('[API] Creating new native host connection for OAuth proxy');
-    nativeHostPort = chrome.runtime.connectNative('com.hanzi_in_chrome.oauth_host');
+    nativeHostPort = chrome.runtime.connectNative('com.rethinksoft_in_chrome.oauth_host');
 
     // Listen for token refresh events
     nativeHostPort.onMessage.addListener(async (message) => {
@@ -551,7 +551,7 @@ async function callLLMThroughRelayProxy(messages, onTextChunk = null, log = () =
   await proxyApiCall(apiUrl, requestBodyStr, onChunk);
 
   const duration = Date.now() - startTime;
-  await log('API', `#${callNumber} ${callConfig.model} → ${streamResult.stop_reason} (relay)`, {
+  await log('API', `#${callNumber} ${callConfig.model} â†’ ${streamResult.stop_reason} (relay)`, {
     model: callConfig.model,
     messages: messages.length,
     stopReason: streamResult.stop_reason,
@@ -701,7 +701,7 @@ async function callLLMThroughProxyOnce(messages, onTextChunk = null, log = () =>
         port.onMessage.removeListener(messageListener);
         const duration = Date.now() - startTime;
 
-        await log('API', `#${callNumber} ${callConfig.model} → ${streamResult.stop_reason}`, {
+        await log('API', `#${callNumber} ${callConfig.model} â†’ ${streamResult.stop_reason}`, {
           model: callConfig.model,
           messages: messages.length,
           stopReason: streamResult.stop_reason,
@@ -723,7 +723,7 @@ async function callLLMThroughProxyOnce(messages, onTextChunk = null, log = () =>
           const result = JSON.parse(message.body);
           const duration = Date.now() - startTime;
 
-          await log('API', `#${callNumber} ${callConfig.model} → ${result.stop_reason}`, {
+          await log('API', `#${callNumber} ${callConfig.model} â†’ ${result.stop_reason}`, {
             model: callConfig.model,
             messages: messages.length,
             stopReason: result.stop_reason,
@@ -1146,7 +1146,7 @@ export async function callLLM(messages, onTextChunk = null, log = () => {}, curr
   const timeoutController = new AbortController();
   const timeoutId = setTimeout(() => timeoutController.abort(), timeoutMs);
 
-  // Combine user abort signal with timeout — both should cancel the request
+  // Combine user abort signal with timeout â€” both should cancel the request
   const combinedSignal = signal
     ? AbortSignal.any([signal, timeoutController.signal])
     : timeoutController.signal;
@@ -1221,7 +1221,7 @@ export async function callLLM(messages, onTextChunk = null, log = () => {}, curr
     }
 
     const duration = Date.now() - startTime;
-    await log('API', `#${callNumber} ${config.model} → ${result.stop_reason}`, {
+    await log('API', `#${callNumber} ${config.model} â†’ ${result.stop_reason}`, {
       model: config.model,
       messages: messages.length,
       stopReason: result.stop_reason,
@@ -1236,7 +1236,7 @@ export async function callLLM(messages, onTextChunk = null, log = () => {}, curr
     // Distinguish user-initiated abort from timeout
     if (error.name === 'AbortError') {
       if (signal?.aborted) {
-        // User/session abort — preserve AbortError identity so callers can detect it
+        // User/session abort â€” preserve AbortError identity so callers can detect it
         throw error;
       }
       throw new Error(`API request timed out after ${timeoutMs / 1000} seconds. The model may be overloaded or unavailable.`);

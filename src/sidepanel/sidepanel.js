@@ -1,5 +1,5 @@
 /**
- * Side Panel - Chat interface for Hanzi in Chrome
+ * Side Panel - Chat interface for RethinkSoft in Chrome
  */
 
 // Provider configurations
@@ -767,7 +767,7 @@ function renderSkillsList() {
 
   listEl.innerHTML = allSkills.map((skill) => {
     const preview = skill.skill.substring(0, 80).replace(/\n/g, ' ') + (skill.skill.length > 80 ? '...' : '');
-    const icon = skill.isBuiltIn ? '📦' : '✏️';
+    const icon = skill.isBuiltIn ? 'ðŸ“¦' : 'âœï¸';
     const userIndex = userSkills.findIndex(s => s.domain === skill.domain);
 
     return `
@@ -783,7 +783,7 @@ function renderSkillsList() {
         </div>
         <div class="skill-actions">
           <button class="edit-btn" title="Edit">Edit</button>
-          ${!skill.isBuiltIn ? `<button class="delete-btn" title="Delete">×</button>` : ''}
+          ${!skill.isBuiltIn ? `<button class="delete-btn" title="Delete">Ã—</button>` : ''}
         </div>
       </div>
     `;
@@ -1420,7 +1420,7 @@ function createStepElement(step) {
       <div class="step-label">${escapeHtml(step.description)}</div>
       ${resultText ? `<div class="step-result">${escapeHtml(resultText)}</div>` : ''}
     </div>
-    <div class="step-status">✓</div>
+    <div class="step-status">âœ“</div>
   `;
 
   return div;

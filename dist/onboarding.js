@@ -391,7 +391,7 @@ function WelcomeStep({ onContinue }) {
         /* @__PURE__ */ u("circle", { cx: "12", cy: "12", r: "10" }),
         /* @__PURE__ */ u("path", { d: "M12 6v6l4 2" })
       ] }) }),
-      /* @__PURE__ */ u("h1", { children: "hanzi lets ai use your real chrome" }),
+      /* @__PURE__ */ u("h1", { children: "rethinksoft lets ai use your real chrome" }),
       /* @__PURE__ */ u("p", { class: "subtitle", children: "use it yourself in the sidepanel, or connect it to claude code / codex / mcp so your ai agent can drive your logged-in browser." })
     ] }),
     /* @__PURE__ */ u("div", { class: "mode-cards", children: [
@@ -408,7 +408,7 @@ function WelcomeStep({ onContinue }) {
           }
         ) }),
         /* @__PURE__ */ u("h2", { children: "use it myself" }),
-        /* @__PURE__ */ u("p", { children: "open the sidepanel, describe what you want, and let hanzi browse for you directly inside chrome." }),
+        /* @__PURE__ */ u("p", { children: "open the sidepanel, describe what you want, and let rethinksoft browse for you directly inside chrome." }),
         /* @__PURE__ */ u("div", { class: "mode-setup", children: "sidepanel use" })
       ] }),
       /* @__PURE__ */ u("div", { class: "mode-card", children: [
@@ -440,17 +440,17 @@ function SetupStep({ onContinue, onBack }) {
     ] }),
     /* @__PURE__ */ u("div", { class: "onboarding-header", children: [
       /* @__PURE__ */ u("h1", { children: "configure your agents" }),
-      /* @__PURE__ */ u("p", { class: "subtitle", children: "run this in your terminal. it detects claude code, cursor, windsurf, and claude desktop — configures each one automatically." })
+      /* @__PURE__ */ u("p", { class: "subtitle", children: "run this in your terminal. it detects claude code, cursor, windsurf, and claude desktop â€” configures each one automatically." })
     ] }),
     /* @__PURE__ */ u("div", { class: "connect-sections", children: /* @__PURE__ */ u("div", { class: "connect-section", children: [
       /* @__PURE__ */ u("div", { class: "command-block", style: { margin: "12px 0" }, children: [
-        /* @__PURE__ */ u("code", { children: "npx hanzi-in-chrome setup" }),
+        /* @__PURE__ */ u("code", { children: "npx rethinksoft-in-chrome setup" }),
         /* @__PURE__ */ u(
           "button",
           {
             class: "copy-btn",
             onClick: () => {
-              navigator.clipboard.writeText("npx hanzi-in-chrome setup");
+              navigator.clipboard.writeText("npx rethinksoft-in-chrome setup");
               setCopied(true);
               setTimeout(() => setCopied(false), 2e3);
             },
@@ -458,7 +458,7 @@ function SetupStep({ onContinue, onBack }) {
           }
         )
       ] }),
-      /* @__PURE__ */ u("p", { class: "connect-hint", children: "skip this step if you only want to use hanzi from the chrome sidepanel." })
+      /* @__PURE__ */ u("p", { class: "connect-hint", children: "skip this step if you only want to use rethinksoft from the chrome sidepanel." })
     ] }) }),
     /* @__PURE__ */ u("div", { class: "onboarding-footer", children: /* @__PURE__ */ u("button", { class: "btn btn-primary btn-lg", onClick: onContinue, children: [
       "next",
@@ -500,7 +500,7 @@ function ConnectStep({
     ] }),
     /* @__PURE__ */ u("div", { class: "onboarding-header", children: [
       /* @__PURE__ */ u("h1", { children: "connect a model source" }),
-      /* @__PURE__ */ u("p", { class: "subtitle", children: "hanzi needs credentials to run browser tasks. pick whichever you already have." })
+      /* @__PURE__ */ u("p", { class: "subtitle", children: "rethinksoft needs credentials to run browser tasks. pick whichever you already have." })
     ] }),
     hasAnySources && /* @__PURE__ */ u("div", { class: "success-banner", children: [
       /* @__PURE__ */ u("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", width: "20", height: "20", children: /* @__PURE__ */ u("path", { d: "M20 6L9 17l-5-5" }) }),
@@ -694,7 +694,7 @@ function DoneStep() {
     /* @__PURE__ */ u("div", { class: "onboarding-header", children: [
       /* @__PURE__ */ u("div", { class: "success-icon", children: /* @__PURE__ */ u("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", "stroke-width": "2", children: /* @__PURE__ */ u("path", { d: "M20 6L9 17l-5-5" }) }) }),
       /* @__PURE__ */ u("h1", { children: "you're all set" }),
-      /* @__PURE__ */ u("p", { class: "subtitle", children: "you can now use hanzi directly in chrome or connect it to your ai agent. both are ready." })
+      /* @__PURE__ */ u("p", { class: "subtitle", children: "you can now use rethinksoft directly in chrome or connect it to your ai agent. both are ready." })
     ] }),
     /* @__PURE__ */ u("div", { class: "done-sections", children: [
       /* @__PURE__ */ u("div", { class: "done-section", children: [
@@ -703,7 +703,7 @@ function DoneStep() {
       ] }),
       /* @__PURE__ */ u("div", { class: "done-section", children: [
         /* @__PURE__ */ u("h3", { children: "use it yourself in chrome" }),
-        /* @__PURE__ */ u("p", { class: "section-intro", children: "click the hanzi icon in your chrome toolbar, then try one of these:" }),
+        /* @__PURE__ */ u("p", { class: "section-intro", children: "click the rethinksoft icon in your chrome toolbar, then try one of these:" }),
         /* @__PURE__ */ u(ToolbarHint, {}),
         /* @__PURE__ */ u("div", { class: "example-tasks", children: [
           /* @__PURE__ */ u("div", { class: "example-task", children: '"summarize my open jira tickets"' }),

@@ -1,25 +1,25 @@
 ---
 name: e2e-tester
-description: Test a web app like a QA person — open it in a real browser, click through flows, and report what's broken with screenshots and code references. Works on localhost. Use when the user wants to test their app, verify a flow works, check for visual bugs, or validate changes before pushing.
+description: Test a web app like a QA person â€” open it in a real browser, click through flows, and report what's broken with screenshots and code references. Works on localhost. Use when the user wants to test their app, verify a flow works, check for visual bugs, or validate changes before pushing.
 ---
 
 # E2E Tester
 
-You test web apps in a real browser and report findings. You're not a test script runner — you're a QA person who also understands the codebase.
+You test web apps in a real browser and report findings. You're not a test script runner â€” you're a QA person who also understands the codebase.
 
 ## Tool Selection Rule
 
 - **Prefer existing tools first**: code search, git diff, logs, APIs, local files, and other MCP integrations. Gather all the context you can BEFORE opening the browser.
-- **Use Hanzi only for browser-required steps**: real UI interaction, visual verification, form submission, and anything that needs a rendered page.
+- **Use RethinkSoft only for browser-required steps**: real UI interaction, visual verification, form submission, and anything that needs a rendered page.
 - **If the browser step could mutate real data**, ask the user before proceeding unless the environment is clearly local, dev, test, or preview.
 
-## Before Starting — Preflight Check
+## Before Starting â€” Preflight Check
 
 Try calling `browser_status` to verify the browser extension is reachable. If the tool doesn't exist or returns an error:
 
-> **Hanzi isn't set up yet.** This skill needs the hanzi browser extension running in Chrome.
+> **RethinkSoft isn't set up yet.** This skill needs the rethinksoft browser extension running in Chrome.
 >
-> 1. Install from the Chrome Web Store: https://chromewebstore.google.com/detail/hanzi-in-chrome/iklpkemlmbhemkiojndpbhoakgikpmcd
+> 1. Install from the Chrome Web Store: https://chromewebstore.google.com/detail/rethinksoft-in-chrome/iklpkemlmbhemkiojndpbhoakgikpmcd
 > 2. The extension will walk you through setup (~1 minute)
 > 3. Then come back and run this again
 
@@ -27,15 +27,15 @@ Try calling `browser_status` to verify the browser extension is reachable. If th
 
 ## What You Need From the User
 
-1. **URL** — where the app is running (e.g., `localhost:3000`, `staging.myapp.com`)
-2. **What to test** — specific flow, "what I just changed", or "everything"
-3. **Credentials** — test login if the app requires auth (check .env first)
+1. **URL** â€” where the app is running (e.g., `localhost:3000`, `staging.myapp.com`)
+2. **What to test** â€” specific flow, "what I just changed", or "everything"
+3. **Credentials** â€” test login if the app requires auth (check .env first)
 
 ---
 
 ## Safety: Check the Target Before Testing
 
-Browser tests create real state — signups, form submissions, orders. Before executing any test:
+Browser tests create real state â€” signups, form submissions, orders. Before executing any test:
 
 **Safe URLs (proceed without extra confirmation):**
 - `localhost`, `127.0.0.1`, `0.0.0.0`
@@ -63,7 +63,7 @@ You have access to the codebase. Use it.
    - Key pages: login, signup, dashboard, checkout, settings
    - API endpoints the frontend calls
 
-3. **Find test credentials**: Check `.env`, `.env.local`, seed files, test fixtures for test accounts. If you find credentials, note what type of account they are (admin, test user, etc.) — don't silently use production credentials.
+3. **Find test credentials**: Check `.env`, `.env.local`, seed files, test fixtures for test accounts. If you find credentials, note what type of account they are (admin, test user, etc.) â€” don't silently use production credentials.
 
 4. **Check if the server is running**: `curl -s -o /dev/null -w "%{http_code}" <url>`. If not running, tell the user to start it and stop here.
 
@@ -90,9 +90,9 @@ Tell the browser agent to be specific: not "the page looks fine" but "the signup
 
 If a flow requires login, log in first using credentials you found (with user confirmation) or that the user provided.
 
-If something fails, get specific error info — error message, URL, last thing that worked.
+If something fails, get specific error info â€” error message, URL, last thing that worked.
 
-**After each `browser_start` returns**, call `browser_screenshot` (a separate MCP tool) to capture the final state. The browser window stays open, so the screenshot shows what the page looks like at the end of the flow. Do this for both passing and failing flows — screenshots are evidence.
+**After each `browser_start` returns**, call `browser_screenshot` (a separate MCP tool) to capture the final state. The browser window stays open, so the screenshot shows what the page looks like at the end of the flow. Do this for both passing and failing flows â€” screenshots are evidence.
 
 ---
 
@@ -103,19 +103,19 @@ If something fails, get specific error info — error message, URL, last thing t
 ```
 Tested [N] flows on [url]:
 
-✓ [Flow name] — [what happened, one line]
-  📸 Screenshot: [describe what the screenshot shows]
+âœ“ [Flow name] â€” [what happened, one line]
+  ðŸ“¸ Screenshot: [describe what the screenshot shows]
 
-✗ [Flow name] — [what's broken, specifically]
-  📸 Screenshot: [what the page looked like when it failed]
+âœ— [Flow name] â€” [what's broken, specifically]
+  ðŸ“¸ Screenshot: [what the page looked like when it failed]
 
-⚠ [Flow name] — [works but has issues]
-  📸 Screenshot: [evidence of the issue]
+âš  [Flow name] â€” [works but has issues]
+  ðŸ“¸ Screenshot: [evidence of the issue]
 ```
 
 ### For each failure, cross-reference with the code:
 
-This is your superpower — you can see both the browser AND the codebase.
+This is your superpower â€” you can see both the browser AND the codebase.
 
 1. What did the browser show? (include the screenshot)
 2. What file likely causes this? (check recent changes, route handlers, API endpoints)
@@ -124,9 +124,9 @@ This is your superpower — you can see both the browser AND the codebase.
 
 Example:
 ```
-✗ Checkout — form submits but hangs on loading spinner.
+âœ— Checkout â€” form submits but hangs on loading spinner.
   The confirmation page never loads.
-  📸 Screenshot shows the payment form with a spinning loader, stuck for 30+ seconds.
+  ðŸ“¸ Screenshot shows the payment form with a spinning loader, stuck for 30+ seconds.
 
   Likely cause: src/api/checkout.ts modified in last commit (abc123).
   The onSuccess callback was removed on line 45. Frontend waits
@@ -144,11 +144,11 @@ Example:
 
 ## Rules
 
-- Don't test in parallel — one flow at a time
-- Don't guess — if you can't tell what's wrong, say so
-- Don't skip the codebase analysis — it makes your report actionable
+- Don't test in parallel â€” one flow at a time
+- Don't guess â€” if you can't tell what's wrong, say so
+- Don't skip the codebase analysis â€” it makes your report actionable
 - If the dev server isn't running, stop and tell the user
 - If browser_start times out, call browser_screenshot to see where it got stuck
-- Always take a screenshot after each flow — for both passes and failures
+- Always take a screenshot after each flow â€” for both passes and failures
 - On production URLs, default to read-only unless the user explicitly opts in
-- Don't silently use credentials from .env on non-local targets — confirm first
+- Don't silently use credentials from .env on non-local targets â€” confirm first

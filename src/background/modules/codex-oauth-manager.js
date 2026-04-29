@@ -7,7 +7,7 @@
 
 import { relayRequest, isRelayConnected } from './mcp-bridge.js';
 
-const NATIVE_HOST_NAME = 'com.hanzi_in_chrome.oauth_host';
+const NATIVE_HOST_NAME = 'com.rethinksoft_in_chrome.oauth_host';
 
 /**
  * Import OAuth credentials from Codex CLI installation
@@ -54,7 +54,7 @@ async function importCodexViaRelay() {
   }
 
   const { accessToken, refreshToken, accountId } = response.credentials;
-  console.log('[Codex OAuth] ✓ Credentials received via relay');
+  console.log('[Codex OAuth] âœ“ Credentials received via relay');
   console.log('[Codex OAuth] Access token:', accessToken.substring(0, 20) + '...');
 
   // Save credentials to storage
@@ -66,7 +66,7 @@ async function importCodexViaRelay() {
     codexTokenSource: 'codex_cli'
   });
 
-  console.log('[Codex OAuth] ✓ Credentials saved to storage');
+  console.log('[Codex OAuth] âœ“ Credentials saved to storage');
   return { accessToken, refreshToken, accountId };
 }
 
@@ -82,7 +82,7 @@ function importCodexViaNativeHost() {
     const timeout = setTimeout(() => {
       if (!resolved) {
         resolved = true;
-        console.error('[Codex OAuth] ✗ Timeout waiting for native host response');
+        console.error('[Codex OAuth] âœ— Timeout waiting for native host response');
         if (port) port.disconnect();
         reject(new Error('Timeout waiting for native host response'));
       }
@@ -91,7 +91,7 @@ function importCodexViaNativeHost() {
     try {
       console.log('[Codex OAuth] Connecting to native host:', NATIVE_HOST_NAME);
       port = chrome.runtime.connectNative(NATIVE_HOST_NAME);
-      console.log('[Codex OAuth] ✓ Connected to native host');
+      console.log('[Codex OAuth] âœ“ Connected to native host');
 
       port.onMessage.addListener(async (message) => {
         if (resolved) return;
@@ -100,12 +100,12 @@ function importCodexViaNativeHost() {
         if (message.type === 'codex_credentials') {
           resolved = true;
           clearTimeout(timeout);
-          console.log('[Codex OAuth] ✓ Codex credentials received');
+          console.log('[Codex OAuth] âœ“ Codex credentials received');
           const { accessToken, refreshToken, accountId } = message.credentials;
 
           // Validate accessToken
           if (!accessToken) {
-            console.error('[Codex OAuth] ✗ No accessToken in credentials');
+            console.error('[Codex OAuth] âœ— No accessToken in credentials');
             if (port) port.disconnect();
             reject(new Error('No accessToken found in Codex CLI credentials'));
             return;
@@ -124,7 +124,7 @@ function importCodexViaNativeHost() {
             codexTokenSource: 'codex_cli'
           });
 
-          console.log('[Codex OAuth] ✓ Credentials saved to storage');
+          console.log('[Codex OAuth] âœ“ Credentials saved to storage');
 
           if (port) port.disconnect();
           resolve({ accessToken, refreshToken, accountId });
@@ -132,7 +132,7 @@ function importCodexViaNativeHost() {
         } else if (message.type === 'credentials_not_found') {
           resolved = true;
           clearTimeout(timeout);
-          console.error('[Codex OAuth] ✗ CLI credentials not found');
+          console.error('[Codex OAuth] âœ— CLI credentials not found');
           console.error('[Codex OAuth]', message.error);
           if (port) port.disconnect();
           reject(new Error(message.error));
@@ -140,7 +140,7 @@ function importCodexViaNativeHost() {
         } else if (message.type === 'error') {
           resolved = true;
           clearTimeout(timeout);
-          console.error('[Codex OAuth] ✗ Error:', message.error);
+          console.error('[Codex OAuth] âœ— Error:', message.error);
           if (port) port.disconnect();
           reject(new Error(message.error));
         }
@@ -152,7 +152,7 @@ function importCodexViaNativeHost() {
         if (!resolved) {
           resolved = true;
           const errorMsg = chrome.runtime.lastError?.message || 'Native host disconnected unexpectedly';
-          console.error('[Codex OAuth] ✗ Disconnect error:', errorMsg);
+          console.error('[Codex OAuth] âœ— Disconnect error:', errorMsg);
           reject(new Error(`Native host error: ${errorMsg}`));
         }
       });
@@ -163,7 +163,7 @@ function importCodexViaNativeHost() {
     } catch (error) {
       resolved = true;
       clearTimeout(timeout);
-      console.error('[Codex OAuth] ✗ Failed to connect:', error);
+      console.error('[Codex OAuth] âœ— Failed to connect:', error);
       if (port) port.disconnect();
       reject(new Error(`Failed to connect: ${error.message}`));
     }

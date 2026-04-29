@@ -119,7 +119,7 @@ async function handleFormInput(payload, sendResponse) {
     // Scroll element into view first
     element.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-    // Handle native SELECT elements — case-insensitive matching
+    // Handle native SELECT elements â€” case-insensitive matching
     if (element instanceof HTMLSelectElement) {
       const prev = element.value;
       const options = Array.from(element.options);
@@ -278,7 +278,7 @@ async function handleFormInput(payload, sendResponse) {
           }
         }
       }
-      // Pass 5: Single result — just take it
+      // Pass 5: Single result â€” just take it
       if (!matched && options.length === 1) {
         matched = options[0];
       }
@@ -302,7 +302,7 @@ async function handleFormInput(payload, sendResponse) {
       return;
     }
 
-    // Handle CHECKBOX inputs — use click() for React/framework compatibility (same as radio)
+    // Handle CHECKBOX inputs â€” use click() for React/framework compatibility (same as radio)
     if (element instanceof HTMLInputElement && element.type === 'checkbox') {
       if (typeof value !== 'boolean') {
         sendResponse({ success: false, error: 'Checkbox requires a boolean value (true/false)' });
@@ -323,7 +323,7 @@ async function handleFormInput(payload, sendResponse) {
       return;
     }
 
-    // Handle RADIO inputs — use click() for React compatibility
+    // Handle RADIO inputs â€” use click() for React compatibility
     if (element instanceof HTMLInputElement && element.type === 'radio') {
       element.click();
       element.dispatchEvent(new Event('change', { bubbles: true }));
@@ -392,7 +392,7 @@ async function handleFormInput(payload, sendResponse) {
       return;
     }
 
-    // Handle TEXT inputs and TEXTAREAs — use native setter to bypass React
+    // Handle TEXT inputs and TEXTAREAs â€” use native setter to bypass React
     if (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement) {
       const prev = element.value;
       const proto = element instanceof HTMLTextAreaElement
@@ -782,4 +782,4 @@ function handleFindAndScroll(payload, sendResponse) {
   }
 }
 
-console.log('[Hanzi in Chrome] Content script loaded');
+console.log('[RethinkSoft in Chrome] Content script loaded');

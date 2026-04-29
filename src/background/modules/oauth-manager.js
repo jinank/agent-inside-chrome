@@ -18,7 +18,7 @@ const OAUTH_CONFIG = {
 
 import { relayRequest, isRelayConnected } from './mcp-bridge.js';
 
-const NATIVE_HOST_NAME = 'com.hanzi_in_chrome.oauth_host';
+const NATIVE_HOST_NAME = 'com.rethinksoft_in_chrome.oauth_host';
 
 /**
  * Generate cryptographically random string for PKCE
@@ -102,7 +102,7 @@ async function importCLIViaRelay() {
   }
 
   const { accessToken, refreshToken, expiresAt } = response.credentials;
-  console.log('[OAuth] ✓ Credentials received via relay');
+  console.log('[OAuth] âœ“ Credentials received via relay');
   console.log('[OAuth] Access token:', accessToken.substring(0, 20) + '...');
 
   // Handle expiresAt
@@ -122,7 +122,7 @@ async function importCLIViaRelay() {
     tokenSource: 'claude_cli'
   });
 
-  console.log('[OAuth] ✓ Credentials saved to storage');
+  console.log('[OAuth] âœ“ Credentials saved to storage');
   return { accessToken, refreshToken, expiresAt: expiresAtTimestamp };
 }
 
@@ -136,18 +136,18 @@ function importCLIViaNativeHost() {
     try {
       console.log('[OAuth] Connecting to native host:', NATIVE_HOST_NAME);
       port = chrome.runtime.connectNative(NATIVE_HOST_NAME);
-      console.log('[OAuth] ✓ Connected to native host');
+      console.log('[OAuth] âœ“ Connected to native host');
 
       port.onMessage.addListener(async (message) => {
         console.log('[OAuth] Message received:', message.type);
 
         if (message.type === 'cli_credentials') {
-          console.log('[OAuth] ✓ CLI credentials received');
+          console.log('[OAuth] âœ“ CLI credentials received');
           const { accessToken, refreshToken, expiresAt, subscriptionType } = message.credentials;
 
           // Validate accessToken
           if (!accessToken) {
-            console.error('[OAuth] ✗ No accessToken in credentials');
+            console.error('[OAuth] âœ— No accessToken in credentials');
             if (port) port.disconnect();
             reject(new Error('No accessToken found in Claude CLI credentials'));
             return;
@@ -182,19 +182,19 @@ function importCLIViaNativeHost() {
             tokenSource: 'claude_cli'
           });
 
-          console.log('[OAuth] ✓ Credentials saved to storage');
+          console.log('[OAuth] âœ“ Credentials saved to storage');
 
           if (port) port.disconnect();
           resolve({ accessToken, refreshToken, expiresAt: expiresAtTimestamp });
 
         } else if (message.type === 'credentials_not_found') {
-          console.error('[OAuth] ✗ CLI credentials not found');
+          console.error('[OAuth] âœ— CLI credentials not found');
           console.error('[OAuth]', message.error);
           if (port) port.disconnect();
           reject(new Error(message.error));
 
         } else if (message.type === 'error') {
-          console.error('[OAuth] ✗ Error:', message.error);
+          console.error('[OAuth] âœ— Error:', message.error);
           if (port) port.disconnect();
           reject(new Error(message.error));
         }
@@ -203,7 +203,7 @@ function importCLIViaNativeHost() {
       port.onDisconnect.addListener(() => {
         console.log('[OAuth] Native host disconnected');
         if (chrome.runtime.lastError) {
-          console.error('[OAuth] ✗ Disconnect error:', chrome.runtime.lastError.message);
+          console.error('[OAuth] âœ— Disconnect error:', chrome.runtime.lastError.message);
           reject(new Error(`Native host error: ${chrome.runtime.lastError.message}`));
         }
       });
@@ -212,7 +212,7 @@ function importCLIViaNativeHost() {
       port.postMessage({ type: 'read_cli_credentials' });
 
     } catch (error) {
-      console.error('[OAuth] ✗ Failed to connect:', error);
+      console.error('[OAuth] âœ— Failed to connect:', error);
       if (port) port.disconnect();
       reject(new Error(`Failed to connect: ${error.message}`));
     }
@@ -254,7 +254,7 @@ export async function startOAuthLogin() {
     try {
       console.log('[OAuth] Calling chrome.runtime.connectNative...');
       port = chrome.runtime.connectNative(NATIVE_HOST_NAME);
-      console.log('[OAuth] ✓ Connected to native host successfully');
+      console.log('[OAuth] âœ“ Connected to native host successfully');
       console.log('[OAuth] Port object:', port);
 
       port.onMessage.addListener(async (message) => {
@@ -278,7 +278,7 @@ export async function startOAuthLogin() {
           console.log('[OAuth] Authorization URL:', authUrl.toString());
           console.log('[OAuth] Opening authorization page in new tab...');
           authTab = await chrome.tabs.create({ url: authUrl.toString(), active: true });
-          console.log('[OAuth] ✓ Authorization tab opened, tab ID:', authTab.id);
+          console.log('[OAuth] âœ“ Authorization tab opened, tab ID:', authTab.id);
         } else if (message.type === 'oauth_success') {
           console.log('[OAuth] OAuth success! Received authorization code');
           console.log('[OAuth] Code:', message.code.substring(0, 10) + '...');
@@ -288,20 +288,20 @@ export async function startOAuthLogin() {
           console.log('[OAuth] State from storage:', oauthStateParam);
 
           if (message.state !== oauthStateParam) {
-            console.error('[OAuth] ✗ State mismatch! CSRF attack detected');
+            console.error('[OAuth] âœ— State mismatch! CSRF attack detected');
             reject(new Error('Invalid state'));
             return;
           }
-          console.log('[OAuth] ✓ State validated');
+          console.log('[OAuth] âœ“ State validated');
 
           try {
             console.log('[OAuth] Exchanging authorization code for tokens...');
             const tokens = await exchangeCodeForTokens(message.code);
-            console.log('[OAuth] ✓ Tokens received');
+            console.log('[OAuth] âœ“ Tokens received');
 
             console.log('[OAuth] Saving tokens to storage...');
             await saveTokens(tokens);
-            console.log('[OAuth] ✓ Tokens saved');
+            console.log('[OAuth] âœ“ Tokens saved');
 
             await chrome.storage.local.set({ oauthState: 'authenticated' });
             console.log('[OAuth] Cleaning up...');
@@ -310,11 +310,11 @@ export async function startOAuthLogin() {
             console.log('[OAuth] ===== OAuth Login Complete =====');
             resolve(tokens);
           } catch (error) {
-            console.error('[OAuth] ✗ Token exchange failed:', error);
+            console.error('[OAuth] âœ— Token exchange failed:', error);
             reject(error);
           }
         } else if (message.type === 'error' || message.type === 'oauth_error') {
-          console.error('[OAuth] ✗ Error from native host:', message.error);
+          console.error('[OAuth] âœ— Error from native host:', message.error);
           reject(new Error(message.error || 'OAuth failed'));
         } else {
           console.warn('[OAuth] Unknown message type:', message.type);
@@ -324,7 +324,7 @@ export async function startOAuthLogin() {
       port.onDisconnect.addListener(() => {
         console.log('[OAuth] ==== Native host disconnected ====');
         if (chrome.runtime.lastError) {
-          console.error('[OAuth] ✗ Disconnect error:', chrome.runtime.lastError);
+          console.error('[OAuth] âœ— Disconnect error:', chrome.runtime.lastError);
           console.error('[OAuth] Error message:', chrome.runtime.lastError.message);
           reject(new Error(`Native host error: ${chrome.runtime.lastError.message}`));
         } else {
@@ -339,7 +339,7 @@ export async function startOAuthLogin() {
       console.log('[OAuth] Message sent, waiting for response...');
 
     } catch (error) {
-      console.error('[OAuth] ✗ connectNative error:', error);
+      console.error('[OAuth] âœ— connectNative error:', error);
       console.error('[OAuth] Error stack:', error.stack);
       reject(new Error(`Failed to connect: ${error.message}`));
     }
@@ -361,10 +361,10 @@ async function exchangeCodeForTokens(code) {
   const { pkceCodeVerifier } = await chrome.storage.local.get('pkceCodeVerifier');
 
   if (!pkceCodeVerifier) {
-    console.error('[OAuth] ✗ PKCE code verifier not found in storage');
+    console.error('[OAuth] âœ— PKCE code verifier not found in storage');
     throw new Error('PKCE code verifier not found');
   }
-  console.log('[OAuth] ✓ Code verifier found:', pkceCodeVerifier.substring(0, 20) + '...');
+  console.log('[OAuth] âœ“ Code verifier found:', pkceCodeVerifier.substring(0, 20) + '...');
 
   // Build token request
   const body = {
@@ -400,7 +400,7 @@ async function exchangeCodeForTokens(code) {
 
   if (!response.ok) {
     const errorText = await response.text();
-    console.error('[OAuth] ✗ Token exchange failed');
+    console.error('[OAuth] âœ— Token exchange failed');
     console.error('[OAuth] Status:', response.status);
     console.error('[OAuth] Error:', errorText);
     throw new Error(`Token exchange failed: ${response.status} ${errorText}`);
@@ -408,7 +408,7 @@ async function exchangeCodeForTokens(code) {
 
   console.log('[OAuth] Parsing token response...');
   const data = await response.json();
-  console.log('[OAuth] ✓ Token response received:', {
+  console.log('[OAuth] âœ“ Token response received:', {
     ...data,
     access_token: data.access_token ? data.access_token.substring(0, 20) + '...' : undefined,
     refresh_token: data.refresh_token ? data.refresh_token.substring(0, 20) + '...' : undefined
@@ -417,7 +417,7 @@ async function exchangeCodeForTokens(code) {
   // Clean up PKCE verifier and state parameter
   console.log('[OAuth] Cleaning up PKCE data from storage...');
   await chrome.storage.local.remove(['pkceCodeVerifier', 'oauthStateParam']);
-  console.log('[OAuth] ✓ PKCE data cleaned up');
+  console.log('[OAuth] âœ“ PKCE data cleaned up');
 
   const tokens = {
     accessToken: data.access_token,

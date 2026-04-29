@@ -1,8 +1,8 @@
 /**
- * `hanzi-browser setup` — auto-detect AI agents and inject MCP config.
+ * `rethinksoft-browser setup` â€” auto-detect AI agents and inject MCP config.
  *
  * Scans the machine for Claude Code, Cursor, Windsurf, and Claude Desktop,
- * then merges the Hanzi MCP server entry into each agent's config file.
+ * then merges the RethinkSoft MCP server entry into each agent's config file.
  */
 export declare function runSetup(options?: {
     only?: string;

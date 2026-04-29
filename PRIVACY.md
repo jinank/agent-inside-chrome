@@ -1,9 +1,9 @@
-# Privacy Policy for Hanzi in Chrome
+# Privacy Policy for RethinkSoft in Chrome
 
 Last updated: February 1, 2026
 
 ## Overview
-Hanzi in Chrome is a browser automation extension that uses AI to help users complete web tasks.
+RethinkSoft in Chrome is a browser automation extension that uses AI to help users complete web tasks.
 
 ## Data Collection
 This extension:
@@ -34,7 +34,7 @@ These permissions are used solely for browser automation at your request.
 
 ## Contact
 For questions about this privacy policy, please open an issue at:
-https://github.com/hanzili/hanzi-in-chrome/issues
+https://github.com/hanzili/rethinksoft-in-chrome/issues
 
 ## Changes
 We may update this policy occasionally. Changes will be posted to this page.

@@ -33,7 +33,7 @@ export function App() {
               <path d="M12 6v6l4 2" />
             </svg>
           </div>
-          <h2>Welcome to Hanzi</h2>
+          <h2>Welcome to RethinkSoft</h2>
           <p>Complete setup to get started.</p>
           <button
             class="btn btn-primary"

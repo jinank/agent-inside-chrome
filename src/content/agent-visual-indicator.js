@@ -355,5 +355,5 @@
     hideStaticIndicator();
   });
 
-  console.log('[Hanzi in Chrome] Visual indicator script loaded');
+  console.log('[RethinkSoft in Chrome] Visual indicator script loaded');
 })();

@@ -9,11 +9,11 @@
  *
  * License key sources (checked in order):
  * 1. HANZI_IN_CHROME_LICENSE_KEY env var
- * 2. ~/.hanzi-in-chrome/mcp-license.json (persisted from previous activation)
+ * 2. ~/.rethinksoft-in-chrome/mcp-license.json (persisted from previous activation)
  *
  * Storage:
- *   ~/.hanzi-in-chrome/mcp-license.json — { key, valid, instanceId, validatedAt }
- *   ~/.hanzi-in-chrome/mcp-usage.json   — { count }
+ *   ~/.rethinksoft-in-chrome/mcp-license.json â€” { key, valid, instanceId, validatedAt }
+ *   ~/.rethinksoft-in-chrome/mcp-usage.json   â€” { count }
  */
 /**
  * Check if user can run a task, and increment the counter.

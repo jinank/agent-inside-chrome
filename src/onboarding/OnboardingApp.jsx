@@ -434,7 +434,7 @@ function ToolbarHint() {
         <circle cx="116" cy="24" r="12" fill="#c4c7cc" />
         <circle cx="148" cy="24" r="12" fill="#c4c7cc" />
 
-        {/* Hanzi icon — highlighted */}
+        {/* RethinkSoft icon â€” highlighted */}
         <g>
           {/* Pulse ring */}
           <circle cx="188" cy="24" r="17" fill="none" stroke="#5D9A9A" stroke-width="2" opacity="0.3">
@@ -443,7 +443,7 @@ function ToolbarHint() {
           </circle>
           {/* Highlight ring */}
           <circle cx="188" cy="24" r="16" fill="none" stroke="#5D9A9A" stroke-width="2" />
-          {/* Actual hanzi icon */}
+          {/* Actual rethinksoft icon */}
           <image href="data:image/png;base64,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" x="175" y="11" width="26" height="26" />
         </g>
 
@@ -458,7 +458,7 @@ function ToolbarHint() {
         <circle cx="300" cy="24" r="2" fill="#9aa0a6" />
         <circle cx="300" cy="31" r="2" fill="#9aa0a6" />
 
-        {/* Arrow pointing up to the hanzi icon */}
+        {/* Arrow pointing up to the rethinksoft icon */}
         <path d="M188 56 L188 50" stroke="#5D9A9A" stroke-width="2.5" stroke-linecap="round" />
         <path d="M183 53 L188 47 L193 53" stroke="#5D9A9A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
 
@@ -481,7 +481,7 @@ function WelcomeStep({ onContinue }) {
               <path d="M12 6v6l4 2" />
             </svg>
           </div>
-          <h1>hanzi lets ai use your real chrome</h1>
+          <h1>rethinksoft lets ai use your real chrome</h1>
           <p class="subtitle">
             use it yourself in the sidepanel, or connect it to claude code / codex / mcp
             so your ai agent can drive your logged-in browser.
@@ -501,7 +501,7 @@ function WelcomeStep({ onContinue }) {
               />
             </div>
             <h2>use it myself</h2>
-            <p>open the sidepanel, describe what you want, and let hanzi browse for you directly inside chrome.</p>
+            <p>open the sidepanel, describe what you want, and let rethinksoft browse for you directly inside chrome.</p>
             <div class="mode-setup">sidepanel use</div>
           </div>
 
@@ -548,18 +548,18 @@ function SetupStep({ onContinue, onBack }) {
         <div class="onboarding-header">
           <h1>configure your agents</h1>
           <p class="subtitle">
-            run this in your terminal. it detects claude code, cursor, windsurf, and claude desktop — configures each one automatically.
+            run this in your terminal. it detects claude code, cursor, windsurf, and claude desktop â€” configures each one automatically.
           </p>
         </div>
 
         <div class="connect-sections">
           <div class="connect-section">
             <div class="command-block" style={{ margin: '12px 0' }}>
-              <code>npx hanzi-in-chrome setup</code>
+              <code>npx rethinksoft-in-chrome setup</code>
               <button
                 class="copy-btn"
                 onClick={() => {
-                  navigator.clipboard.writeText('npx hanzi-in-chrome setup');
+                  navigator.clipboard.writeText('npx rethinksoft-in-chrome setup');
                   setCopied(true);
                   setTimeout(() => setCopied(false), 2000);
                 }}
@@ -568,7 +568,7 @@ function SetupStep({ onContinue, onBack }) {
               </button>
             </div>
             <p class="connect-hint">
-              skip this step if you only want to use hanzi from the chrome sidepanel.
+              skip this step if you only want to use rethinksoft from the chrome sidepanel.
             </p>
           </div>
         </div>
@@ -627,7 +627,7 @@ function ConnectStep({
         <div class="onboarding-header">
           <h1>connect a model source</h1>
           <p class="subtitle">
-            hanzi needs credentials to run browser tasks. pick whichever you already have.
+            rethinksoft needs credentials to run browser tasks. pick whichever you already have.
           </p>
         </div>
 
@@ -842,7 +842,7 @@ function DoneStep() {
             </svg>
           </div>
           <h1>you're all set</h1>
-          <p class="subtitle">you can now use hanzi directly in chrome or connect it to your ai agent. both are ready.</p>
+          <p class="subtitle">you can now use rethinksoft directly in chrome or connect it to your ai agent. both are ready.</p>
         </div>
 
         <div class="done-sections">
@@ -853,7 +853,7 @@ function DoneStep() {
 
           <div class="done-section">
             <h3>use it yourself in chrome</h3>
-            <p class="section-intro">click the hanzi icon in your chrome toolbar, then try one of these:</p>
+            <p class="section-intro">click the rethinksoft icon in your chrome toolbar, then try one of these:</p>
             <ToolbarHint />
             <div class="example-tasks">
               <div class="example-task">"summarize my open jira tickets"</div>

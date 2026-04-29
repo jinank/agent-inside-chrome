@@ -6,12 +6,12 @@
  * Sends tasks to the Chrome extension via WebSocket relay.
  *
  * Usage:
- *   hanzi-browser start "task" --url https://example.com
- *   hanzi-browser status [session_id]
- *   hanzi-browser message <session_id> "message"
- *   hanzi-browser logs <session_id> [--follow]
- *   hanzi-browser stop <session_id> [--remove]
- *   hanzi-browser screenshot <session_id>
+ *   rethinksoft-browser start "task" --url https://example.com
+ *   rethinksoft-browser status [session_id]
+ *   rethinksoft-browser message <session_id> "message"
+ *   rethinksoft-browser logs <session_id> [--follow]
+ *   rethinksoft-browser stop <session_id> [--remove]
+ *   rethinksoft-browser screenshot <session_id>
  */
 import { existsSync, readFileSync, mkdirSync, watch, writeFileSync } from 'fs';
 import { randomUUID } from 'crypto';
@@ -97,7 +97,7 @@ function disconnectAndExit(code = 0) {
 }
 // --- Commands ---
 function loadSkillPrompt(skillName) {
-    // Resolve relative to package root: dist/cli.js → ../skills/<name>/SKILL.md
+    // Resolve relative to package root: dist/cli.js â†’ ../skills/<name>/SKILL.md
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
     const skillPath = join(__dirname, '..', 'skills', skillName, 'SKILL.md');
@@ -110,7 +110,7 @@ function loadSkillPrompt(skillName) {
 async function cmdStart() {
     const task = args[1];
     if (!task) {
-        console.error('Usage: hanzi-browser start "task description" [--url URL] [--context TEXT] [--skill NAME]');
+        console.error('Usage: rethinksoft-browser start "task description" [--url URL] [--context TEXT] [--skill NAME]');
         process.exit(1);
     }
     let url;
@@ -160,9 +160,9 @@ async function cmdStart() {
         context,
     });
     console.log(`\n[CLI] Session: ${sessionId}`);
-    console.log(`  Status: ~/.hanzi-in-chrome/sessions/${sessionId}.json`);
-    console.log(`  Logs:   ~/.hanzi-in-chrome/sessions/${sessionId}.log`);
-    console.log(`  Skills: run \`hanzi-browser skills\` for optimized workflows (e.g. LinkedIn prospecting)`);
+    console.log(`  Status: ~/.rethinksoft-in-chrome/sessions/${sessionId}.json`);
+    console.log(`  Logs:   ~/.rethinksoft-in-chrome/sessions/${sessionId}.log`);
+    console.log(`  Skills: run \`rethinksoft-browser skills\` for optimized workflows (e.g. LinkedIn prospecting)`);
     console.log('\nWaiting for completion...\n');
     // Block until task completes
     await waitForTaskCompletion();
@@ -196,7 +196,7 @@ async function cmdMessage() {
     const sessionId = args[1];
     const message = args[2];
     if (!sessionId || !message) {
-        console.error('Usage: hanzi-browser message <session_id> "message"');
+        console.error('Usage: rethinksoft-browser message <session_id> "message"');
         process.exit(1);
     }
     activeSessionId = sessionId;
@@ -212,7 +212,7 @@ function cmdLogs() {
     const sessionId = args[1];
     const follow = args.includes('--follow') || args.includes('-f');
     if (!sessionId) {
-        console.error('Usage: hanzi-browser logs <session_id> [--follow]');
+        console.error('Usage: rethinksoft-browser logs <session_id> [--follow]');
         process.exit(1);
     }
     const logPath = getSessionLogPath(sessionId);
@@ -239,7 +239,7 @@ async function cmdStop() {
     const sessionId = args[1];
     const remove = args.includes('--remove') || args.includes('-r');
     if (!sessionId) {
-        console.error('Usage: hanzi-browser stop <session_id> [--remove]');
+        console.error('Usage: rethinksoft-browser stop <session_id> [--remove]');
         process.exit(1);
     }
     activeSessionId = sessionId;
@@ -289,12 +289,12 @@ const SKILL_REGISTRY = [
     },
     {
         name: 'e2e-tester',
-        description: 'Test your web app in a real browser — reports bugs with code references',
+        description: 'Test your web app in a real browser â€” reports bugs with code references',
         files: ['SKILL.md'],
     },
     {
         name: 'social-poster',
-        description: 'Post across LinkedIn, Twitter, Reddit, HN — drafts per-platform, posts from your browser',
+        description: 'Post across LinkedIn, Twitter, Reddit, HN â€” drafts per-platform, posts from your browser',
         files: ['SKILL.md'],
     },
 ];
@@ -303,7 +303,7 @@ async function cmdSkills() {
     if (subcommand === 'install') {
         const skillName = args[2];
         if (!skillName) {
-            console.error('Usage: hanzi-browser skills install <name>');
+            console.error('Usage: rethinksoft-browser skills install <name>');
             process.exit(1);
         }
         const skill = SKILL_REGISTRY.find(s => s.name === skillName);
@@ -325,7 +325,7 @@ async function cmdSkills() {
                 const content = await response.text();
                 const filePath = join(targetDir, file);
                 writeFileSync(filePath, content);
-                console.log(`  → ${filePath}`);
+                console.log(`  â†’ ${filePath}`);
             }
             catch (err) {
                 console.error(`  Failed to download ${file}: ${err.message}`);
@@ -340,7 +340,7 @@ async function cmdSkills() {
     for (const skill of SKILL_REGISTRY) {
         console.log(`  ${skill.name.padEnd(24)} ${skill.description}`);
     }
-    console.log(`\nInstall: hanzi-browser skills install <name>`);
+    console.log(`\nInstall: rethinksoft-browser skills install <name>`);
     console.log(`Browse:  https://browse.hanzilla.co/skills\n`);
 }
 function detectSkillsDir(skillName) {
@@ -369,14 +369,14 @@ async function cmdSetup() {
 }
 function cmdHelp() {
     console.log(`
-Hanzi Browser CLI - Browser automation from the command line
+RethinkSoft Browser CLI - Browser automation from the command line
 
 Controls your real Chrome browser with your existing logins, cookies, and
 sessions. Good for authenticated sites, dynamic pages, and multi-step tasks
 that need a real browser.
 
 Usage:
-  hanzi-browser <command> [options]
+  rethinksoft-browser <command> [options]
 
 Commands:
   start <task>              Start a browser automation task
@@ -409,12 +409,12 @@ Commands:
   help                      Show this help message
 
 Typical workflow:
-  1. Run \`hanzi-browser start "task"\`
+  1. Run \`rethinksoft-browser start "task"\`
   2. If needed, inspect progress with \`status\`, \`logs\`, or \`screenshot\`
   3. Continue the same session with \`message <session_id> "next step"\`
   4. Stop it with \`stop <session_id>\`
 
-Use Hanzi when the task needs a real browser:
+Use RethinkSoft when the task needs a real browser:
   - Logged-in sites: Jira, LinkedIn, Slack, GitHub, dashboards
   - UI testing and visual verification
   - Form filling in third-party web apps
@@ -427,18 +427,18 @@ Prefer other tools first for:
   - Local files, env vars, structured data
 
 Examples:
-  hanzi-browser start "Search LinkedIn for immigration consultants in Toronto and collect 10 names" --url https://www.linkedin.com
-  hanzi-browser start "Check flight prices to Tokyo" --url https://flights.google.com
-  hanzi-browser status abc123
-  hanzi-browser logs abc123 --follow
-  hanzi-browser message abc123 "Click the first result and summarize the page"
-  hanzi-browser screenshot abc123
-  hanzi-browser stop abc123 --remove
+  rethinksoft-browser start "Search LinkedIn for immigration consultants in Toronto and collect 10 names" --url https://www.linkedin.com
+  rethinksoft-browser start "Check flight prices to Tokyo" --url https://flights.google.com
+  rethinksoft-browser status abc123
+  rethinksoft-browser logs abc123 --follow
+  rethinksoft-browser message abc123 "Click the first result and summarize the page"
+  rethinksoft-browser screenshot abc123
+  rethinksoft-browser stop abc123 --remove
 
 Skills:
   Pre-built workflows for common tasks (LinkedIn prospecting, etc.).
-  Run \`hanzi-browser skills\` to see what's available, or install one:
-  \`hanzi-browser skills install linkedin-prospector\`
+  Run \`rethinksoft-browser skills\` to see what's available, or install one:
+  \`rethinksoft-browser skills install linkedin-prospector\`
 `);
 }
 // --- Main ---

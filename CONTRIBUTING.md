@@ -1,23 +1,23 @@
-# Contributing to Hanzi
+# Contributing to RethinkSoft
 
 Thanks for wanting to contribute! Here's what you need to know.
 
 ## Quick Start
 
 ```bash
-git clone https://github.com/hanzili/hanzi-in-chrome
-cd hanzi-in-chrome/server && npm install && npm run build
+git clone https://github.com/hanzili/rethinksoft-in-chrome
+cd rethinksoft-in-chrome/server && npm install && npm run build
 ```
 
 To test locally:
-1. Load the extension: `chrome://extensions/` → Load unpacked → select the repo root
+1. Load the extension: `chrome://extensions/` â†’ Load unpacked â†’ select the repo root
 2. Start the relay: `node server/dist/relay/server.js`
 3. Run CLI: `node server/dist/cli.js start "your task"`
 
 ## What We Love Getting
 
 ### New Skills (no code required!)
-Skills are just SKILL.md files — structured prompts that guide the AI agent through a workflow. Look at `server/skills/linkedin-prospector/SKILL.md` for the pattern.
+Skills are just SKILL.md files â€” structured prompts that guide the AI agent through a workflow. Look at `server/skills/linkedin-prospector/SKILL.md` for the pattern.
 
 To add a skill:
 1. Create `server/skills/{your-skill}/SKILL.md`

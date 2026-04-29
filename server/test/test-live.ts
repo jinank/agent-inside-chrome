@@ -31,7 +31,7 @@ if (!fs.existsSync(LOG_DIR)) {
 
 function log(level: 'INFO' | 'PASS' | 'FAIL' | 'WARN' | 'DEBUG' | 'LLM', message: string, data?: any) {
   const timestamp = new Date().toISOString();
-  const emoji = { INFO: '📋', PASS: '✅', FAIL: '❌', WARN: '⚠️', DEBUG: '🔍', LLM: '🤖' }[level];
+  const emoji = { INFO: 'ðŸ“‹', PASS: 'âœ…', FAIL: 'âŒ', WARN: 'âš ï¸', DEBUG: 'ðŸ”', LLM: 'ðŸ¤–' }[level];
 
   const logLine = `[${timestamp}] ${emoji} ${level}: ${message}`;
   const dataLine = data ? `\n    ${JSON.stringify(data, null, 2).split('\n').join('\n    ')}` : '';
@@ -45,7 +45,7 @@ function log(level: 'INFO' | 'PASS' | 'FAIL' | 'WARN' | 'DEBUG' | 'LLM', message
 }
 
 function logSection(title: string) {
-  const line = '═'.repeat(60);
+  const line = 'â•'.repeat(60);
   const msg = `\n${line}\n${title}\n${line}`;
   console.log(`\x1b[1m${msg}\x1b[0m`);
   fs.appendFileSync(LOG_FILE, msg + '\n');
@@ -69,7 +69,7 @@ function findNativeHost(): string | null {
   const manifestPath = path.join(
     os.homedir(),
     'Library', 'Application Support', 'Google', 'Chrome',
-    'NativeMessagingHosts', 'com.hanzi_in_chrome.oauth_host.json'
+    'NativeMessagingHosts', 'com.rethinksoft_in_chrome.oauth_host.json'
   );
 
   if (fs.existsSync(manifestPath)) {
@@ -206,7 +206,7 @@ async function testPlanningAgentWithLLM(): Promise<boolean> {
 
 async function runLiveTests() {
   console.log('\n');
-  logSection('🔴 LIVE AGENT TESTS');
+  logSection('ðŸ”´ LIVE AGENT TESTS');
   log('INFO', `Log file: ${LOG_FILE}`);
   log('WARN', 'These tests require the Chrome extension to be running!');
 
@@ -217,7 +217,7 @@ async function runLiveTests() {
   results.push({ name: 'Planning Agent with LLM', passed: await testPlanningAgentWithLLM() });
 
   // Summary
-  logSection('📊 LIVE TEST SUMMARY');
+  logSection('ðŸ“Š LIVE TEST SUMMARY');
 
   const passed = results.filter(r => r.passed).length;
   const total = results.length;

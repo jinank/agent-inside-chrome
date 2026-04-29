@@ -8,8 +8,9 @@
 
 import { BaseProvider } from './base-provider.js';
 import { filterClaudeOnlyTools } from '../../../tools/definitions.js';
+import { isRelayConnected, proxyApiCall } from '../mcp-bridge.js';
 
-const NATIVE_HOST_NAME = 'com.hanzi_in_chrome.oauth_host';
+const NATIVE_HOST_NAME = 'com.rethinksoft_in_chrome.oauth_host';
 const CODEX_API_URL = 'https://chatgpt.com/backend-api/codex/responses';
 
 export class CodexProvider extends BaseProvider {
@@ -60,7 +61,6 @@ export class CodexProvider extends BaseProvider {
     const useStreaming = !!onTextChunk;
     const requestBody = this.buildRequestBody(messages, systemPrompt, tools, useStreaming);
     const url = this.buildUrl(useStreaming);
-    const REQUEST_TIMEOUT_MS = 150000;
 
     await log?.('DEBUG', 'Codex API call through proxy', {
       url,
@@ -69,6 +69,126 @@ export class CodexProvider extends BaseProvider {
       streaming: useStreaming,
     });
 
+    if (isRelayConnected()) {
+      try {
+        return await this.callViaRelay(url, requestBody, onTextChunk);
+      } catch (error) {
+        await log?.('WARN', 'Codex relay proxy failed, falling back to native host', {
+          error: error.message,
+        });
+      }
+    }
+
+    return this.callViaNativeHost(url, requestBody, onTextChunk);
+  }
+
+  async callViaRelay(url, requestBody, onTextChunk) {
+    let result = {
+      content: [],
+      usage: null,
+      stop_reason: 'end_turn',
+    };
+    let currentText = '';
+    let itemsById = {};
+
+    await proxyApiCall(url, JSON.stringify(requestBody), (event) => {
+      if (event.type === 'response.output_item.added') {
+        const item = event.item;
+        if (item) {
+          itemsById[item.id] = {
+            id: item.id,
+            type: item.type,
+            call_id: item.call_id,
+            name: item.name || '',
+            arguments: item.arguments || '',
+          };
+        }
+      } else if (event.type === 'response.output_item.done') {
+        const item = event.item;
+        if (item && item.type === 'function_call') {
+          itemsById[item.id] = {
+            id: item.id,
+            type: item.type,
+            call_id: item.call_id,
+            name: item.name || '',
+            arguments: item.arguments || '',
+          };
+        }
+      } else if (event.type === 'response.output_text.delta') {
+        const text = event.delta || '';
+        currentText += text;
+        if (onTextChunk) onTextChunk(text);
+      } else if (event.type === 'response.function_call_arguments.delta') {
+        const itemId = event.item_id;
+        if (itemId && itemsById[itemId]) {
+          itemsById[itemId].arguments += event.delta || '';
+        }
+      } else if (event.type === 'response.function_call_arguments.done') {
+        const itemId = event.item_id;
+        if (itemId && itemsById[itemId]) {
+          itemsById[itemId].arguments = event.arguments || '';
+        }
+      } else if (event.type === 'response.completed') {
+        const response = event.response;
+        if (response?.usage) {
+          result.usage = response.usage;
+        }
+        if (response?.status === 'incomplete') {
+          result.stop_reason = 'max_tokens';
+        }
+        if (response?.output) {
+          for (const item of response.output) {
+            if (item.type === 'function_call') {
+              itemsById[item.id] = {
+                id: item.id,
+                type: item.type,
+                call_id: item.call_id,
+                name: item.name,
+                arguments: item.arguments || '',
+              };
+            }
+          }
+        }
+      }
+    });
+
+    if (currentText) {
+      result.content.push({ type: 'text', text: currentText });
+    }
+
+    let hasToolCalls = false;
+    for (const item of Object.values(itemsById)) {
+      if (item.type === 'function_call' && item.name) {
+        let parsedArgs = {};
+        try {
+          parsedArgs = JSON.parse(item.arguments || '{}');
+        } catch {
+          parsedArgs = {};
+        }
+
+        result.content.push({
+          type: 'tool_use',
+          id: item.call_id || item.id,
+          name: item.name,
+          input: parsedArgs,
+        });
+        hasToolCalls = true;
+      }
+    }
+
+    if (hasToolCalls) {
+      result.stop_reason = 'tool_use';
+    }
+
+    if (result.content.length === 0) {
+      result.content.push({ type: 'text', text: '' });
+    }
+
+    return result;
+  }
+
+  callViaNativeHost(url, requestBody, onTextChunk) {
+    const REQUEST_TIMEOUT_MS = 150000;
     return new Promise((resolve, reject) => {
       let port = null;
       let settled = false;
@@ -211,12 +331,12 @@ export class CodexProvider extends BaseProvider {
             for (const item of Object.values(itemsById)) {
               // Only include function_call items with a valid name
               if (item.type === 'function_call' && item.name) {
-                let parsedArgs = {};
-                try {
-                  parsedArgs = JSON.parse(item.arguments || '{}');
-                } catch (e) {
-                  parsedArgs = {};
-                }
+              let parsedArgs = {};
+              try {
+                parsedArgs = JSON.parse(item.arguments || '{}');
+              } catch (e) {
+                parsedArgs = {};
+              }
 
                 result.content.push({
                   type: 'tool_use',
@@ -302,14 +422,14 @@ export class CodexProvider extends BaseProvider {
           }
         } else if (item.type === 'function_call') {
           // Convert function_call to tool_use
-          let parsedArgs = {};
-          try {
-            parsedArgs = typeof item.arguments === 'string'
-              ? JSON.parse(item.arguments)
-              : item.arguments || {};
-          } catch (e) {
-            parsedArgs = {};
-          }
+                let parsedArgs = {};
+                try {
+                  parsedArgs = typeof item.arguments === 'string'
+                    ? JSON.parse(item.arguments)
+                    : item.arguments || {};
+                } catch (e) {
+                  parsedArgs = {};
+                }
 
           content.push({
             type: 'tool_use',

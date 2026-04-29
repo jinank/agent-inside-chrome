@@ -2,7 +2,7 @@
  * Session Files Module
  *
  * Manages file-based session storage for the CLI.
- * Sessions are stored as JSON files in ~/.hanzi-in-chrome/sessions/
+ * Sessions are stored as JSON files in ~/.rethinksoft-in-chrome/sessions/
  */
 export interface SessionFileStatus {
     session_id: string;

@@ -1,8 +1,8 @@
 /**
- * `hanzi-browser setup` — auto-detect AI agents and inject MCP config.
+ * `rethinksoft-browser setup` â€” auto-detect AI agents and inject MCP config.
  *
  * Scans the machine for Claude Code, Cursor, Windsurf, and Claude Desktop,
- * then merges the Hanzi MCP server entry into each agent's config file.
+ * then merges the RethinkSoft MCP server entry into each agent's config file.
  */
 import { existsSync, readFileSync, writeFileSync, mkdirSync, copyFileSync } from 'fs';
 import { join } from 'path';
@@ -12,7 +12,7 @@ import { createInterface } from 'readline';
 import { randomUUID } from 'crypto';
 import { isRelayRunning } from '../relay/auto-start.js';
 import { WebSocketClient } from '../ipc/websocket-client.js';
-// ── Style ──────────────────────────────────────────────────────────────
+// â”€â”€ Style â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const c = {
     green: (s) => `\x1b[32m${s}\x1b[0m`,
     yellow: (s) => `\x1b[33m${s}\x1b[0m`,
@@ -23,14 +23,14 @@ const c = {
 };
 const y1 = '\x1b[38;5;178m', y2 = '\x1b[38;5;214m', y3 = '\x1b[38;5;220m', y4 = '\x1b[38;5;221m', y5 = '\x1b[38;5;222m', rs = '\x1b[0m';
 const BANNER = `
-  ${y1}██   ██${rs} ${y2} █████ ${rs} ${y3}███  ██${rs} ${y4}████████${rs} ${y5}██${rs}
-  ${y1}██   ██${rs} ${y2}██   ██${rs} ${y3}████ ██${rs} ${y4}   ██   ${rs} ${y5}██${rs}
-  ${y1}███████${rs} ${y2}███████${rs} ${y3}██ ████${rs} ${y4}  ██    ${rs} ${y5}██${rs}
-  ${y1}██   ██${rs} ${y2}██   ██${rs} ${y3}██  ███${rs} ${y4} ██     ${rs} ${y5}██${rs}
-  ${y1}██   ██${rs} ${y2}██   ██${rs} ${y3}██   ██${rs} ${y4}████████${rs} ${y5}██${rs}
+  ${y1}â–ˆâ–ˆ   â–ˆâ–ˆ${rs} ${y2} â–ˆâ–ˆâ–ˆâ–ˆâ–ˆ ${rs} ${y3}â–ˆâ–ˆâ–ˆ  â–ˆâ–ˆ${rs} ${y4}â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ${rs} ${y5}â–ˆâ–ˆ${rs}
+  ${y1}â–ˆâ–ˆ   â–ˆâ–ˆ${rs} ${y2}â–ˆâ–ˆ   â–ˆâ–ˆ${rs} ${y3}â–ˆâ–ˆâ–ˆâ–ˆ â–ˆâ–ˆ${rs} ${y4}   â–ˆâ–ˆ   ${rs} ${y5}â–ˆâ–ˆ${rs}
+  ${y1}â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ${rs} ${y2}â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ${rs} ${y3}â–ˆâ–ˆ â–ˆâ–ˆâ–ˆâ–ˆ${rs} ${y4}  â–ˆâ–ˆ    ${rs} ${y5}â–ˆâ–ˆ${rs}
+  ${y1}â–ˆâ–ˆ   â–ˆâ–ˆ${rs} ${y2}â–ˆâ–ˆ   â–ˆâ–ˆ${rs} ${y3}â–ˆâ–ˆ  â–ˆâ–ˆâ–ˆ${rs} ${y4} â–ˆâ–ˆ     ${rs} ${y5}â–ˆâ–ˆ${rs}
+  ${y1}â–ˆâ–ˆ   â–ˆâ–ˆ${rs} ${y2}â–ˆâ–ˆ   â–ˆâ–ˆ${rs} ${y3}â–ˆâ–ˆ   â–ˆâ–ˆ${rs} ${y4}â–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆâ–ˆ${rs} ${y5}â–ˆâ–ˆ${rs}
   ${c.dim('browser automation for your ai agent')}
 `;
-const SPINNER_FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+const SPINNER_FRAMES = ['â ‹', 'â ™', 'â ¹', 'â ¸', 'â ¼', 'â ´', 'â ¦', 'â §', 'â ‡', 'â '];
 function sleep(ms) {
     return new Promise(r => setTimeout(r, ms));
 }
@@ -56,12 +56,12 @@ function spinner(text, isInteractive = true) {
         },
     };
 }
-// ── MCP config payload ─────────────────────────────────────────────────
+// â”€â”€ MCP config payload â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 const MCP_ENTRY = {
     command: 'npx',
-    args: ['-y', 'hanzi-in-chrome'],
+    args: ['-y', 'rethinksoft-in-chrome'],
 };
-// ── Agent registry ─────────────────────────────────────────────────────
+// â”€â”€ Agent registry â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function getAgentRegistry() {
     const home = homedir();
     const plat = platform();
@@ -70,7 +70,7 @@ function getAgentRegistry() {
             name: 'Claude Code',
             slug: 'claude-code',
             method: 'cli-command',
-            cliCommand: 'claude mcp add browser -- npx -y hanzi-in-chrome',
+            cliCommand: 'claude mcp add browser -- npx -y rethinksoft-in-chrome',
             detect: () => {
                 try {
                     execSync('which claude', { stdio: 'ignore' });
@@ -116,7 +116,7 @@ function getAgentRegistry() {
         },
     ];
 }
-// ── JSON merge ─────────────────────────────────────────────────────────
+// â”€â”€ JSON merge â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function stripJsonComments(text) {
     return text
         .replace(/\/\/.*$/gm, '')
@@ -169,7 +169,7 @@ function mergeJsonConfig(configPath) {
 }
 function runClaudeCodeSetup() {
     try {
-        const output = execSync('claude mcp add browser -- npx -y hanzi-in-chrome', {
+        const output = execSync('claude mcp add browser -- npx -y rethinksoft-in-chrome', {
             encoding: 'utf-8',
             stdio: ['pipe', 'pipe', 'pipe'],
             timeout: 10000,
@@ -187,8 +187,8 @@ function runClaudeCodeSetup() {
         return { agent: 'Claude Code', status: 'error', detail: err.message };
     }
 }
-// ── Browser detection ──────────────────────────────────────────────────
-const EXTENSION_URL = 'https://chromewebstore.google.com/detail/hanzi-in-chrome/iklpkemlmbhemkiojndpbhoakgikpmcd';
+// â”€â”€ Browser detection â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+const EXTENSION_URL = 'https://chromewebstore.google.com/detail/rethinksoft-in-chrome/iklpkemlmbhemkiojndpbhoakgikpmcd';
 const BROWSERS = [
     { name: 'Google Chrome', slug: 'chrome', macApp: 'Google Chrome', linuxBin: 'google-chrome' },
     { name: 'Brave', slug: 'brave', macApp: 'Brave Browser', linuxBin: 'brave-browser' },
@@ -235,20 +235,20 @@ async function ensureExtension(isInteractive) {
     if (browsers.length === 0) {
         const msg = `No Chromium browser found. Install the extension manually: ${EXTENSION_URL}`;
         isInteractive
-            ? console.log(`  ${c.yellow('●')}  ${msg}\n`)
-            : log(`  ●  ${msg}`);
+            ? console.log(`  ${c.yellow('â—')}  ${msg}\n`)
+            : log(`  â—  ${msg}`);
         return false;
     }
-    // Pick browser — auto-select first in non-interactive mode
+    // Pick browser â€” auto-select first in non-interactive mode
     let browser;
     if (!isInteractive || browsers.length === 1) {
         browser = browsers[0];
         isInteractive
-            ? console.log(`  ${c.green('✓')}  Found ${c.bold(browser.name)}`)
-            : log(`  ✓  Found ${browser.name}`);
+            ? console.log(`  ${c.green('âœ“')}  Found ${c.bold(browser.name)}`)
+            : log(`  âœ“  Found ${browser.name}`);
     }
     else {
-        console.log(`  ${c.green('✓')}  Found ${c.bold(String(browsers.length))} browsers\n`);
+        console.log(`  ${c.green('âœ“')}  Found ${c.bold(String(browsers.length))} browsers\n`);
         browsers.forEach((b, i) => {
             console.log(`     ${c.bold(String(i + 1))}  ${b.name}`);
         });
@@ -270,17 +270,17 @@ async function ensureExtension(isInteractive) {
     for (let i = 0; i < 90; i++) { // 3 minutes max
         await sleep(2000);
         if (await isRelayRunning()) {
-            sp.stop(`${c.green('✓')}  Extension ${c.green('connected')}`);
+            sp.stop(`${c.green('âœ“')}  Extension ${c.green('connected')}`);
             return true;
         }
     }
-    sp.stop(`${c.yellow('●')}  Timed out waiting for extension`);
+    sp.stop(`${c.yellow('â—')}  Timed out waiting for extension`);
     isInteractive
         ? console.log(`     ${c.dim('Install the extension, then run setup again.')}`)
         : log('     Install the extension, then run setup again.');
     return false;
 }
-// ── Readline ───────────────────────────────────────────────────────────
+// â”€â”€ Readline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let rl = null;
 function ask(prompt) {
     if (!rl)
@@ -289,7 +289,7 @@ function ask(prompt) {
         rl.question(`  ${c.cyan('?')}  ${prompt}`, answer => resolve(answer.trim()));
     });
 }
-// ── Relay ──────────────────────────────────────────────────────────────
+// â”€â”€ Relay â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 let relay = null;
 async function connectRelay() {
     if (!(await isRelayRunning()))
@@ -325,7 +325,7 @@ async function sendToExtension(type, payload) {
         return false;
     }
 }
-// ── Credential setup ──────────────────────────────────────────────────
+// â”€â”€ Credential setup â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 function detectCredentialSources() {
     const home = homedir();
     const found = [];
@@ -343,7 +343,7 @@ async function promptCredentials() {
     console.log(`  ${c.dim('       Connect a model source so the extension can run browser tasks.')}\n`);
     const skip = await ask('Set up credentials now? Press enter to skip. (y/N): ');
     if (skip.toLowerCase() !== 'y') {
-        console.log(`\n  ${c.dim('○')}  ${c.dim('Skipped — set up later in the Chrome extension.')}`);
+        console.log(`\n  ${c.dim('â—‹')}  ${c.dim('Skipped â€” set up later in the Chrome extension.')}`);
         return;
     }
     // Connect relay for syncing
@@ -353,7 +353,7 @@ async function promptCredentials() {
     if (sources.length > 0) {
         console.log('');
         for (const source of sources) {
-            console.log(`     ${c.green('✓')}  Found ${source.name} credentials ${c.dim(source.path)}`);
+            console.log(`     ${c.green('âœ“')}  Found ${source.name} credentials ${c.dim(source.path)}`);
         }
         for (const source of sources) {
             console.log('');
@@ -362,8 +362,8 @@ async function promptCredentials() {
                 const sp = spinner(`Importing ${source.name}...`);
                 const sent = await sendToExtension('import_credentials', { source: source.slug });
                 sp.stop(sent
-                    ? `${c.green('✓')}  ${source.name} imported`
-                    : `${c.yellow('●')}  Could not sync — import from Chrome extension instead`);
+                    ? `${c.green('âœ“')}  ${source.name} imported`
+                    : `${c.yellow('â—')}  Could not sync â€” import from Chrome extension instead`);
             }
         }
     }
@@ -394,8 +394,8 @@ async function promptCredentials() {
                     const sp = spinner(`Saving ${providerId} key...`);
                     const sent = await sendToExtension('save_config', { payload: { providerKeys: { [providerId]: key } } });
                     sp.stop(sent
-                        ? `${c.green('✓')}  ${providerId} key saved`
-                        : `${c.yellow('●')}  Could not sync — add from Chrome extension instead`);
+                        ? `${c.green('âœ“')}  ${providerId} key saved`
+                        : `${c.yellow('â—')}  Could not sync â€” add from Chrome extension instead`);
                 }
             }
         }
@@ -412,8 +412,8 @@ async function promptCredentials() {
                         payload: { customModels: [{ name, baseUrl, modelId, apiKey: apiKey || '' }] },
                     });
                     sp.stop(sent
-                        ? `${c.green('✓')}  ${name} added`
-                        : `${c.yellow('●')}  Could not sync — add from Chrome extension instead`);
+                        ? `${c.green('âœ“')}  ${name} added`
+                        : `${c.yellow('â—')}  Could not sync â€” add from Chrome extension instead`);
                 }
             }
         }
@@ -430,22 +430,22 @@ async function promptCredentials() {
         setTimeout(() => { console.error = origError; }, 500);
     }
 }
-// ── Main ───────────────────────────────────────────────────────────────
+// â”€â”€ Main â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export async function runSetup(options = {}) {
     const registry = getAgentRegistry();
     const only = options.only;
     const interactive = options.yes ? false : (process.stdin.isTTY ?? false);
-    // ── Banner ──
+    // â”€â”€ Banner â”€â”€
     if (interactive) {
         console.log(BANNER);
     }
     else {
-        log('\nHanzi Setup (non-interactive)\n');
+        log('\nRethinkSoft Setup (non-interactive)\n');
     }
-    // ── Step 0: Chrome extension ──
+    // â”€â”€ Step 0: Chrome extension â”€â”€
     if (interactive) {
         console.log(`  ${c.dim('step 1')}  ${c.bold('Chrome extension')}`);
-        console.log(`  ${c.dim('       Hanzi needs a Chrome extension to control your browser.')}\n`);
+        console.log(`  ${c.dim('       RethinkSoft needs a Chrome extension to control your browser.')}\n`);
     }
     else {
         log('  Step 1: Chrome extension');
@@ -455,10 +455,10 @@ export async function runSetup(options = {}) {
         await sleep(400);
     const relayUp = await isRelayRunning();
     if (relayUp) {
-        sp0.stop(`${c.green('✓')}  Chrome extension is running`);
+        sp0.stop(`${c.green('âœ“')}  Chrome extension is running`);
     }
     else {
-        sp0.stop(`${c.dim('○')}  Chrome extension not found`);
+        sp0.stop(`${c.dim('â—‹')}  Chrome extension not found`);
         if (interactive) {
             console.log('');
             await ensureExtension(interactive);
@@ -467,11 +467,11 @@ export async function runSetup(options = {}) {
             log(`     Install from: ${EXTENSION_URL}`);
         }
     }
-    // ── Step 1: Detect agents ──
+    // â”€â”€ Step 1: Detect agents â”€â”€
     if (interactive) {
         console.log('');
         console.log(`  ${c.dim('step 2')}  ${c.bold('MCP server')}`);
-        console.log(`  ${c.dim('       Adding Hanzi as an MCP tool to your coding agents.')}\n`);
+        console.log(`  ${c.dim('       Adding RethinkSoft as an MCP tool to your coding agents.')}\n`);
     }
     else {
         log('\n  Step 2: MCP server');
@@ -487,8 +487,8 @@ export async function runSetup(options = {}) {
             detected.push(agent);
     }
     sp1.stop(interactive
-        ? `${c.green('✓')}  Found ${c.bold(String(detected.length))} agent${detected.length === 1 ? '' : 's'} on this machine`
-        : `  ✓  Found ${detected.length} agent${detected.length === 1 ? '' : 's'} on this machine`);
+        ? `${c.green('âœ“')}  Found ${c.bold(String(detected.length))} agent${detected.length === 1 ? '' : 's'} on this machine`
+        : `  âœ“  Found ${detected.length} agent${detected.length === 1 ? '' : 's'} on this machine`);
     const out = interactive ? console.log : log;
     out('');
     for (const agent of registry) {
@@ -498,29 +498,29 @@ export async function runSetup(options = {}) {
         const path = agent.configPath ? agent.configPath() : '';
         if (interactive) {
             if (found) {
-                console.log(`     ${c.green('✓')}  ${agent.name.padEnd(16)} ${c.dim(path)}`);
+                console.log(`     ${c.green('âœ“')}  ${agent.name.padEnd(16)} ${c.dim(path)}`);
             }
             else {
-                console.log(`     ${c.dim('○')}  ${c.dim(agent.name)}`);
+                console.log(`     ${c.dim('â—‹')}  ${c.dim(agent.name)}`);
             }
         }
         else {
-            out(`     ${found ? '✓' : '○'}  ${agent.name}${path ? ` (${path})` : ''}`);
+            out(`     ${found ? 'âœ“' : 'â—‹'}  ${agent.name}${path ? ` (${path})` : ''}`);
         }
     }
     out('');
     if (detected.length === 0) {
         if (interactive) {
-            console.log(`  ${c.yellow('●')}  No agents found. Add this to your agent's MCP config manually:\n`);
+            console.log(`  ${c.yellow('â—')}  No agents found. Add this to your agent's MCP config manually:\n`);
             console.log(`     ${c.cyan(JSON.stringify({ mcpServers: { browser: MCP_ENTRY } }))}\n`);
         }
         else {
-            log(`  ●  No agents found. Add manually: ${JSON.stringify({ mcpServers: { browser: MCP_ENTRY } })}`);
+            log(`  â—  No agents found. Add manually: ${JSON.stringify({ mcpServers: { browser: MCP_ENTRY } })}`);
         }
         return;
     }
-    // ── Step 2: Configure agents ──
-    const sp2 = spinner('Adding Hanzi MCP server to each agent...', interactive);
+    // â”€â”€ Step 2: Configure agents â”€â”€
+    const sp2 = spinner('Adding RethinkSoft MCP server to each agent...', interactive);
     if (interactive)
         await sleep(400);
     const results = [];
@@ -538,31 +538,31 @@ export async function runSetup(options = {}) {
     const configured = results.filter(r => r.status === 'configured').length;
     const alreadyDone = results.filter(r => r.status === 'already-configured').length;
     if (interactive) {
-        sp2.stop(`${c.green('✓')}  ${configured > 0 ? `Added to ${c.bold(String(configured))} agent${configured === 1 ? '' : 's'}` : 'All agents already have Hanzi'}`);
+        sp2.stop(`${c.green('âœ“')}  ${configured > 0 ? `Added to ${c.bold(String(configured))} agent${configured === 1 ? '' : 's'}` : 'All agents already have RethinkSoft'}`);
         console.log('');
         for (const result of results) {
             if (result.status === 'configured') {
-                console.log(`     ${c.green('✓')}  ${result.agent.padEnd(16)} ${c.green('added')}`);
+                console.log(`     ${c.green('âœ“')}  ${result.agent.padEnd(16)} ${c.green('added')}`);
             }
             else if (result.status === 'already-configured') {
-                console.log(`     ${c.dim('●')}  ${result.agent.padEnd(16)} ${c.dim('already has Hanzi')}`);
+                console.log(`     ${c.dim('â—')}  ${result.agent.padEnd(16)} ${c.dim('already has RethinkSoft')}`);
             }
             else {
-                console.log(`     ${c.red('✗')}  ${result.agent.padEnd(16)} ${c.red(result.detail)}`);
+                console.log(`     ${c.red('âœ—')}  ${result.agent.padEnd(16)} ${c.red(result.detail)}`);
             }
         }
     }
     else {
-        sp2.stop(`  ✓  ${configured > 0 ? `Added to ${configured} agent${configured === 1 ? '' : 's'}` : 'All agents already have Hanzi'}`);
+        sp2.stop(`  âœ“  ${configured > 0 ? `Added to ${configured} agent${configured === 1 ? '' : 's'}` : 'All agents already have RethinkSoft'}`);
         log('');
         for (const result of results) {
             const status = result.status === 'configured' ? 'added'
-                : result.status === 'already-configured' ? 'already has Hanzi'
+                : result.status === 'already-configured' ? 'already has RethinkSoft'
                     : `error: ${result.detail}`;
-            log(`     ${result.status === 'error' ? '✗' : result.status === 'configured' ? '✓' : '●'}  ${result.agent} — ${status}`);
+            log(`     ${result.status === 'error' ? 'âœ—' : result.status === 'configured' ? 'âœ“' : 'â—'}  ${result.agent} â€” ${status}`);
         }
     }
-    // ── Step 3: Credentials (skippable, interactive only) ──
+    // â”€â”€ Step 3: Credentials (skippable, interactive only) â”€â”€
     if (interactive) {
         await promptCredentials();
     }
@@ -572,31 +572,31 @@ export async function runSetup(options = {}) {
         if (sources.length > 0) {
             log('\n  Step 3: Credentials');
             for (const source of sources) {
-                log(`     ✓  Found ${source.name} credentials (${source.path})`);
+                log(`     âœ“  Found ${source.name} credentials (${source.path})`);
             }
         }
     }
-    // ── Summary ──
+    // â”€â”€ Summary â”€â”€
     const errors = results.filter(r => r.status === 'error').length;
     if (interactive) {
         console.log('');
-        console.log(`  ${c.bold('◆  Setup complete!')}`);
+        console.log(`  ${c.bold('â—†  Setup complete!')}`);
         console.log('');
         if (configured > 0) {
-            console.log(`     ${c.green('▸')}  Restart your agents to start using Hanzi.`);
+            console.log(`     ${c.green('â–¸')}  Restart your agents to start using RethinkSoft.`);
         }
-        console.log(`     ${c.green('▸')}  Change credentials anytime in the Chrome extension or sidepanel settings.`);
+        console.log(`     ${c.green('â–¸')}  Change credentials anytime in the Chrome extension or sidepanel settings.`);
         if (errors > 0) {
-            console.log(`     ${c.red('▸')}  ${errors} agent${errors === 1 ? '' : 's'} failed — check the errors above.`);
+            console.log(`     ${c.red('â–¸')}  ${errors} agent${errors === 1 ? '' : 's'} failed â€” check the errors above.`);
         }
         console.log('');
     }
     else {
         log('\n  Setup complete!');
         if (configured > 0)
-            log(`     Restart your agents to start using Hanzi.`);
+            log(`     Restart your agents to start using RethinkSoft.`);
         if (errors > 0)
-            log(`     ${errors} agent(s) failed — check errors above.`);
+            log(`     ${errors} agent(s) failed â€” check errors above.`);
         log('');
     }
     rl?.close();

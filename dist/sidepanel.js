@@ -741,7 +741,7 @@ function StepItem({ step, status }) {
       /* @__PURE__ */ u("div", { class: "step-label", children: escapeHtml(description) }),
       resultText && /* @__PURE__ */ u("div", { class: "step-result", children: escapeHtml(resultText) })
     ] }),
-    /* @__PURE__ */ u("div", { class: "step-status", children: status === "completed" ? "✓" : "..." })
+    /* @__PURE__ */ u("div", { class: "step-status", children: status === "completed" ? "âœ“" : "..." })
   ] });
 }
 function MessageList({ messages, pendingStep }) {
@@ -897,7 +897,7 @@ function InputArea({
             {
               class: "remove-image-btn",
               onClick: () => onRemoveImage(i),
-              children: "×"
+              children: "Ã—"
             }
           )
         ] }, i)) }),
@@ -980,7 +980,7 @@ function SettingsModal({ config, onClose }) {
   return /* @__PURE__ */ u("div", { class: "modal-overlay", onClick: (e) => e.target === e.currentTarget && onClose(), children: /* @__PURE__ */ u("div", { class: "modal settings-modal", children: [
     /* @__PURE__ */ u("div", { class: "modal-header", children: [
       /* @__PURE__ */ u("span", { children: "Settings" }),
-      /* @__PURE__ */ u("button", { class: "close-btn", onClick: onClose, children: "×" })
+      /* @__PURE__ */ u("button", { class: "close-btn", onClick: onClose, children: "Ã—" })
     ] }),
     /* @__PURE__ */ u("div", { class: "tabs", children: [
       /* @__PURE__ */ u(
@@ -1075,7 +1075,7 @@ function ProvidersTab({
         "Import from ",
         /* @__PURE__ */ u("code", { children: "claude login" }),
         " to use your Claude Pro/Max subscription. ",
-        /* @__PURE__ */ u("a", { href: "https://github.com/hanzili/hanzi-in-chrome#claude-code-plan-setup", target: "_blank", children: "Setup guide" })
+        /* @__PURE__ */ u("a", { href: "https://github.com/hanzili/rethinksoft-in-chrome#claude-code-plan-setup", target: "_blank", children: "Setup guide" })
       ] }),
       config.oauthStatus.isAuthenticated ? /* @__PURE__ */ u("div", { class: "connected-status", children: [
         /* @__PURE__ */ u("span", { class: "status-badge connected", children: "Connected" }),
@@ -1088,7 +1088,7 @@ function ProvidersTab({
         "Import from ",
         /* @__PURE__ */ u("code", { children: "codex login" }),
         " to use your ChatGPT Pro/Plus subscription. ",
-        /* @__PURE__ */ u("a", { href: "https://github.com/hanzili/hanzi-in-chrome#codex-plan-setup", target: "_blank", children: "Setup guide" })
+        /* @__PURE__ */ u("a", { href: "https://github.com/hanzili/rethinksoft-in-chrome#codex-plan-setup", target: "_blank", children: "Setup guide" })
       ] }),
       config.codexStatus.isAuthenticated ? /* @__PURE__ */ u("div", { class: "connected-status", children: [
         /* @__PURE__ */ u("span", { class: "status-badge connected", children: "Connected" }),
@@ -1104,7 +1104,7 @@ function ProvidersTab({
         onClick: () => setSelectedProvider(selectedProvider === id ? null : id),
         children: [
           /* @__PURE__ */ u("div", { class: "provider-name", children: provider.name }),
-          localKeys[id] && /* @__PURE__ */ u("span", { class: "check-badge", children: "✓" })
+          localKeys[id] && /* @__PURE__ */ u("span", { class: "check-badge", children: "âœ“" })
         ]
       },
       id
@@ -1129,7 +1129,7 @@ function ProvidersTab({
       /* @__PURE__ */ u("h4", { children: "browser automation default" }),
       /* @__PURE__ */ u("p", { class: "provider-desc", children: [
         "used by ",
-        /* @__PURE__ */ u("code", { children: "hanzi-browser" }),
+        /* @__PURE__ */ u("code", { children: "rethinksoft-browser" }),
         " and mcp browser tasks. the sidepanel model is still selected from the header."
       ] }),
       /* @__PURE__ */ u("div", { class: "api-key-input", children: [
@@ -1151,9 +1151,9 @@ function ProvidersTab({
       /* @__PURE__ */ u("p", { class: "provider-desc", children: [
         "Control this browser from Claude Code or any MCP client.",
         " ",
-        /* @__PURE__ */ u("a", { href: "https://github.com/hanzili/hanzi-in-chrome#setup", target: "_blank", children: "Setup guide" })
+        /* @__PURE__ */ u("a", { href: "https://github.com/hanzili/rethinksoft-in-chrome#setup", target: "_blank", children: "Setup guide" })
       ] }),
-      /* @__PURE__ */ u("code", { class: "install-cmd", children: "npm install -g hanzi-in-chrome" })
+      /* @__PURE__ */ u("code", { class: "install-cmd", children: "npm install -g rethinksoft-in-chrome" })
     ] })
   ] });
 }
@@ -1272,7 +1272,7 @@ function LicenseTab() {
           target: "_blank",
           class: "btn btn-primary",
           style: { display: "inline-block", textDecoration: "none", marginBottom: "12px" },
-          children: "Buy Pro — $29"
+          children: "Buy Pro â€” $29"
         }
       )
     ] }),
@@ -1406,7 +1406,7 @@ function EmptyState({ onSelectExample, primaryMode }) {
       /* @__PURE__ */ u("circle", { cx: "12", cy: "12", r: "10" }),
       /* @__PURE__ */ u("path", { d: "M12 6v6l4 2" })
     ] }) }),
-    /* @__PURE__ */ u("h2", { children: "Hanzi in Chrome" }),
+    /* @__PURE__ */ u("h2", { children: "RethinkSoft in Chrome" }),
     /* @__PURE__ */ u("p", { children: "Describe what you want to accomplish and the AI will browse autonomously to complete your task." }),
     /* @__PURE__ */ u("div", { class: "empty-examples", children: examples.map((example, i) => /* @__PURE__ */ u(
       "button",
@@ -1433,7 +1433,7 @@ function App() {
         /* @__PURE__ */ u("circle", { cx: "12", cy: "12", r: "10" }),
         /* @__PURE__ */ u("path", { d: "M12 6v6l4 2" })
       ] }) }),
-      /* @__PURE__ */ u("h2", { children: "Welcome to Hanzi" }),
+      /* @__PURE__ */ u("h2", { children: "Welcome to RethinkSoft" }),
       /* @__PURE__ */ u("p", { children: "Complete setup to get started." }),
       /* @__PURE__ */ u(
         "button",

@@ -1,5 +1,5 @@
 /**
- * Service Worker - Hanzi in Chrome
+ * Service Worker - RethinkSoft in Chrome
  *
  * Orchestrates browser automation by:
  * 1. Receiving tasks from the sidepanel
@@ -478,7 +478,7 @@ function isAccessibleTab(tab) {
 async function resolveActiveTab(mcpSession, sessionTabGroupId, { allowRestricted = false } = {}) {
   const tabOk = allowRestricted ? (t) => !!t.id : isAccessibleTab;
 
-  // MCP session with dedicated window — find active tab in that window
+  // MCP session with dedicated window â€” find active tab in that window
   if (mcpSession?.windowId) {
     try {
       const win = await chrome.windows.get(mcpSession.windowId, { populate: true });
@@ -491,7 +491,7 @@ async function resolveActiveTab(mcpSession, sessionTabGroupId, { allowRestricted
     }
   }
 
-  // Tab group session — find active tab in the group
+  // Tab group session â€” find active tab in the group
   if (sessionTabGroupId !== null) {
     try {
       const groupTabs = await chrome.tabs.query({ groupId: sessionTabGroupId, active: true });
@@ -505,7 +505,7 @@ async function resolveActiveTab(mcpSession, sessionTabGroupId, { allowRestricted
     }
   }
 
-  // No last-resort fallback — never grab an unrelated user tab
+  // No last-resort fallback â€” never grab an unrelated user tab
   return null;
 }
 
@@ -533,7 +533,7 @@ async function executeTool(toolName, toolInput, sessionTabGroupId = null, mcpSes
   toolInput = { ...toolInput };
 
   // Auto-resolve tabId: if the agent didn't provide one, use the active tab in the session's window
-  // tabs_close is excluded — it always requires an explicit tabId
+  // tabs_close is excluded â€” it always requires an explicit tabId
   const tabTools = ['computer', 'read_page', 'find', 'form_input', 'get_page_text',
                     'javascript_tool', 'file_upload', 'read_console_messages', 'read_network_requests',
                     'resize_window', 'solve_captcha', 'navigate'];
@@ -655,7 +655,7 @@ async function runAgentLoop(initialTabId, task, onUpdate, images = [], askBefore
   await loadConfig();
 
   // Create or adopt tab group for this session (receives tabGroupId from client)
-  // Skip tab grouping for MCP sessions with dedicated windows — chrome.tabs.group()
+  // Skip tab grouping for MCP sessions with dedicated windows â€” chrome.tabs.group()
   // pulls tabs out of their window and into the main window's tab strip
   let sessionTabGroupId = initialTabGroupId;
   const hasDedicatedWindow = mcpSession && mcpSession.windowId;
@@ -671,7 +671,7 @@ async function runAgentLoop(initialTabId, task, onUpdate, images = [], askBefore
     }
   }
 
-  // Get tab info for system-reminder — query ALL tabs in the session's window
+  // Get tab info for system-reminder â€” query ALL tabs in the session's window
   let tabInfo = { availableTabs: [], initialTabId, domainSkills: [] };
   let currentTabUrl = null; // Track current URL for tool filtering
   try {
@@ -775,7 +775,7 @@ ${mcpSession.context}</system-reminder>`,
 
       await taskLog('MCP', `Injecting ${newMessages.length} follow-up message(s) from user (start of turn)`);
 
-      // Build fresh tab context — query all tabs in the session's window
+      // Build fresh tab context â€” query all tabs in the session's window
       let freshTabInfo = { availableTabs: [], initialTabId, domainSkills: [] };
       try {
         const windowId = mcpSession?.windowId;
@@ -790,7 +790,7 @@ ${mcpSession.context}</system-reminder>`,
           freshTabInfo.availableTabs = [{ tabId: initialTabId, title: tab.title || 'New Tab', url: tab.url || 'chrome://newtab/', active: tab.active }];
         }
       } catch {
-        // Tab/window gone mid-execution — agent will discover via tabs_context
+        // Tab/window gone mid-execution â€” agent will discover via tabs_context
       }
 
       for (const msg of newMessages) {
@@ -1075,7 +1075,7 @@ async function startTask(tabId, task, shouldAskBeforeActing = true, images = [],
 
     // Log API call summary
     const totalApiCalls = getApiCallCount();
-    await log('TASK', `📈 TASK COMPLETE - Total API calls: ${totalApiCalls}`, {
+    await log('TASK', `ðŸ“ˆ TASK COMPLETE - Total API calls: ${totalApiCalls}`, {
       totalApiCalls,
       status: uiSessionState.currentTask.status,
       turns: result.steps || 0,
@@ -1237,7 +1237,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       console.log('[ServiceWorker] Calling startOAuthLogin()...');
       startOAuthLogin()
         .then(async tokens => {
-          console.log('[ServiceWorker] ✓ OAuth login successful');
+          console.log('[ServiceWorker] âœ“ OAuth login successful');
           console.log('[ServiceWorker] Reloading config to pick up authMethod...');
           await loadConfig();
           console.log('[ServiceWorker] Config reloaded, authMethod:', getConfig().authMethod);
@@ -1245,7 +1245,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           sendResponse({ success: true, tokens });
         })
         .catch(error => {
-          console.error('[ServiceWorker] ✗ OAuth login failed:', error);
+          console.error('[ServiceWorker] âœ— OAuth login failed:', error);
           console.error('[ServiceWorker] Error message:', error.message);
           console.error('[ServiceWorker] Error stack:', error.stack);
           sendResponse({ success: false, error: error.message });
@@ -1255,7 +1255,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     case 'OAUTH_LOGOUT':
       console.log('[ServiceWorker] OAUTH_LOGOUT message received');
       logout().then(async () => {
-        console.log('[ServiceWorker] ✓ OAuth logout complete');
+        console.log('[ServiceWorker] âœ“ OAuth logout complete');
         console.log('[ServiceWorker] Reloading config to clear authMethod...');
         await loadConfig();
         console.log('[ServiceWorker] Config reloaded');
@@ -1276,7 +1276,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       console.log('[ServiceWorker] Calling importCLICredentials()...');
       importCLICredentials()
         .then(async credentials => {
-          console.log('[ServiceWorker] ✓ CLI credentials import successful');
+          console.log('[ServiceWorker] âœ“ CLI credentials import successful');
           console.log('[ServiceWorker] Reloading config to pick up authMethod...');
           await loadConfig();
           console.log('[ServiceWorker] Config reloaded, authMethod:', getConfig().authMethod);
@@ -1284,7 +1284,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           sendResponse({ success: true, credentials });
         })
         .catch(error => {
-          console.error('[ServiceWorker] ✗ CLI credentials import failed:', error);
+          console.error('[ServiceWorker] âœ— CLI credentials import failed:', error);
           console.error('[ServiceWorker] Error message:', error.message);
           console.error('[ServiceWorker] Error stack:', error.stack);
           sendResponse({ success: false, error: error.message });
@@ -1302,14 +1302,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       console.log('[ServiceWorker] Calling importCodexCredentials()...');
       importCodexCredentials()
         .then(async credentials => {
-          console.log('[ServiceWorker] ✓ Codex credentials import successful');
+          console.log('[ServiceWorker] âœ“ Codex credentials import successful');
           console.log('[ServiceWorker] Reloading config...');
           await loadConfig();
           console.log('[ServiceWorker] Credentials received, sending response to sidepanel');
           sendResponse({ success: true, credentials });
         })
         .catch(error => {
-          console.error('[ServiceWorker] ✗ Codex credentials import failed:', error);
+          console.error('[ServiceWorker] âœ— Codex credentials import failed:', error);
           console.error('[ServiceWorker] Error message:', error.message);
           sendResponse({ success: false, error: error.message });
         });
@@ -1318,7 +1318,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     case 'CODEX_LOGOUT':
       console.log('[ServiceWorker] CODEX_LOGOUT message received');
       logoutCodex().then(async () => {
-        console.log('[ServiceWorker] ✓ Codex logout complete');
+        console.log('[ServiceWorker] âœ“ Codex logout complete');
         await loadConfig();
         sendResponse({ success: true });
       });
@@ -1618,7 +1618,7 @@ async function startMcpTaskInternal(sessionId, tabId, task) {
     // Record task completion for usage stats
     recordTaskCompletion(result.success);
 
-    // Send completion to MCP server — but NOT if session was cancelled/superseded
+    // Send completion to MCP server â€” but NOT if session was cancelled/superseded
     // (e.g., a follow-up message arrived and is waiting for this loop to finish)
     if (!session.cancelled) {
       sendMcpComplete(sessionId, {
@@ -1701,7 +1701,7 @@ async function handleMcpSendMessage(sessionId, message) {
     console.log(`[MCP] Re-activating session ${sessionId} (was: ${session.status})`);
 
     // CRITICAL: Wait for the previous agent loop to fully finish before starting a new one.
-    // Without this, two loops can run concurrently on the same session — the old loop's
+    // Without this, two loops can run concurrently on the same session â€” the old loop's
     // cleanup (detach debugger, set status='error', send completion) destroys the new loop's state.
     // This race condition is the root cause of follow-up messages failing with multiple tabs.
     session.cancelled = true;  // Signal old loop to exit
@@ -1713,17 +1713,17 @@ async function handleMcpSendMessage(sessionId, message) {
       console.log(`[MCP] Previous run finished for session ${sessionId}`);
     }
 
-    // Now safe to reset and start fresh — old loop is fully done
+    // Now safe to reset and start fresh â€” old loop is fully done
     session.status = 'running';
     session.cancelled = false;
     session.cancelReason = null;
     session.abortController = new AbortController();
     void persistMcpSessions();
 
-    // DON'T push to session.messages here — runAgentLoop will add it with
+    // DON'T push to session.messages here â€” runAgentLoop will add it with
     // proper tab context. Pushing here would create a duplicate message.
 
-    // Validate tab still exists before re-running — tab may have been closed
+    // Validate tab still exists before re-running â€” tab may have been closed
     // Prefer the ACTIVE tab in the session's window (user may have navigated)
     let tabId = session.tabId;
     try {
@@ -1738,7 +1738,7 @@ async function handleMcpSendMessage(sessionId, message) {
       }
       await chrome.tabs.get(tabId);
     } catch {
-      // Tab is gone — find a valid tab from the session's window
+      // Tab is gone â€” find a valid tab from the session's window
       console.log(`[MCP] Tab ${tabId} no longer exists, recovering...`);
       tabId = await recoverSessionTab(session);
       if (tabId) {
@@ -1751,14 +1751,14 @@ async function handleMcpSendMessage(sessionId, message) {
       }
     }
 
-    // Re-run the agent with the validated tab — track the promise for future follow-ups
+    // Re-run the agent with the validated tab â€” track the promise for future follow-ups
     session.runPromise = startMcpTaskInternal(sessionId, tabId, message).catch(error => {
       console.error(`[MCP] Follow-up execution error:`, error);
       session.status = 'error';
       sendMcpError(sessionId, error.message);
     });
   } else {
-    // Session is still running — append to session.messages for mid-execution injection
+    // Session is still running â€” append to session.messages for mid-execution injection
     session.messages.push({
       role: 'user',
       content: message
@@ -1770,7 +1770,7 @@ async function handleMcpSendMessage(sessionId, message) {
 
 /**
  * Recover a valid tab for a session whose original tab was closed.
- * Tries: active tab in session window → any tab in session window → new tab.
+ * Tries: active tab in session window â†’ any tab in session window â†’ new tab.
  * @returns {number|null} Valid tab ID or null if unrecoverable
  */
 async function recoverSessionTab(session) {
@@ -1784,7 +1784,7 @@ async function recoverSessionTab(session) {
         if (activeAccessible) return activeAccessible.id;
         const anyAccessible = win.tabs.find(t => isAccessibleTab(t));
         if (anyAccessible) return anyAccessible.id;
-        // Only restricted tabs left — return one anyway so navigate can fix it
+        // Only restricted tabs left â€” return one anyway so navigate can fix it
         return (win.tabs.find(t => t.active) || win.tabs[0]).id;
       }
     } catch {
@@ -1793,7 +1793,7 @@ async function recoverSessionTab(session) {
     }
   }
 
-  // Window gone — create a new one with the session's URL if available
+  // Window gone â€” create a new one with the session's URL if available
   try {
     const url = session.url || undefined; // undefined lets Chrome open the default new tab
     const win = await chrome.windows.create({ url, focused: true });
@@ -1900,5 +1900,5 @@ void restoreMcpSessions();
 // Start usage tracking session
 startSession();
 
-console.log('[Hanzi in Chrome] Service worker loaded');
-console.log('[Hanzi in Chrome] MCP bridge initialized');
+console.log('[RethinkSoft in Chrome] Service worker loaded');
+console.log('[RethinkSoft in Chrome] MCP bridge initialized');

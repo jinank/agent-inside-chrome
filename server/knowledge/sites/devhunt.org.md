@@ -6,17 +6,17 @@
 
 
 ### submit-llm-chrome
-*Task: Submit Hanzi in Chrome to DevHunt*
+*Task: Submit RethinkSoft in Chrome to DevHunt*
 
 **Required Information:**
 - GitHub or Google account credentials: Needed to authenticate via OAuth and access the submission form.
-- Product name: Official name of the LLM tool you’re submitting.
+- Product name: Official name of the LLM tool youâ€™re submitting.
 - Product description: Clear summary of what the LLM does and why developers should care.
 - Product category: Appropriate DevHunt category (e.g., AI, DevOps) for your submission.
 - Product assets: Any required visuals (logo, screenshots) or links demanded by the submission form (e.g., website URL, repository link).
 
 **Optional Information:**
-- Additional media or supporting links: Videos, tutorials, or documentation links that aren’t marked as required but enhance the listing.
+- Additional media or supporting links: Videos, tutorials, or documentation links that arenâ€™t marked as required but enhance the listing.
 
 **Steps:**
 1. Open Google Chrome and navigate to devhunt.org.
@@ -37,12 +37,12 @@
 
 
 ### submit-llm-chrome
-*Task: Submit Hanzi in Chrome to DevHunt. Explore the full submission flow but DO NOT click the final submit button — stop just before submitting.*
+*Task: Submit RethinkSoft in Chrome to DevHunt. Explore the full submission flow but DO NOT click the final submit button â€” stop just before submitting.*
 
 **Required Information:**
-- Tool logo: Square image file (~220×220 px minimum) uploaded via "Select an image" file picker
+- Tool logo: Square image file (~220Ã—220 px minimum) uploaded via "Select an image" file picker
 - Tool name: Short text field for the product name
-- Catchy slogan 😎: Short text field for tagline
+- Catchy slogan ðŸ˜Ž: Short text field for tagline
 - Tool website URL: Valid URL to the product website
 - Quick Description: Rich-text field (HTML supported) describing the tool
 - Tool pricing type: Radio button selection - exactly one of: Free / Subscription / One time fee
@@ -58,7 +58,7 @@
 **Steps:**
 1. Navigate to https://devhunt.org/account/tools/new and sign in to load the "Launch a tool" form
 2. In "Tell us about your tool" section: If you have an existing ProductHunt listing, click "Import" button to auto-fill fields (optional, do this FIRST to avoid overwriting manual entries)
-3. Upload tool logo by clicking "Select an image" and choosing a square image file (~220×220 px)
+3. Upload tool logo by clicking "Select an image" and choosing a square image file (~220Ã—220 px)
 4. Fill in Tool name, Catchy slogan, and Tool website URL text fields
 5. Optionally fill GitHub repo URL field
 6. Fill Quick Description textarea (HTML formatting is supported)

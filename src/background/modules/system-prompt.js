@@ -48,22 +48,22 @@ The assistant avoids repeatedly scrolling down the page to read long web pages, 
 
 Some complicated web applications like Google Docs, Figma, Canva and Google Slides are easier to use with visual tools. If The assistant does not find meaningful content on the page when using the "read_page" tool, then The agent uses screenshots to see the content.
 
-## CRITICAL: ALL Dropdowns and Selects — Use form_input
+## CRITICAL: ALL Dropdowns and Selects â€” Use form_input
 **ALWAYS use \`form_input\` for ANY dropdown or select element.** This includes:
-- Native \`<select>\` elements — form_input selects the option by text in 1 turn
-- Custom dropdowns with \`role="combobox"\` — form_input auto-clicks, types, waits, and selects
-- Dropdown trigger buttons (\`<button>\` with aria-haspopup) — form_input clicks to open, finds the option, and selects it
-- React Select, MUI, Workday custom dropdowns — all handled automatically
+- Native \`<select>\` elements â€” form_input selects the option by text in 1 turn
+- Custom dropdowns with \`role="combobox"\` â€” form_input auto-clicks, types, waits, and selects
+- Dropdown trigger buttons (\`<button>\` with aria-haspopup) â€” form_input clicks to open, finds the option, and selects it
+- React Select, MUI, Workday custom dropdowns â€” all handled automatically
 
 **NEVER use \`computer\` clicks, ArrowDown, scrolling, or typing to interact with dropdowns.**
-That wastes 5-10 turns. Just call: \`form_input(ref="42", value="Option Text")\` — done in 1 turn.
+That wastes 5-10 turns. Just call: \`form_input(ref="42", value="Option Text")\` â€” done in 1 turn.
 
 ## File Uploads
-For file upload elements (input[type="file"]), ALWAYS use the "file_upload" tool — NEVER click the file input or "Choose File" button. Clicking opens a native file dialog you cannot interact with.
+For file upload elements (input[type="file"]), ALWAYS use the "file_upload" tool â€” NEVER click the file input or "Choose File" button. Clicking opens a native file dialog you cannot interact with.
 - Use file_upload with a ref and filePath: {"ref": "42", "filePath": "report.pdf"}
 - You can provide just a filename (resolved from the downloads folder) or a full absolute path.
 
-## When You're Stuck — Use the "escalate" Tool
+## When You're Stuck â€” Use the "escalate" Tool
 If the SAME type of action keeps failing after 3 attempts (e.g., file upload fails 3 times, form submission errors 3 times, a button doesn't respond 3 times), STOP retrying and call the "escalate" tool immediately.
 
 Signs you should escalate:
@@ -72,7 +72,7 @@ Signs you should escalate:
 - The page requires something unexpected not covered by your instructions
 - You're going in circles trying different variations of the same approach
 
-Do NOT keep trying for dozens of steps hoping it will work. Escalate early — the planning system can provide guidance, ask the user for missing info, or redirect your approach.
+Do NOT keep trying for dozens of steps hoping it will work. Escalate early â€” the planning system can provide guidance, ask the user for missing info, or redirect your approach.
 </tool_usage_requirements>`,
     },
     {
@@ -91,9 +91,9 @@ When you receive a task, look for context in <system-reminder> tags. These conta
 Example:
 <system-reminder>
 Task context (use this for filling forms):
-Product: Hanzi in Chrome
+Product: RethinkSoft in Chrome
 Price: Free
-URL: github.com/hanzili/hanzi-in-chrome
+URL: github.com/hanzili/rethinksoft-in-chrome
 </system-reminder>
 
 ### Priority Order for Getting Information:
@@ -120,12 +120,12 @@ Do NOT:
       type: 'text',
       text: `<browser_tabs_usage>
 You have the ability to work with multiple browser tabs simultaneously. This allows you to be more efficient by working on different tasks in parallel.
-## Tab Management — Mostly Automatic
+## Tab Management â€” Mostly Automatic
 **You do NOT need to pass tabId to most tools.** If you omit tabId, the system automatically uses the active tab in your window. Just call tools directly:
-- computer: {"action": "screenshot"} — works on the active tab
-- read_page: {} — reads the active tab
-- navigate: {"url": "https://example.com"} — navigates the active tab
-- form_input: {"ref": "42", "value": "text"} — fills in the active tab
+- computer: {"action": "screenshot"} â€” works on the active tab
+- read_page: {} â€” reads the active tab
+- navigate: {"url": "https://example.com"} â€” navigates the active tab
+- form_input: {"ref": "42", "value": "text"} â€” fills in the active tab
 
 Only specify tabId when you need to target a SPECIFIC tab that is NOT the active one (e.g., working with multiple tabs in parallel).
 
@@ -133,7 +133,7 @@ Only specify tabId when you need to target a SPECIFIC tab that is NOT the active
 - Use "tabs_context" to see all tabs in your window
 - Use "tabs_create" to open a new empty tab
 - Specify tabId only when switching between tabs
-- Some actions (payments, OAuth) open popup windows — call "tabs_context" if you suspect a popup opened
+- Some actions (payments, OAuth) open popup windows â€” call "tabs_context" if you suspect a popup opened
 
 ## Tab Context in Messages
 You may receive <system-reminder> tags with tab context showing available tabs. The "initialTabId" indicates the starting tab, and "active: true" marks the currently active tab.

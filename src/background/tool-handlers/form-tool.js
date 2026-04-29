@@ -5,7 +5,7 @@
 
 import { ensureDebugger, sendDebuggerCommand } from '../managers/debugger-manager.js';
 
-const NATIVE_HOST_NAME = 'com.hanzi_in_chrome.oauth_host';
+const NATIVE_HOST_NAME = 'com.rethinksoft_in_chrome.oauth_host';
 
 /**
  * Check if a file exists on disk via native messaging bridge.
@@ -22,7 +22,7 @@ async function checkFileExists(filePath) {
         { type: 'check_file', filePath },
         (response) => {
           if (chrome.runtime.lastError) {
-            // Native host unavailable — can't verify, allow attempt
+            // Native host unavailable â€” can't verify, allow attempt
             resolve(true);
             return;
           }
@@ -30,7 +30,7 @@ async function checkFileExists(filePath) {
         }
       );
     } catch (e) {
-      // Native messaging not available — allow attempt
+      // Native messaging not available â€” allow attempt
       resolve(true);
     }
   });
@@ -72,14 +72,14 @@ async function getDownloadsFolder() {
       }
     }
   } catch (e) {
-    // Silent fail — will use filePath as-is
+    // Silent fail â€” will use filePath as-is
   }
 
   return null;
 }
 
 /**
- * Resolve a file path — if it's just a filename (no directory separators),
+ * Resolve a file path â€” if it's just a filename (no directory separators),
  * resolve it against the downloads folder.
  * @param {string} input - File path or bare filename
  * @returns {Promise<string>} Resolved absolute file path
@@ -90,13 +90,13 @@ async function resolveFilePath(input) {
     return input;
   }
 
-  // Bare filename — resolve against downloads folder
+  // Bare filename â€” resolve against downloads folder
   const downloadsDir = await getDownloadsFolder();
   if (downloadsDir) {
     return downloadsDir + input;
   }
 
-  // Can't resolve — return as-is and let CDP handle (will fail validation)
+  // Can't resolve â€” return as-is and let CDP handle (will fail validation)
   return input;
 }
 
@@ -157,7 +157,7 @@ export async function handleFileUpload(toolInput, deps) {
   // Resolve bare filenames against the downloads folder
   const filePath = await resolveFilePath(rawFilePath);
   if (filePath !== rawFilePath) {
-    await log?.('FILE_UPLOAD', `Resolved "${rawFilePath}" → "${filePath}"`);
+    await log?.('FILE_UPLOAD', `Resolved "${rawFilePath}" â†’ "${filePath}"`);
   }
 
   try {

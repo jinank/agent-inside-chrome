@@ -314,6 +314,9 @@ async function handleApiProxy(ws: WebSocket, msg: any): Promise<void> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), PROXY_TIMEOUT_MS);
   const EXPIRY_BUFFER_MS = 60 * 1000;
+  const urlObj = new URL(url);
+  const isCodex = urlObj.hostname.includes('chatgpt.com') || urlObj.hostname.includes('openai.com');
+  const isClaude = urlObj.hostname.includes('anthropic.com');
 
   const getFreshClaudeCredentials = async (): Promise<ClaudeCredentials | null> => {
     const existing = getClaudeCredentials() || getClaudeKeychainCredentials();
@@ -332,33 +335,60 @@ async function handleApiProxy(ws: WebSocket, msg: any): Promise<void> {
   };
 
   try {
-    // Read OAuth credentials
-    let creds = await getFreshClaudeCredentials();
-    if (!creds) {
-      ws.send(JSON.stringify({ type: 'proxy_api_error', requestId, error: 'No Claude credentials found' }));
-      return;
-    }
+    let response: Response;
 
-    // Claude Code impersonation headers
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${creds.accessToken}`,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true',
-      'anthropic-beta': 'claude-code-20250219,oauth-2025-04-20,interleaved-thinking-2025-05-14',
-      'x-app': 'cli',
-      'user-agent': 'claude-code/2.1.29 (Darwin; arm64)',
-    };
+    if (isCodex) {
+      const creds = getCodexCredentials();
+      if (!creds?.accessToken) {
+        ws.send(JSON.stringify({ type: 'proxy_api_error', requestId, error: 'No Codex credentials found. Run `codex login` first.' }));
+        return;
+      }
 
-    let response = await fetch(url, { method: 'POST', headers, body, signal: controller.signal });
+      const sessionId = randomUUID();
+      const conversationId = randomUUID();
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${creds.accessToken}`,
+        'openai-beta': 'responses=experimental',
+        'chatgpt-account-id': creds.accountId || '',
+        'session_id': sessionId,
+        'conversation_id': conversationId,
+        'user-agent': 'codex_cli_rs/0.34.0 (Darwin; arm64)',
+        'originator': 'codex_cli_rs',
+        'accept': 'text/event-stream',
+      };
 
-    if (response.status === 401) {
-      log('Claude proxy request got 401, refreshing token and retrying once');
-      const refreshed = await refreshClaudeToken(creds.refreshToken);
-      saveClaudeCredentials(refreshed);
-      creds = refreshed;
-      headers.Authorization = `Bearer ${creds.accessToken}`;
       response = await fetch(url, { method: 'POST', headers, body, signal: controller.signal });
+    } else if (isClaude) {
+      let creds = await getFreshClaudeCredentials();
+      if (!creds) {
+        ws.send(JSON.stringify({ type: 'proxy_api_error', requestId, error: 'No Claude credentials found' }));
+        return;
+      }
+
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${creds.accessToken}`,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+        'anthropic-beta': 'claude-code-20250219,oauth-2025-04-20,interleaved-thinking-2025-05-14',
+        'x-app': 'cli',
+        'user-agent': 'claude-code/2.1.29 (Darwin; arm64)',
+      };
+
+      response = await fetch(url, { method: 'POST', headers, body, signal: controller.signal });
+
+      if (response.status === 401) {
+        log('Claude proxy request got 401, refreshing token and retrying once');
+        const refreshed = await refreshClaudeToken(creds.refreshToken);
+        saveClaudeCredentials(refreshed);
+        creds = refreshed;
+        headers.Authorization = `Bearer ${creds.accessToken}`;
+        response = await fetch(url, { method: 'POST', headers, body, signal: controller.signal });
+      }
+    } else {
+      ws.send(JSON.stringify({ type: 'proxy_api_error', requestId, error: `Unsupported proxy host: ${urlObj.hostname}` }));
+      return;
     }
 
     if (!response.ok) {

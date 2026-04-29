@@ -1,6 +1,6 @@
-# Your agent stops when it needs a browser. Hanzi lets it keep going.
+# Your agent stops when it needs a browser. RethinkSoft lets it keep going.
 
-**Hanzi** gives your AI agent your real signed-in browser. One tool call, entire task delegated.
+**RethinkSoft** gives your AI agent your real signed-in browser. One tool call, entire task delegated.
 
 Works with Claude Code, Claude Cowork, Cursor, Codex, Windsurf, and more.
 
@@ -9,10 +9,10 @@ Works with Claude Code, Claude Cowork, Cursor, Codex, Windsurf, and more.
 ## Setup
 
 ```bash
-npx hanzi-in-chrome setup
+npx rethinksoft-in-chrome setup
 ```
 
-Detects your browsers, installs the extension, finds AI agents on your machine (Claude Code, Cursor, etc.), and adds Hanzi to each one.
+Detects your browsers, installs the extension, finds AI agents on your machine (Claude Code, Cursor, etc.), and adds RethinkSoft to each one.
 
 <details>
 <summary>Manual setup</summary>
@@ -23,7 +23,7 @@ Detects your browsers, installs the extension, finds AI agents on your machine (
 
 **Claude Code:**
 ```bash
-claude mcp add browser -- npx -y hanzi-in-chrome
+claude mcp add browser -- npx -y rethinksoft-in-chrome
 ```
 
 **Cursor / Windsurf / Others** (mcp.json):
@@ -32,13 +32,13 @@ claude mcp add browser -- npx -y hanzi-in-chrome
   "mcpServers": {
     "browser": {
       "command": "npx",
-      "args": ["-y", "hanzi-in-chrome"]
+      "args": ["-y", "rethinksoft-in-chrome"]
     }
   }
 }
 ```
 
-3. Credentials — pick one:
+3. Credentials â€” pick one:
    - Claude Pro/Max: uses `claude login` automatically
    - Codex: run `codex login`
    - API key: set `ANTHROPIC_API_KEY`
@@ -55,7 +55,7 @@ claude mcp add browser -- npx -y hanzi-in-chrome
 
 ## Skills
 
-Reusable workflows. Open source — [add your own](https://github.com/hanzili/llm-in-chrome/tree/main/server/skills).
+Reusable workflows. Open source â€” [add your own](https://github.com/hanzili/llm-in-chrome/tree/main/server/skills).
 
 | Skill | Description |
 |-------|-------------|

@@ -11,7 +11,7 @@
  */
 
 
-const NATIVE_HOST_NAME = 'com.hanzi_in_chrome.oauth_host';
+const NATIVE_HOST_NAME = 'com.rethinksoft_in_chrome.oauth_host';
 const WS_RELAY_URL = 'ws://localhost:7862';
 const WS_RECONNECT_DELAY_MS = 5000;
 
@@ -64,7 +64,7 @@ export function initMcpBridge(callbacks) {
   // Try WebSocket relay first
   connectToRelay();
 
-  // Keepalive alarm — wakes the service worker periodically to reconnect
+  // Keepalive alarm â€” wakes the service worker periodically to reconnect
   // relay WebSocket (which drops when the service worker sleeps).
   // The relay queues messages while we're offline, so reconnecting
   // delivers any pending start_task/send_message commands.
@@ -157,7 +157,7 @@ export function connectToRelay() {
 
         // Route through the same command handler as polling
         // Messages from MCP/CLI come in the same format as inbox commands
-        // but with mcp_ prefix (e.g., mcp_start_task → start_task)
+        // but with mcp_ prefix (e.g., mcp_start_task â†’ start_task)
         const command = normalizeIncomingMessage(message);
         if (command) {
           handleMcpCommand(command);
@@ -230,7 +230,7 @@ function normalizeIncomingMessage(message) {
 
   const mappedType = typeMap[type];
   if (mappedType === undefined) {
-    // Unknown type — try passing through as-is
+    // Unknown type â€” try passing through as-is
     return { type, ...rest };
   }
   if (mappedType === null) {
@@ -582,7 +582,7 @@ export function queryMemory(sessionId, query, timeoutMs = 10000) {
  * @param {string} problem - What the browser agent is stuck on
  * @param {string} whatITried - Approaches already attempted
  * @param {string} whatINeed - What would unblock the agent
- * @param {number} timeoutMs - Timeout (default 3 minutes — accounts for planning LLM call + possible user input)
+ * @param {number} timeoutMs - Timeout (default 3 minutes â€” accounts for planning LLM call + possible user input)
  * @returns {Promise<string>} Guidance from planning agent
  */
 export function sendEscalation(sessionId, problem, whatITried, whatINeed, timeoutMs = 180000) {
@@ -614,7 +614,7 @@ export function sendEscalation(sessionId, problem, whatITried, whatINeed, timeou
   });
 }
 
-// Model tier → Anthropic model ID mapping for ccproxy
+// Model tier â†’ Anthropic model ID mapping for ccproxy
 const CCPROXY_MODEL_MAP = {
   fast: 'claude-haiku-4-5-20251001',
   smart: 'claude-sonnet-4-5-20250929',
@@ -626,7 +626,7 @@ const CCPROXY_URL = 'http://127.0.0.1:8000/claude/v1/messages';
 /**
  * Handle LLM request from MCP server
  * Routes directly to ccproxy (local Claude Code proxy) via fetch().
- * No native host needed — ccproxy handles credential injection.
+ * No native host needed â€” ccproxy handles credential injection.
  */
 async function handleLLMRequest(command) {
   const { requestId, prompt, systemPrompt, maxTokens, modelTier } = command;
@@ -708,7 +708,7 @@ function sendToMcpRelay(message) {
  * Normalize outgoing messages from extension format to the format
  * expected by MCP server/CLI consumers.
  *
- * Native host bridge translates mcp_task_update → task_update etc.
+ * Native host bridge translates mcp_task_update â†’ task_update etc.
  * For WebSocket, we do this translation here.
  */
 function normalizeOutgoingMessage(message) {
