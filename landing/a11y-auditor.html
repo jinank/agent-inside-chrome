@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RethinkSoft Accessibility Auditor</title>
+  <meta name="description" content="Run real-browser accessibility reviews with RethinkSoft.">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="stylesheet" href="./rethink-style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="./index.html"><span class="brand-mark">R</span><span>RethinkSoft</span></a>
+      <nav class="nav-pill" aria-label="Primary"><a href="./index.html">Home</a><a href="./all-skills.html">Skills</a><a href="./index.html#api">API</a><a href="https://github.com/jinank/agent-inside-chrome" target="_blank" rel="noreferrer">Repository</a></nav>
+      <div class="top-actions"><a class="tiny-button tiny-button--accent" href="./all-skills.html">All skills</a></div>
+    </header>
+    <main>
+      <section class="hero detail-hero">
+        <div class="hero-art" aria-hidden="true"></div>
+        <div class="hero-kicker">Accessibility workflow</div>
+        <h1>Audit the experience users actually touch.</h1>
+        <p class="hero-copy">Review keyboard access, semantic cues, contrast, labels, and focus behavior in a real rendered browser flow.</p>
+        <form class="prompt-bar"><input aria-label="Accessibility prompt" placeholder="Audit checkout and signup for accessibility risks..."><button class="prompt-submit" type="button">Run</button></form>
+      </section>
+      <section class="section">
+        <div class="card-grid">
+          <article class="agent-card agent-card--a11y"><div class="agent-card-content"><span class="agent-card-kicker">Keyboard</span><h3 class="agent-card-title">Trace focus behavior</h3><p>Check tab order, visible focus, and keyboard-only operation.</p></div></article>
+          <article class="agent-card agent-card--a11y"><div class="agent-card-content"><span class="agent-card-kicker">Semantics</span><h3 class="agent-card-title">Inspect structure</h3><p>Look for labels, role misuse, and assistive technology blockers.</p></div></article>
+          <article class="agent-card agent-card--a11y"><div class="agent-card-content"><span class="agent-card-kicker">Contrast</span><h3 class="agent-card-title">Find readability issues</h3><p>Surface visual risks that affect comprehension and conversion.</p></div></article>
+        </div>
+        <div class="detail-grid">
+          <article class="mini-card"><h3>Best for</h3><p>Signup, checkout, dashboards, forms, and customer-facing workflows.</p></article>
+          <article class="mini-card"><h3>Inputs</h3><p>Target page, key flows, expected user role, and known accessibility concerns.</p></article>
+          <article class="mini-card"><h3>Output</h3><p>Prioritized findings with user impact, reproduction steps, and fixes to consider.</p></article>
+          <article class="command-card"><div class="command-top"><span>Run command</span><button class="copy-button" type="button" data-copy="npx rethinksoft-in-chrome setup&#10;rethinksoft-browser start &quot;Audit checkout and signup flows for accessibility risks&quot; --skill a11y-auditor">Copy</button></div><pre>npx rethinksoft-in-chrome setup
+rethinksoft-browser start "Audit checkout and signup flows for accessibility risks" --skill a11y-auditor</pre></article>
+        </div>
+      </section>
+    </main>
+    <footer class="footer"><span>RethinkSoft Accessibility Auditor</span><div class="footer-links"><a href="./all-skills.html">All skills</a><a href="./index.html">Home</a></div></footer>
+  </div>
+  <script src="./landing.js"></script>
+</body>
+</html>

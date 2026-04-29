@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RethinkSoft Social Poster</title>
+  <meta name="description" content="Draft and publish content from signed-in browser sessions.">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="stylesheet" href="./rethink-style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="./index.html"><span class="brand-mark">R</span><span>RethinkSoft</span></a>
+      <nav class="nav-pill" aria-label="Primary"><a href="./index.html">Home</a><a href="./all-skills.html">Skills</a><a href="./index.html#api">API</a><a href="https://github.com/jinank/agent-inside-chrome" target="_blank" rel="noreferrer">Repository</a></nav>
+      <div class="top-actions"><a class="tiny-button tiny-button--accent" href="./all-skills.html">All skills</a></div>
+    </header>
+    <main>
+      <section class="hero detail-hero">
+        <div class="hero-art" aria-hidden="true"></div>
+        <div class="hero-kicker">Social workflow</div>
+        <h1>Publish updates through real account sessions.</h1>
+        <p class="hero-copy">Turn campaign notes into platform-aware posts, then execute publication from live browser sessions.</p>
+        <form class="prompt-bar"><input aria-label="Social prompt" placeholder="Draft and post today's launch update on LinkedIn and X..."><button class="prompt-submit" type="button">Run</button></form>
+      </section>
+      <section class="section">
+        <div class="card-grid">
+          <article class="agent-card agent-card--social"><div class="agent-card-content"><span class="agent-card-kicker">Draft</span><h3 class="agent-card-title">Shape the message</h3><p>Adapt one idea into channel-specific copy and tone.</p></div></article>
+          <article class="agent-card agent-card--social"><div class="agent-card-content"><span class="agent-card-kicker">Post</span><h3 class="agent-card-title">Use the live UI</h3><p>Open the right surface, prepare the post, and complete browser steps.</p></div></article>
+          <article class="agent-card agent-card--social"><div class="agent-card-content"><span class="agent-card-kicker">Report</span><h3 class="agent-card-title">Return status</h3><p>Summarize where content went and what needs human follow-up.</p></div></article>
+        </div>
+        <div class="detail-grid">
+          <article class="mini-card"><h3>Best for</h3><p>Launch posts, content repurposing, campaign distribution, and routine updates.</p></article>
+          <article class="mini-card"><h3>Inputs</h3><p>Source copy, target channels, tone, assets, and final approval preference.</p></article>
+          <article class="mini-card"><h3>Output</h3><p>Platform-specific drafts, publishing status, and recommended next steps.</p></article>
+          <article class="command-card"><div class="command-top"><span>Run command</span><button class="copy-button" type="button" data-copy="npx rethinksoft-in-chrome setup&#10;rethinksoft-browser start &quot;Draft and post today's launch update on LinkedIn and X&quot; --skill social-poster">Copy</button></div><pre>npx rethinksoft-in-chrome setup
+rethinksoft-browser start "Draft and post today's launch update on LinkedIn and X" --skill social-poster</pre></article>
+        </div>
+      </section>
+    </main>
+    <footer class="footer"><span>RethinkSoft Social Poster</span><div class="footer-links"><a href="./all-skills.html">All skills</a><a href="./index.html">Home</a></div></footer>
+  </div>
+  <script src="./landing.js"></script>
+</body>
+</html>

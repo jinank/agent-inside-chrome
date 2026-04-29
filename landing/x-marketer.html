@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RethinkSoft X Marketer</title>
+  <meta name="description" content="Find conversations and draft contextual replies with RethinkSoft.">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="stylesheet" href="./rethink-style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="./index.html"><span class="brand-mark">R</span><span>RethinkSoft</span></a>
+      <nav class="nav-pill" aria-label="Primary"><a href="./index.html">Home</a><a href="./all-skills.html">Skills</a><a href="./index.html#api">API</a><a href="https://github.com/jinank/agent-inside-chrome" target="_blank" rel="noreferrer">Repository</a></nav>
+      <div class="top-actions"><a class="tiny-button tiny-button--accent" href="./all-skills.html">All skills</a></div>
+    </header>
+    <main>
+      <section class="hero detail-hero">
+        <div class="hero-art" aria-hidden="true"></div>
+        <div class="hero-kicker">Marketing workflow</div>
+        <h1>Find conversations worth joining.</h1>
+        <p class="hero-copy">Monitor relevant topics, discover live threads, and prepare thoughtful replies from real account context.</p>
+        <form class="prompt-bar"><input aria-label="Marketing prompt" placeholder="Find conversations about browser agents and draft thoughtful replies..."><button class="prompt-submit" type="button">Run</button></form>
+      </section>
+      <section class="section">
+        <div class="card-grid">
+          <article class="agent-card agent-card--marketing"><div class="agent-card-content"><span class="agent-card-kicker">Discover</span><h3 class="agent-card-title">Track relevant topics</h3><p>Find live posts, creators, and threads connected to your market.</p></div></article>
+          <article class="agent-card agent-card--marketing"><div class="agent-card-content"><span class="agent-card-kicker">Draft</span><h3 class="agent-card-title">Prepare contextual replies</h3><p>Use thread content and brand intent to shape useful responses.</p></div></article>
+          <article class="agent-card agent-card--marketing"><div class="agent-card-content"><span class="agent-card-kicker">Act</span><h3 class="agent-card-title">Keep control of posting</h3><p>Review and publish through live sessions with clear boundaries.</p></div></article>
+        </div>
+        <div class="detail-grid">
+          <article class="mini-card"><h3>Best for</h3><p>Founder-led marketing, social listening, community growth, and launch engagement.</p></article>
+          <article class="mini-card"><h3>Inputs</h3><p>Topics, target audience, voice, account constraints, and desired response count.</p></article>
+          <article class="mini-card"><h3>Output</h3><p>Ranked threads, suggested responses, and a summary of action opportunities.</p></article>
+          <article class="command-card"><div class="command-top"><span>Run command</span><button class="copy-button" type="button" data-copy="npx rethinksoft-in-chrome setup&#10;rethinksoft-browser start &quot;Find conversations about browser AI tools and draft three thoughtful replies&quot; --skill x-marketer">Copy</button></div><pre>npx rethinksoft-in-chrome setup
+rethinksoft-browser start "Find conversations about browser AI tools and draft three thoughtful replies" --skill x-marketer</pre></article>
+        </div>
+      </section>
+    </main>
+    <footer class="footer"><span>RethinkSoft X Marketer</span><div class="footer-links"><a href="./all-skills.html">All skills</a><a href="./index.html">Home</a></div></footer>
+  </div>
+  <script src="./landing.js"></script>
+</body>
+</html>

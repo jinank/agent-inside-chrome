@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RethinkSoft Skills</title>
+  <meta name="description" content="All browser automation skills available with RethinkSoft setup.">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="stylesheet" href="./rethink-style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="./index.html"><span class="brand-mark">R</span><span>RethinkSoft</span></a>
+      <nav class="nav-pill" aria-label="Primary">
+        <a href="./index.html">Home</a>
+        <a href="./all-skills.html" aria-current="page">Skills</a>
+        <a href="./index.html#api">API</a>
+        <a href="https://github.com/jinank/agent-inside-chrome" target="_blank" rel="noreferrer">Repository</a>
+      </nav>
+      <div class="top-actions">
+        <a class="tiny-button tiny-button--accent" href="https://chromewebstore.google.com/detail/rethinksoft-in-chrome/iklpkemlmbhemkiojndpbhoakgikpmcd" target="_blank" rel="noreferrer">Install</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-art" aria-hidden="true"></div>
+        <div class="hero-kicker">Skill library</div>
+        <h1>Choose the browser workflow you want to automate.</h1>
+        <p class="hero-copy">These reusable workflows are designed for real signed-in sessions, dynamic pages, and tasks where plain APIs are not enough.</p>
+        <form class="prompt-bar">
+          <input aria-label="Skill search" placeholder="Search by workflow: testing, posting, extraction, accessibility...">
+          <button class="prompt-submit" type="button">Search</button>
+        </form>
+      </section>
+
+      <section class="filter-strip" aria-label="Filter skills">
+        <div class="filter-shell">
+          <button class="filter-chip" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter-chip" type="button" data-filter="qa" aria-pressed="false">QA</button>
+          <button class="filter-chip" type="button" data-filter="social" aria-pressed="false">Social</button>
+          <button class="filter-chip" type="button" data-filter="prospecting" aria-pressed="false">Prospecting</button>
+          <button class="filter-chip" type="button" data-filter="a11y" aria-pressed="false">Accessibility</button>
+          <button class="filter-chip" type="button" data-filter="data" aria-pressed="false">Data</button>
+          <button class="filter-chip" type="button" data-filter="marketing" aria-pressed="false">Marketing</button>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <div>
+            <div class="hero-kicker">All skills</div>
+            <h2 class="section-title">Reusable browser agents</h2>
+          </div>
+          <p class="section-note">Each page includes the workflow, expected output, and a command example for running it locally.</p>
+        </div>
+        <div class="card-grid">
+          <a class="agent-card agent-card--qa" data-category="qa" href="./e2e-tester.html">
+            <div class="agent-card-content"><span class="agent-card-kicker">QA</span><h3 class="agent-card-title">E2E Tester</h3><p>Validate product paths in a real browser and report issues clearly.</p></div>
+          </a>
+          <a class="agent-card agent-card--social" data-category="social" href="./social-poster.html">
+            <div class="agent-card-content"><span class="agent-card-kicker">Social</span><h3 class="agent-card-title">Social Poster</h3><p>Draft and publish channel-aware updates through live accounts.</p></div>
+          </a>
+          <a class="agent-card agent-card--marketing" data-category="marketing social" href="./x-marketer.html">
+            <div class="agent-card-content"><span class="agent-card-kicker">Marketing</span><h3 class="agent-card-title">X Marketer</h3><p>Find conversations and draft contextual replies with live context.</p></div>
+          </a>
+          <a class="agent-card agent-card--prospecting" data-category="prospecting" href="./linkedin-prospector.html">
+            <div class="agent-card-content"><span class="agent-card-kicker">Prospecting</span><h3 class="agent-card-title">LinkedIn Prospector</h3><p>Research prospects and prepare personalized outreach packages.</p></div>
+          </a>
+          <a class="agent-card agent-card--a11y" data-category="a11y qa" href="./a11y-auditor.html">
+            <div class="agent-card-content"><span class="agent-card-kicker">Accessibility</span><h3 class="agent-card-title">Accessibility Auditor</h3><p>Review keyboard, focus, contrast, labels, and structure in real UI.</p></div>
+          </a>
+          <a class="agent-card agent-card--data" data-category="data" href="./data-extractor.html">
+            <div class="agent-card-content"><span class="agent-card-kicker">Data</span><h3 class="agent-card-title">Data Extractor</h3><p>Extract structured data from tables, listings, and authenticated pages.</p></div>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>RethinkSoft Skills</span>
+      <div class="footer-links">
+        <a href="./index.html">Home</a>
+        <a href="https://github.com/jinank/agent-inside-chrome" target="_blank" rel="noreferrer">Repository</a>
+      </div>
+    </footer>
+  </div>
+  <script src="./landing.js"></script>
+</body>
+</html>

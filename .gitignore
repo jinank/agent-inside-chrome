@@ -12,6 +12,8 @@ STRUCTURED_LOGGING.md
 # Unused code
 docs/*
 !docs/architecture-diagram.png
+!docs/gtm-kit/
+!docs/gtm-kit/*
 profiles/
 src/popup/
 

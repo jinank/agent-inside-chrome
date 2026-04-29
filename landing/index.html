@@ -1,873 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RethinkSoft | Give Your AI Agent a Real Browser</title>
-    <meta name="description" content="RethinkSoft gives your AI agent a real signed-in browser so it can inspect apps, complete workflows, and automate the web.">
-    <meta property="og:title" content="RethinkSoft | Give Your AI Agent a Real Browser">
-    <meta property="og:description" content="Connect a real browser to your AI agent. Run browser tasks locally, use your own model, or build product workflows on top of the API.">
-    <meta property="og:image" content="./og.png">
-    <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="RethinkSoft | Give Your AI Agent a Real Browser">
-    <meta name="twitter:description" content="Connect a real browser to your AI agent. Run browser tasks locally, use your own model, or build product workflows on top of the API.">
-    <meta name="twitter:image" content="./og.png">
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
-    <style>
-        :root {
-            --bg: #f6f1e8;
-            --bg-strong: #efe6d8;
-            --surface: rgba(255, 251, 245, 0.94);
-            --surface-2: #fff7ee;
-            --line: #e8dcc8;
-            --ink: #1d170f;
-            --muted: #6c6154;
-            --accent: #b05831;
-            --accent-strong: #873b1d;
-            --forest: #20453a;
-            --gold: #d0a45c;
-            --shadow: 0 24px 60px rgba(58, 36, 17, 0.10);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            min-height: 100vh;
-            color: var(--ink);
-            background:
-                radial-gradient(circle at top left, rgba(208, 164, 92, 0.20), transparent 28%),
-                radial-gradient(circle at 85% 10%, rgba(32, 69, 58, 0.12), transparent 24%),
-                linear-gradient(180deg, #fbf7f0 0%, var(--bg) 50%, #f2eade 100%);
-            font-family: "Avenir Next", "Segoe UI", sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        img {
-            display: block;
-            max-width: 100%;
-        }
-
-        code,
-        pre {
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-        }
-
-        .shell {
-            width: min(1160px, calc(100% - 32px));
-            margin: 0 auto;
-        }
-
-        .topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            padding: 26px 0 18px;
-        }
-
-        .brand {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 800;
-            letter-spacing: 0.01em;
-        }
-
-        .brand img {
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
-        }
-
-        .nav {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .nav-link,
-        .btn {
-            min-height: 42px;
-            padding: 0 16px;
-            border-radius: 999px;
-            border: 1px solid var(--line);
-            background: rgba(255, 255, 255, 0.6);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 700;
-            transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
-        }
-
-        .nav-link:hover,
-        .btn:hover {
-            transform: translateY(-1px);
-        }
-
-        .btn-primary {
-            color: #fff;
-            border-color: transparent;
-            background: linear-gradient(135deg, var(--accent), var(--accent-strong));
-        }
-
-        .btn-dark {
-            color: #fff;
-            border-color: transparent;
-            background: linear-gradient(135deg, var(--forest), #163229);
-        }
-
-        .hero {
-            display: grid;
-            grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
-            gap: 42px;
-            align-items: center;
-            padding: 28px 0 56px;
-        }
-
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 999px;
-            border: 1px solid #ead6c2;
-            background: rgba(255, 246, 235, 0.88);
-            color: var(--accent-strong);
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        h1,
-        h2,
-        h3 {
-            font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
-            letter-spacing: -0.04em;
-        }
-
-        h1 {
-            max-width: 10ch;
-            margin-top: 18px;
-            font-size: clamp(3rem, 7vw, 5.5rem);
-            line-height: 0.94;
-        }
-
-        .hero-copy p {
-            max-width: 580px;
-            margin-top: 22px;
-            font-size: 18px;
-            line-height: 1.7;
-            color: var(--muted);
-        }
-
-        .hero-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 28px;
-        }
-
-        .hero-note {
-            margin-top: 18px;
-            color: var(--muted);
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .pill-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 26px;
-        }
-
-        .pill {
-            padding: 10px 13px;
-            border-radius: 999px;
-            border: 1px solid var(--line);
-            background: rgba(255, 255, 255, 0.55);
-            color: var(--muted);
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .hero-card {
-            border: 1px solid var(--line);
-            border-radius: 28px;
-            background: linear-gradient(180deg, rgba(255, 252, 247, 0.98), rgba(249, 240, 228, 0.94));
-            box-shadow: var(--shadow);
-            overflow: hidden;
-        }
-
-        .hero-card img {
-            width: 100%;
-            aspect-ratio: 16 / 11;
-            object-fit: cover;
-            background: #f5ebdc;
-        }
-
-        .hero-card-body {
-            padding: 22px;
-            display: grid;
-            gap: 14px;
-        }
-
-        .mini-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-        }
-
-        .mini-stat {
-            padding: 14px;
-            border-radius: 18px;
-            background: rgba(255, 255, 255, 0.68);
-            border: 1px solid #eadbc7;
-        }
-
-        .mini-stat strong {
-            display: block;
-            margin-bottom: 6px;
-            font-size: 14px;
-        }
-
-        .mini-stat span {
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        .section {
-            padding: 60px 0;
-            border-top: 1px solid rgba(164, 133, 95, 0.15);
-        }
-
-        .section-head {
-            display: grid;
-            grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-            gap: 26px;
-            align-items: end;
-            margin-bottom: 28px;
-        }
-
-        .kicker {
-            color: var(--accent-strong);
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        h2 {
-            margin-top: 10px;
-            font-size: clamp(2.2rem, 4.2vw, 3.5rem);
-            line-height: 0.95;
-        }
-
-        .section-head p {
-            max-width: 620px;
-            color: var(--muted);
-            font-size: 17px;
-            line-height: 1.7;
-        }
-
-        .logo-strip {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .logo-chip {
-            padding: 12px 16px;
-            border-radius: 16px;
-            border: 1px solid var(--line);
-            background: rgba(255, 255, 255, 0.62);
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--muted);
-        }
-
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 18px;
-        }
-
-        .card,
-        .terminal,
-        .pricing-card,
-        .cta-band {
-            border: 1px solid var(--line);
-            border-radius: 24px;
-            background: var(--surface);
-            box-shadow: 0 10px 28px rgba(62, 41, 18, 0.05);
-        }
-
-        .card {
-            padding: 24px;
-        }
-
-        .card h3 {
-            font-size: 1.45rem;
-            line-height: 1.02;
-        }
-
-        .card p,
-        .card li,
-        .terminal p,
-        .pricing-card li,
-        .pricing-card p {
-            color: var(--muted);
-            line-height: 1.65;
-        }
-
-        .card .tag {
-            display: inline-flex;
-            margin-bottom: 12px;
-            padding: 8px 11px;
-            border-radius: 999px;
-            background: #fff3e6;
-            color: var(--accent-strong);
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .terminal {
-            overflow: hidden;
-        }
-
-        .terminal-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 18px;
-            border-bottom: 1px solid var(--line);
-            background: rgba(251, 244, 233, 0.8);
-        }
-
-        .terminal-top span {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--muted);
-        }
-
-        .copy-btn {
-            min-height: 34px;
-            padding: 0 12px;
-            border: 1px solid var(--line);
-            border-radius: 999px;
-            background: #fff;
-            color: var(--ink);
-            font-size: 12px;
-            font-weight: 800;
-            cursor: pointer;
-        }
-
-        .terminal-body {
-            padding: 22px;
-            display: grid;
-            gap: 18px;
-        }
-
-        .terminal pre {
-            white-space: pre-wrap;
-            word-break: break-word;
-            padding: 18px;
-            border-radius: 18px;
-            background: #17120d;
-            color: #f8e7cb;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .step-list {
-            list-style: none;
-            display: grid;
-            gap: 12px;
-        }
-
-        .step-list li {
-            display: grid;
-            grid-template-columns: 28px 1fr;
-            gap: 12px;
-            align-items: start;
-        }
-
-        .step-no {
-            width: 28px;
-            height: 28px;
-            border-radius: 999px;
-            background: #f8e8d4;
-            color: var(--accent-strong);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 800;
-        }
-
-        .skill-grid,
-        .tools-grid,
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 18px;
-        }
-
-        .skill-card a,
-        .tool-card a {
-            color: var(--accent-strong);
-            font-weight: 800;
-        }
-
-        .api-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-            gap: 20px;
-        }
-
-        .code-block {
-            padding: 22px;
-            border-radius: 22px;
-            background: #19130e;
-            color: #f6e8cf;
-            overflow-x: auto;
-            font-size: 14px;
-            line-height: 1.7;
-        }
-
-        .pricing-card {
-            padding: 24px;
-        }
-
-        .pricing-card .price {
-            margin: 14px 0 12px;
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: -0.04em;
-        }
-
-        .pricing-card ul {
-            padding-left: 18px;
-            display: grid;
-            gap: 10px;
-        }
-
-        .cta-band {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
-            gap: 18px;
-            align-items: center;
-            padding: 28px;
-            background:
-                radial-gradient(circle at top right, rgba(208, 164, 92, 0.20), transparent 25%),
-                linear-gradient(135deg, rgba(255, 252, 247, 0.96), rgba(247, 237, 223, 0.96));
-        }
-
-        .cta-band p {
-            margin-top: 10px;
-            color: var(--muted);
-            font-size: 16px;
-            line-height: 1.65;
-        }
-
-        footer {
-            padding: 28px 0 46px;
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        .footer-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .footer-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-        }
-
-        @media (max-width: 960px) {
-            .hero,
-            .section-head,
-            .api-grid,
-            .cta-band {
-                grid-template-columns: 1fr;
-            }
-
-            .card-grid,
-            .skill-grid,
-            .tools-grid,
-            .pricing-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 720px) {
-            .topbar {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .hero {
-                gap: 28px;
-            }
-
-            h1 {
-                max-width: none;
-            }
-
-            .mini-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RethinkSoft | Browser Agents</title>
+  <meta name="description" content="RethinkSoft gives AI agents real browser control for workflows APIs cannot reach.">
+  <meta property="og:title" content="RethinkSoft | Browser Agents">
+  <meta property="og:description" content="Pair a browser, run tasks, and ship automation that works in real signed-in sessions.">
+  <meta property="og:image" content="./og.png">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="stylesheet" href="./rethink-style.css">
 </head>
 <body>
-    <div class="shell">
-        <header class="topbar">
-            <a class="brand" href="#">
-                <img src="./hanzi.png" alt="RethinkSoft logo">
-                <span>RethinkSoft</span>
-            </a>
-            <nav class="nav">
-                <a class="nav-link" href="#use">Use it</a>
-                <a class="nav-link" href="#tools">Free tools</a>
-                <a class="nav-link" href="#api">API</a>
-                <a class="nav-link" href="#pricing">Pricing</a>
-                <a class="btn btn-primary" href="https://github.com/jinank/agent-inside-chrome" target="_blank" rel="noreferrer">Get started</a>
-            </nav>
-        </header>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="./index.html">
+        <span class="brand-mark">R</span>
+        <span>RethinkSoft</span>
+      </a>
+      <nav class="nav-pill" aria-label="Primary">
+        <a href="./index.html" aria-current="page">Home</a>
+        <a href="./all-skills.html">Skills</a>
+        <a href="#api">API</a>
+        <a href="https://github.com/jinank/agent-inside-chrome" target="_blank" rel="noreferrer">Repository</a>
+      </nav>
+      <div class="top-actions">
+        <a class="tiny-button tiny-button--accent" href="https://chromewebstore.google.com/detail/rethinksoft-in-chrome/iklpkemlmbhemkiojndpbhoakgikpmcd" target="_blank" rel="noreferrer">Install</a>
+      </div>
+    </header>
 
-        <section class="hero">
-            <div class="hero-copy">
-                <div class="eyebrow">Real browser automation for AI agents</div>
-                <h1>Give your AI agent a real browser.</h1>
-                <p>RethinkSoft connects your agent to a signed-in Chrome session so it can inspect real apps, click through workflows, extract authenticated data, and keep going when text-only tools hit a wall.</p>
-                <div class="hero-actions">
-                    <a class="btn btn-primary" href="#install">Install RethinkSoft</a>
-                    <a class="btn" href="#api">Build with the API</a>
-                </div>
-                <p class="hero-note">Works for local agent workflows, MCP browser tasks, and product integrations where your users pair their own browser.</p>
-                <div class="pill-row">
-                    <span class="pill">Claude Code</span>
-                    <span class="pill">Codex</span>
-                    <span class="pill">Cursor</span>
-                    <span class="pill">Windsurf</span>
-                    <span class="pill">Custom MCP clients</span>
-                </div>
+    <main>
+      <section class="hero">
+        <div class="hero-art" aria-hidden="true"></div>
+        <div class="hero-kicker">Browser agents for real work</div>
+        <h1>Jinank, the web is ready to automate.</h1>
+        <p class="hero-copy">Run browser-critical workflows through signed-in sessions. RethinkSoft pairs a real browser, executes tasks, and returns usable results inside your product or agent workflow.</p>
+        <form class="prompt-bar">
+          <input aria-label="Task prompt" placeholder="Ask a browser agent to test, extract, post, audit, or monitor...">
+          <button class="prompt-submit" type="button">Create</button>
+        </form>
+        <div class="quick-actions" aria-label="Popular workflows">
+          <a class="quick-chip" href="./e2e-tester.html">QA</a>
+          <a class="quick-chip" href="./data-extractor.html">Data</a>
+          <a class="quick-chip" href="./linkedin-prospector.html">Leads</a>
+          <a class="quick-chip" href="./social-poster.html">Social</a>
+          <a class="quick-chip" href="./a11y-auditor.html">Accessibility</a>
+        </div>
+      </section>
+
+      <section class="filter-strip" aria-label="Filter cards">
+        <div class="filter-shell">
+          <button class="filter-chip" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter-chip" type="button" data-filter="qa" aria-pressed="false">QA</button>
+          <button class="filter-chip" type="button" data-filter="social" aria-pressed="false">Social</button>
+          <button class="filter-chip" type="button" data-filter="prospecting" aria-pressed="false">Prospecting</button>
+          <button class="filter-chip" type="button" data-filter="a11y" aria-pressed="false">Accessibility</button>
+          <button class="filter-chip" type="button" data-filter="data" aria-pressed="false">Data</button>
+          <button class="filter-chip" type="button" data-filter="marketing" aria-pressed="false">Marketing</button>
+          <button class="filter-chip" type="button" data-filter="api" aria-pressed="false">API</button>
+        </div>
+      </section>
+
+      <section class="section" id="skills">
+        <div class="section-head">
+          <div>
+            <div class="hero-kicker">Skills that ship with setup</div>
+            <h2 class="section-title">A directory of browser-ready workflows</h2>
+          </div>
+          <p class="section-note">Each card maps to a reusable workflow with real browser execution, structured outputs, and a page you can share with prospects.</p>
+        </div>
+        <div class="card-grid">
+          <a class="agent-card agent-card--qa" data-category="qa" href="./e2e-tester.html">
+            <div class="agent-card-content">
+              <span class="agent-card-kicker">QA</span>
+              <h3 class="agent-card-title">E2E testing for live product flows</h3>
+              <p>Click through authenticated paths and report regressions with practical evidence.</p>
             </div>
-
-            <aside class="hero-card">
-                <img src="./hanzi.png" alt="RethinkSoft browser automation preview">
-                <div class="hero-card-body">
-                    <div class="mini-grid">
-                        <div class="mini-stat">
-                            <strong>Local by default</strong>
-                            <span>Bring your own model and keep browser automation on your machine.</span>
-                        </div>
-                        <div class="mini-stat">
-                            <strong>Managed option</strong>
-                            <span>Use task-based pricing when you want the browser runtime without model setup.</span>
-                        </div>
-                        <div class="mini-stat">
-                            <strong>Extension + MCP</strong>
-                            <span>Works from the Chrome sidepanel and from terminal agents.</span>
-                        </div>
-                        <div class="mini-stat">
-                            <strong>Built for workflows</strong>
-                            <span>Forms, dashboards, QA paths, social posting, and authenticated research.</span>
-                        </div>
-                    </div>
-                </div>
-            </aside>
-        </section>
-
-        <section class="section">
-            <div class="section-head">
-                <div>
-                    <div class="kicker">Compatible</div>
-                    <h2>One browser layer for the agents your team already uses.</h2>
-                </div>
-                <p>RethinkSoft is designed to feel like a missing capability, not a separate product. Install once, then let your preferred agent call into the browser whenever the task genuinely needs it.</p>
+          </a>
+          <a class="agent-card agent-card--social" data-category="social" href="./social-poster.html">
+            <div class="agent-card-content">
+              <span class="agent-card-kicker">Social</span>
+              <h3 class="agent-card-title">Social posting from real sessions</h3>
+              <p>Draft once and publish across channels with account-aware browser steps.</p>
             </div>
-            <div class="logo-strip">
-                <div class="logo-chip">Claude Code</div>
-                <div class="logo-chip">OpenAI Codex</div>
-                <div class="logo-chip">Cursor</div>
-                <div class="logo-chip">Windsurf</div>
-                <div class="logo-chip">Gemini CLI</div>
-                <div class="logo-chip">VS Code Copilot</div>
-                <div class="logo-chip">Any MCP client</div>
+          </a>
+          <a class="agent-card agent-card--prospecting" data-category="prospecting" href="./linkedin-prospector.html">
+            <div class="agent-card-content">
+              <span class="agent-card-kicker">Prospecting</span>
+              <h3 class="agent-card-title">LinkedIn prospect research</h3>
+              <p>Find leads, inspect context, and draft personalized outreach packages.</p>
             </div>
-        </section>
-
-        <section class="section" id="use">
-            <div class="section-head">
-                <div>
-                    <div class="kicker">Use RethinkSoft</div>
-                    <h2>Your agent gets a real, signed-in browser session.</h2>
-                </div>
-                <p>Install the extension, connect your coding agents, and unlock browser-native tasks like validating UI changes, filling forms, navigating private dashboards, and posting with your real accounts.</p>
+          </a>
+          <a class="agent-card agent-card--a11y" data-category="a11y qa" href="./a11y-auditor.html">
+            <div class="agent-card-content">
+              <span class="agent-card-kicker">Accessibility</span>
+              <h3 class="agent-card-title">Real-browser accessibility audits</h3>
+              <p>Check keyboard, contrast, focus, labels, and semantic signals in live UI.</p>
             </div>
-
-            <div class="card-grid">
-                <div class="terminal" id="install">
-                    <div class="terminal-top">
-                        <span>Install command</span>
-                        <button class="copy-btn" type="button" data-copy="npx rethinksoft-in-chrome setup">Copy</button>
-                    </div>
-                    <div class="terminal-body">
-                        <pre>npx rethinksoft-in-chrome setup</pre>
-                        <p>Install the browser extension, wire up the MCP server, and configure supported agents on this machine.</p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <span class="tag">How it works</span>
-                    <h3>Setup once.</h3>
-                    <ul class="step-list" style="margin-top: 18px;">
-                        <li><span class="step-no">1</span><span>Install the extension and native host bridge.</span></li>
-                        <li><span class="step-no">2</span><span>Connect supported coding agents through MCP.</span></li>
-                        <li><span class="step-no">3</span><span>Choose managed tasks or bring your own model keys.</span></li>
-                    </ul>
-                </div>
-
-                <div class="card">
-                    <span class="tag">Common jobs</span>
-                    <h3>Use it when the browser is the blocker.</h3>
-                    <p style="margin-top: 16px;">Have an agent verify a login fix, read a customer dashboard, extract rows from a private portal, submit a form, or run an end-to-end regression against a real environment.</p>
-                </div>
+          </a>
+          <a class="agent-card agent-card--data" data-category="data" href="./data-extractor.html">
+            <div class="agent-card-content">
+              <span class="agent-card-kicker">Data</span>
+              <h3 class="agent-card-title">Authenticated data extraction</h3>
+              <p>Turn tables, listings, and portal views into clean CSV or JSON outputs.</p>
             </div>
-        </section>
-
-        <section class="section">
-            <div class="section-head">
-                <div>
-                    <div class="kicker">Skills</div>
-                    <h2>Purpose-built flows for high-value browser work.</h2>
-                </div>
-                <p>RethinkSoft can expose reusable skills to your agents so common jobs come with clear prompts, safety rails, and better browser execution patterns out of the box.</p>
+          </a>
+          <a class="agent-card agent-card--marketing" data-category="marketing social" href="./x-marketer.html">
+            <div class="agent-card-content">
+              <span class="agent-card-kicker">Marketing</span>
+              <h3 class="agent-card-title">Conversation discovery on X</h3>
+              <p>Find relevant threads and prepare contextual responses with live context.</p>
             </div>
-
-            <div class="skill-grid">
-                <article class="card skill-card">
-                    <span class="tag">Prospecting</span>
-                    <h3>LinkedIn Prospector</h3>
-                    <p style="margin-top: 16px;">Find relevant people, read activity, and draft personalized outreach using your real logged-in browser.</p>
-                    <p style="margin-top: 14px;"><a href="./linkedin-prospector.html">See the skill page</a></p>
-                </article>
-                <article class="card skill-card">
-                    <span class="tag">Quality</span>
-                    <h3>E2E Tester</h3>
-                    <p style="margin-top: 16px;">Inspect the codebase, exercise real UI paths, and capture bugs with repro steps and severity notes.</p>
-                </article>
-                <article class="card skill-card">
-                    <span class="tag">Publishing</span>
-                    <h3>Social Poster</h3>
-                    <p style="margin-top: 16px;">Draft content with AI, then publish from real signed-in social accounts when the workflow requires the live UI.</p>
-                </article>
+          </a>
+          <a class="agent-card agent-card--api" data-category="api" href="#api">
+            <div class="agent-card-content">
+              <span class="agent-card-kicker">API</span>
+              <h3 class="agent-card-title">Pair a user browser in your app</h3>
+              <p>Create a pairing flow, run browser tasks, and poll for results.</p>
             </div>
-        </section>
-
-        <section class="section" id="tools">
-            <div class="section-head">
-                <div>
-                    <div class="kicker">Free tools</div>
-                    <h2>Show what browser-native AI can do before your users install anything.</h2>
-                </div>
-                <p>The original Hanzi site used live demos to make the product concrete. This front site keeps that same idea: fast, focused examples that prove why a real browser connection matters.</p>
+          </a>
+          <a class="agent-card agent-card--data" data-category="data api" href="#api">
+            <div class="agent-card-content">
+              <span class="agent-card-kicker">Operations</span>
+              <h3 class="agent-card-title">Back-office portal automation</h3>
+              <p>Execute repetitive admin workflows when APIs are incomplete.</p>
             </div>
-
-            <div class="tools-grid">
-                <article class="card tool-card">
-                    <span class="tag">QA</span>
-                    <h3>App Flow Tester</h3>
-                    <p style="margin-top: 16px;">Paste a web app URL and let the agent walk through a golden path to uncover real browser bugs.</p>
-                    <p style="margin-top: 14px;"><a href="#api">Power it with the API</a></p>
-                </article>
-                <article class="card tool-card">
-                    <span class="tag">Research</span>
-                    <h3>Protected Data Extraction</h3>
-                    <p style="margin-top: 16px;">Pair a browser, open an internal dashboard, and extract structured information from authenticated pages.</p>
-                </article>
-                <article class="card tool-card">
-                    <span class="tag">Accessibility</span>
-                    <h3>Real Browser A11y Audit</h3>
-                    <p style="margin-top: 16px;">Run accessibility checks against actual rendered pages, not just static markup snapshots.</p>
-                </article>
+          </a>
+          <a class="agent-card agent-card--marketing" data-category="marketing api" href="./all-skills.html">
+            <div class="agent-card-content">
+              <span class="agent-card-kicker">Monitoring</span>
+              <h3 class="agent-card-title">Workflow monitoring and reports</h3>
+              <p>Watch pages, collect changes, and return summaries on schedule.</p>
             </div>
-        </section>
+          </a>
+        </div>
+      </section>
 
-        <section class="section" id="api">
-            <div class="section-head">
-                <div>
-                    <div class="kicker">Build with the API</div>
-                    <h2>Add browser automation to your own product.</h2>
-                </div>
-                <p>Your app can send a user a pairing link, wait for their browser to connect, run a task, and show the answer back in your own interface. The browser runtime becomes part of your product instead of a manual support workflow.</p>
+      <section class="section" id="api">
+        <div class="section-head">
+          <div>
+            <div class="hero-kicker">Developer API</div>
+            <h2 class="section-title">Pair, run, poll, render</h2>
+          </div>
+          <p class="section-note">Use RethinkSoft as the browser execution layer for your product. Keep the pairing UX in your app and return task results where users already work.</p>
+        </div>
+        <div class="detail-grid">
+          <article class="mini-card">
+            <h3>Create pairing</h3>
+            <p>Generate a short-lived browser pairing link for a user and wait for a connected session.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Run task</h3>
+            <p>Submit a natural-language workflow with optional URL and context for the connected browser.</p>
+          </article>
+          <article class="mini-card">
+            <h3>Show result</h3>
+            <p>Poll status, display steps when useful, and render the final answer in your own UI.</p>
+          </article>
+          <article class="command-card">
+            <div class="command-top">
+              <span>Local setup</span>
+              <button class="copy-button" type="button" data-copy="npx rethinksoft-in-chrome setup">Copy</button>
             </div>
+            <pre>npx rethinksoft-in-chrome setup</pre>
+          </article>
+        </div>
+      </section>
+    </main>
 
-            <div class="api-grid">
-                <div class="card">
-                    <span class="tag">Flow</span>
-                    <ul class="step-list" style="margin-top: 18px;">
-                        <li><span class="step-no">1</span><span>Create a pairing token for your user.</span></li>
-                        <li><span class="step-no">2</span><span>Show a pairing link so they connect their browser.</span></li>
-                        <li><span class="step-no">3</span><span>Run tasks against the connected browser session.</span></li>
-                        <li><span class="step-no">4</span><span>Poll for completion and render the answer inside your app.</span></li>
-                    </ul>
-                </div>
-
-                <div class="code-block"><pre>import { HanziClient } from "@hanzi-browse/sdk";
-
-const client = new HanziClient({
-  apiKey: process.env.HANZI_API_KEY,
-});
-
-const { pairingToken } = await client.createPairingToken();
-const pairUrl = `https://api.hanzilla.co/pair/${pairingToken}`;
-
-const sessions = await client.listSessions();
-const browser = sessions.find((session) => session.status === "connected");
-
-const result = await client.runTask({
-  browserSessionId: browser.id,
-  task: "Read the patient chart on this page",
-});
-
-console.log(result.answer);</pre></div>
-            </div>
-        </section>
-
-        <section class="section" id="pricing">
-            <div class="section-head">
-                <div>
-                    <div class="kicker">Pricing</div>
-                    <h2>Start free, then choose the runtime model that fits.</h2>
-                </div>
-                <p>Keep the same pricing story as the original product: either use a managed task runtime or bring your own model and run locally for unlimited workflows.</p>
-            </div>
-
-            <div class="pricing-grid">
-                <article class="pricing-card">
-                    <span class="tag">Managed</span>
-                    <div class="price">$0.05 / task</div>
-                    <p>Includes 20 free tasks per month. You are only charged for completed tasks.</p>
-                    <ul style="margin-top: 18px;">
-                        <li>RethinkSoft handles the AI runtime</li>
-                        <li>Errors and timeouts are free</li>
-                        <li>Good fit for teams that want minimal setup</li>
-                    </ul>
-                </article>
-                <article class="pricing-card">
-                    <span class="tag">BYOM</span>
-                    <div class="price">Free</div>
-                    <p>Use your own model keys or subscriptions and keep execution local on your machine.</p>
-                    <ul style="margin-top: 18px;">
-                        <li>Works with Claude, GPT, Gemini, and more</li>
-                        <li>Unlimited local tasks</li>
-                        <li>Best fit for agent-heavy technical workflows</li>
-                    </ul>
-                </article>
-                <article class="pricing-card">
-                    <span class="tag">Teams</span>
-                    <div class="price">Custom</div>
-                    <p>For product integrations, higher volume, and workflows where browser pairing is part of the user journey.</p>
-                    <ul style="margin-top: 18px;">
-                        <li>Partner implementation support</li>
-                        <li>Product-facing browser automation patterns</li>
-                        <li>Volume planning and rollout guidance</li>
-                    </ul>
-                </article>
-            </div>
-        </section>
-
-        <section class="section">
-            <div class="cta-band">
-                <div>
-                    <div class="kicker">Start here</div>
-                    <h2>One command. Real browser.</h2>
-                    <p>Use the static site as a polished front door, then send people into the repo, extension, or API flow depending on whether they want agent automation or product embedding.</p>
-                </div>
-                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                    <a class="btn btn-primary" href="https://github.com/jinank/agent-inside-chrome" target="_blank" rel="noreferrer">View GitHub</a>
-                    <a class="btn btn-dark" href="https://chromewebstore.google.com/detail/rethinksoft-in-chrome/iklpkemlmbhemkiojndpbhoakgikpmcd" target="_blank" rel="noreferrer">Chrome extension</a>
-                </div>
-            </div>
-        </section>
-
-        <footer>
-            <div class="footer-row">
-                <div>RethinkSoft in Chrome</div>
-                <div class="footer-links">
-                    <a href="#use">Use it</a>
-                    <a href="#tools">Free tools</a>
-                    <a href="#api">API</a>
-                    <a href="#pricing">Pricing</a>
-                    <a href="https://github.com/jinank/agent-inside-chrome" target="_blank" rel="noreferrer">GitHub</a>
-                </div>
-            </div>
-        </footer>
-    </div>
-
-    <script>
-        const copyButtons = document.querySelectorAll("[data-copy]");
-
-        async function copyText(text) {
-            if (navigator.clipboard && window.isSecureContext) {
-                await navigator.clipboard.writeText(text);
-                return;
-            }
-
-            const input = document.createElement("textarea");
-            input.value = text;
-            input.style.position = "fixed";
-            input.style.opacity = "0";
-            document.body.appendChild(input);
-            input.focus();
-            input.select();
-            document.execCommand("copy");
-            input.remove();
-        }
-
-        copyButtons.forEach((button) => {
-            button.addEventListener("click", async () => {
-                const original = button.textContent;
-                try {
-                    await copyText(button.dataset.copy);
-                    button.textContent = "Copied";
-                } catch (error) {
-                    button.textContent = "Failed";
-                }
-                window.setTimeout(() => {
-                    button.textContent = original;
-                }, 1400);
-            });
-        });
-    </script>
+    <footer class="footer">
+      <span>RethinkSoft in Chrome</span>
+      <div class="footer-links">
+        <a href="./all-skills.html">All skills</a>
+        <a href="#api">API</a>
+        <a href="https://github.com/jinank/agent-inside-chrome" target="_blank" rel="noreferrer">Repository</a>
+      </div>
+    </footer>
+  </div>
+  <script src="./landing.js"></script>
 </body>
 </html>
