@@ -492,6 +492,71 @@ h1 {
   line-height: 1.55;
 }
 
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.pricing-card {
+  min-height: 292px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(248, 251, 253, 0.84)),
+    var(--paper);
+  box-shadow: var(--soft-shadow);
+  padding: 20px;
+}
+
+.pricing-card--featured {
+  border-color: rgba(68, 197, 189, 0.58);
+  background:
+    linear-gradient(180deg, rgba(239, 253, 251, 0.96), rgba(255, 255, 255, 0.86)),
+    var(--paper);
+}
+
+.pricing-label {
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: #0c6f75;
+  background: #effdfb;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.pricing-card h3 {
+  margin-top: 14px;
+  color: #263145;
+  font-size: 24px;
+}
+
+.price {
+  margin-top: 8px;
+  color: #263145;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.pricing-card p:not(.price) {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.pricing-card ul {
+  margin-top: 16px;
+  padding-left: 18px;
+  color: #516078;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
 .command-card {
   grid-column: span 3;
   padding: 0;
@@ -561,7 +626,8 @@ h1 {
   }
 
   .card-grid,
-  .detail-grid {
+  .detail-grid,
+  .pricing-grid {
     grid-template-columns: 1fr;
   }
 

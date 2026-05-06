@@ -237,6 +237,15 @@ function buildTurnsFromDebugLog(debugLog) {
  */
 export async function saveTaskLogs(taskData, screenshots = [], options = {}) {
   try {
+    if (!options.downloadLogs) {
+      console.log('[LOG] Task download suppressed. Logs remain available in extension/session state.', {
+        sessionId: options.sessionId || taskData.sessionId || null,
+        status: taskData.status,
+        error: taskData.error || null,
+      });
+      return;
+    }
+
     const sessionId = options.sessionId || taskData.sessionId || null;
     const scopedDebugLog = getTaskDebugLog(sessionId);
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');

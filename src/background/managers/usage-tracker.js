@@ -219,29 +219,6 @@ export function formatSessionSummary(model) {
  */
 export async function saveSessionSummary(model) {
   const stats = getSessionStats(model);
-  const summary = formatSessionSummary(model);
-
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-  const filename = `browser-agent/session-summary-${timestamp}.json`;
-
-  const data = {
-    ...stats,
-    formattedSummary: summary,
-  };
-
-  const content = JSON.stringify(data, null, 2);
-  const dataUrl = 'data:application/json;base64,' + btoa(unescape(encodeURIComponent(content)));
-
-  try {
-    await chrome.downloads.download({
-      url: dataUrl,
-      filename,
-      saveAs: false,
-    });
-    console.log('[Usage] Session summary saved:', filename);
-  } catch (err) {
-    console.error('[Usage] Failed to save summary:', err);
-  }
-
+  console.log('[Usage] Session summary download suppressed. Summary remains in extension state.', stats);
   return stats;
 }
